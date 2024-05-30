@@ -38,6 +38,17 @@ class Order(models.Model):
 
 	def __str__(self):
 		return str(self.id)
+	
+	# cheking if product is digital or not to show shipping address
+		# if eny one of the product have phesical to ship it will show address entering section by sending shipping is 'true'
+	@property
+	def shipping(self):
+		shipping = False
+		orderitems = self.orderitem_set.all()
+		for i in orderitems:
+			if i.product.digital == False:
+				shipping = True
+		return shipping
 
 	@property
 	def get_cart_total(self):
