@@ -30,6 +30,7 @@
 		}
 		var csrftoken = getToken('csrftoken')
 
+		// get cookies if user is unauthenticated
 		function getCookie(name) {
 		    // Split cookie string and get all individual name=value pairs in an array
 		    var cookieArr = document.cookie.split(";");
@@ -51,6 +52,7 @@
 		}
 		var cart = JSON.parse(getCookie('cart'))
 
+		// create cookies if it's not exist
 		if (cart == undefined){
 			cart = {}
 			console.log('Cart Created!', cart)
