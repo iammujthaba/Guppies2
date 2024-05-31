@@ -149,6 +149,11 @@
 	    	.then((data) => {
 				  console.log('Success:', data);
 				  alert('Transaction completed');  
+
+                // after peyment, set cart as empty for both (authenticated or no't authenticated user)
+                  cart = {}
+				  document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
 				  window.location.href = "{% url 'store' %}"
 
 				})
