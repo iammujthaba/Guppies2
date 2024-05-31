@@ -4,7 +4,7 @@ import json
 import datetime
 
 from .models import * 
-from . utils import cookieCart, cartData
+from . utils import cartData, guestOrder
 
 def store(request):
 
@@ -79,34 +79,8 @@ def processOrder(request):
 			zipcode=data['shipping']['zipcode'],
 			)
 	else:
-		# save data in backend of an-authenticated user
-		print('User is not logged in')
-
-		print('COOKIES:', request.COOKIES)
-		name = data['form']['name']
-		email = data['form']['email']
-
-		cookieData = cookieCart(request)
-		items = cookieData['items']
-
-		customer, created = Customer.objects.get_or_create(
-				email=email,
-				)
-		customer.name = name
-		customer.save()
-
-		order = Order.objects.create(
-			customer=customer,
-			complete=False,
-			)
-
-		for item in items:
-			product = Product.objects.get(id=item['id'])
-			orderItem = OrderItem.objects.create(
-				product=product,
-				order=order,
-				quantity=item['quantity'],
-			)
+		# calling guestOrder function from util.py for un-authenticated user to prossess order
+		customer, order = guestOrder(request, data)
 
 	# cheking if user pyed amount and we requsted amount is same (cheking for any manupulation is happening)
 	total = float(data['form']['total'])
