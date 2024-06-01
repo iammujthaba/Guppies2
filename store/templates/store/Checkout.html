@@ -74,7 +74,7 @@
 
 <script>
     var total = '{{order.get_cart_total}}'
-
+    
     var options = {
         "key": "rzp_test_T3s2cflbXqYRRf", // Enter the Key ID generated from the Dashboard
         "amount": total * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -82,9 +82,10 @@
         "name": "MUJTHABA M K", //your business name
         "description": "Thank You for Buying from Us",
         "image": "https://example.com/your_logo",
-        "order_id": "order7359438", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        // if i giving order_id, it's not working
+        //"order_id": order.transaction_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response){
-            alert(response.razorpay_payment_id);
+            //alert(response.razorpay_payment_id);
             submitFormData()
             // alert(response.razorpay_order_id);
             // alert(response.razorpay_signature)
