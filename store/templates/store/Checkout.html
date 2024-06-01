@@ -12,6 +12,9 @@
                         <input required class="form-control" type="text" name="name" placeholder="Name..">
                     </div>
                     <div class="form-field">
+                        <input required class="form-control" type="text" name="number" placeholder="Number..">
+                    </div>
+                    <div class="form-field">
                         <input required class="form-control" type="email" name="email" placeholder="Email..">
                     </div>
                 </div>
@@ -152,6 +155,7 @@
         console.log('Payment button clicked')
         var userFormData = {
             'name':null,
+            'number':null,
             'email':null,
             'total':total,
         }
@@ -172,6 +176,7 @@
 
         if (user == 'AnonymousUser'){
             userFormData.name = form.name.value
+            userFormData.number = form.number.value
             userFormData.email = form.email.value
         }
 
