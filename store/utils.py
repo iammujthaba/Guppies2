@@ -58,6 +58,26 @@ def cartData(request):
 
 	return {'cartItems':cartItems ,'order':order, 'items':items}
 
+# from django.core.exceptions import ObjectDoesNotExist
+
+# def cartData(request):
+#     if request.user.is_authenticated:
+#         try:
+#             customer = request.user.customer
+#         except ObjectDoesNotExist:
+#             customer = Customer.objects.create(user=request.user)
+        
+#         order, created = Order.objects.get_or_create(customer=customer, complete=False)
+#         items = order.orderitem_set.all()
+#         cartItems = order.get_cart_items
+#     else:
+#         cookieData = cookieCart(request)
+#         cartItems = cookieData['cartItems']
+#         order = cookieData['order']
+#         items = cookieData['items']
+#     return {'cartItems': cartItems, 'order': order, 'items': items}
+
+
 # unautherized user order prosessed here
 def guestOrder(request, data):
     # save data in backend of an-authenticated user

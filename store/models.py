@@ -7,10 +7,10 @@ class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200)
-	number = models.CharField(max_length=12,unique=True)
+	number = models.CharField(max_length=12)
 
 	def __str__(self):
-		return self.name
+		return f"{self.user.username}" if self.user else "Anonymous Customer"
 
 
 class Product(models.Model):
