@@ -69,15 +69,6 @@ def processOrder(request):
 		customer = request.user.customer
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-		if order.shipping == True:
-			ShippingAddress.objects.create(
-			customer=customer,
-			order=order,
-			address=data['shipping']['address'],
-			city=data['shipping']['city'],
-			state=data['shipping']['state'],
-			zipcode=data['shipping']['zipcode'],
-			)
 	else:
 		# calling guestOrder function from util.py for un-authenticated user to prossess order
 		customer, order = guestOrder(request, data)
@@ -100,5 +91,9 @@ def processOrder(request):
 		state=data['shipping']['state'],
 		zipcode=data['shipping']['zipcode'],
 		)
+
+	# Empty the cart after payment for authenticated users
+	if request.user.is_authenticated:
+		order.orderitem_set.all().delete()
 
 	return JsonResponse('Payment submitted..', safe=False)
