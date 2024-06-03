@@ -7,10 +7,9 @@ class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200)
-	number = models.CharField(max_length=12)
 
 	def __str__(self):
-		return f"{self.user.username}" if self.user else "Anonymous Customer"
+		return self.name
 
 
 class Product(models.Model):
@@ -77,6 +76,7 @@ class OrderItem(models.Model):
 class ShippingAddress(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
 	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	number = models.CharField(max_length=12, null=False, blank=False)
 	address = models.CharField(max_length=200, null=False)
 	city = models.CharField(max_length=200, null=False)
 	state = models.CharField(max_length=200, null=False)

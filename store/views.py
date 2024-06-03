@@ -86,6 +86,7 @@ def processOrder(request):
 		ShippingAddress.objects.create(
 		customer=customer,
 		order=order,
+		number=data['shipping']['number'],
 		address=data['shipping']['address'],
 		city=data['shipping']['city'],
 		state=data['shipping']['state'],
