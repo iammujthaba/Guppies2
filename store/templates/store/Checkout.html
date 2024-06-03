@@ -183,29 +183,30 @@
         console.log('Shipping Info:', shippingInfo)
         console.log('User Info:', userFormData)
 
-            // send feched data into back
-        var url = "/process_order/"
-	    	fetch(url, {
-	    		method:'POST',
-	    		headers:{
-	    			'Content-Type':'applicaiton/json',
-	    			'X-CSRFToken':csrftoken,
-	    		}, 
-	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-	    		
-	    	})
-	    	.then((response) => response.json())
-	    	.then((data) => {
-				  console.log('Success:', data);
-				  alert('Transaction completed');  
+        // send feched data into back
+        var url = "/process_order/";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'form': userFormData, 'shipping': shippingInfo }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', data);
+            alert(data.message);
 
-                // after peyment, set cart as empty for both (authenticated or no't authenticated user)
-                  cart = {}
-				  document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+            if (data.success) {
+                // After payment, set cart as empty for both authenticated and non-authenticated users
+                cart = {};
+                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
 
-				  window.location.href = "{% url 'store' %}"
+                window.location.href = "{% url 'store' %}";
+            }
+        })
 
-				})
     }
 </script>
 

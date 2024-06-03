@@ -79,7 +79,12 @@ def processOrder(request):
 
 	if total == order.get_cart_total:
 		order.complete = True
-	order.save()
+		order.save()
+		success = True
+		message = "Transaction completed"
+	else:
+		success = False
+		message = "Something went wrong. Order not placed."
 
 	# after peyment was succeed order.shipping will True, wich allow to save shipping address in database
 	if order.shipping == True:
@@ -97,4 +102,4 @@ def processOrder(request):
 	if request.user.is_authenticated:
 		order.orderitem_set.all().delete()
 
-	return JsonResponse('Payment submitted..', safe=False)
+	return JsonResponse({'success': success, 'message': message}, safe=False)
