@@ -74,6 +74,7 @@
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     var total = '{{order.get_cart_total}}'
@@ -195,15 +196,30 @@
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log('Success:', data);
-            alert(data.message);
+            console.log(data.message);
+            // alert(data.message);
 
             if (data.success) {
-                // After payment, set cart as empty for both authenticated and non-authenticated users
-                cart = {};
-                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
+                Swal.fire({
+                icon: "success",
+                title: "Congrats...",
+                text: data.message,
+                }).then((result) => {
+                if (result.isConfirmed) {
+                        // After payment, set cart as empty for both authenticated and non-authenticated users
+                        cart = {};
+                        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
 
-                window.location.href = "{% url 'store' %}";
+                        // Redirect to the home page
+                        window.location.href = "{% url 'store' %}";
+                        }
+                    });
+            } else{
+                Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+                });
             }
         })
 

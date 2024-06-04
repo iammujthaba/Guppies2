@@ -82,7 +82,7 @@ def processOrder(request):
 		order.complete = True
 		order.save()
 		success = True
-		message = "Transaction completed"
+		message = "Transaction completed, \nYou'r Order placed Successfully..."
 
 		# after peyment was succeed order.shipping will True, wich allow to save shipping address in database
 		if order.shipping == True:
@@ -104,7 +104,7 @@ def processOrder(request):
 
 	else:
 		success = False
-		message = "Something went wrong. Order not placed."
+		message = "Something went wrong! \nOrder not placed, For More Contact Us"
 
 	
 	return JsonResponse({'success': success, 'message': message}, safe=False)

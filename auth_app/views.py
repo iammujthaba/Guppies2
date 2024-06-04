@@ -8,8 +8,16 @@ from store.models import Customer
 # Create your views here.
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        login_input = request.POST['login_input']
         password = request.POST['password']
+
+        # Check if the login_input is an email
+        if User.objects.filter(email=login_input).exists():
+            user = User.objects.get(email=login_input)
+            username = user.username
+        else:
+            username = login_input
+
         user = auth.authenticate(username=username,password=password)
         if user is not None:
             auth.login(request,user)
