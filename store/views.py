@@ -74,32 +74,37 @@ def processOrder(request):
 		customer, order = guestOrder(request, data)
 
 	# cheking if user pyed amount and we requsted amount is same (cheking for any manupulation is happening)
-	total = float(data['form']['total'])
+	total = data['form']['total']
 	order.transaction_id = transaction_id
+	print(order.transaction_id)
 
-	if total == order.get_cart_total:
+	if total == str(order.get_cart_total):
 		order.complete = True
 		order.save()
 		success = True
 		message = "Transaction completed"
+
+		# after peyment was succeed order.shipping will True, wich allow to save shipping address in database
+		if order.shipping == True:
+			ShippingAddress.objects.create(
+			customer=customer,
+			order=order,
+			number=data['shipping']['number'],
+			address=data['shipping']['address'],
+			city=data['shipping']['city'],
+			state=data['shipping']['state'],
+			zipcode=data['shipping']['zipcode'],
+			)
+
+		# to set cart as Empty (the cart will empty after payment for authenticated users)
+		# if request.user.is_authenticated:
+		# 		# order.orderitem_set.all().delete()
+		# 	# order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+		# 	# order['get_cart_items']
+
 	else:
 		success = False
 		message = "Something went wrong. Order not placed."
 
-	# after peyment was succeed order.shipping will True, wich allow to save shipping address in database
-	if order.shipping == True:
-		ShippingAddress.objects.create(
-		customer=customer,
-		order=order,
-		number=data['shipping']['number'],
-		address=data['shipping']['address'],
-		city=data['shipping']['city'],
-		state=data['shipping']['state'],
-		zipcode=data['shipping']['zipcode'],
-		)
-
-	# Empty the cart after payment for authenticated users
-	if request.user.is_authenticated:
-		order.orderitem_set.all().delete()
-
+	
 	return JsonResponse({'success': success, 'message': message}, safe=False)
