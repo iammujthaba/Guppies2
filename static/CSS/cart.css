@@ -1,0 +1,215 @@
+.cart-item-counter {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 150px;
+border: 1px solid #ccc;
+border-radius: 5px;
+padding: 5px;
+}
+
+.cart-quantity {
+width: 50px;
+text-align: center;
+border: none;
+outline: none;
+background: none;
+}
+
+.cart-decrement,
+.cart-increment {
+width: 30px;
+height: 30px;
+border: none;
+background-color: #f0f0f0;
+cursor: pointer;
+}
+
+/* Add any other existing CSS styles here */
+
+
+
+aside {
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Card */
+.card {
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* Card body */
+.card-body {
+    padding: 1rem;
+}
+
+/* Form */
+form {
+    margin-bottom: 0;
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Label */
+.form-label {
+    font-weight: 500;
+}
+
+/* Input */
+input {
+    width: 100%;
+    border-radius: 0.25rem;
+}
+
+/* Button */
+button {
+    border-radius: 0.25rem;
+}
+
+/* Dlist */
+.dlist-align {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+/* Total price */
+.total-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Discount */
+.discount {
+    color: green;
+    font-weight: 700;
+}
+
+/* TAX */
+.tax {
+    font-weight: 700;
+}
+
+/* Total */
+.total {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+/* Make Purchase button */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* Back to shop button */
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+
+
+
+/* Modal container */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker background */
+    animation: fadeIn 0.3s; /* Fade-in effect */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 30px; /* Increased padding */
+    border-radius: 10px; /* Rounded corners */
+    border: none; /* Removed border */
+    width: 40%; /* Wider modal */
+    max-width: 90%; /* Ensure it doesn't get too wide on large screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    text-align: center; /* Center text */
+    animation: slideDown 0.4s; /* Slide-down effect */
+}
+
+/* Modal message */
+.modal-content p {
+    font-size: 1.2em; /* Larger font size */
+    color: #333; /* Darker text color */
+}
+
+/* OK button */
+#okButton {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 10px 20px; /* Adjusted padding */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 1em; /* Larger font size */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+#okButton:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes slideDown {
+    from {transform: translateY(-50px);}
+    to {transform: translateY(0);}
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .modal-content {
+    width: 80%; /* Adjust width for tablets and small screens */
+    margin: 30% auto; /* Adjust vertical margin */
+    }
+
+    #okButton {
+    width: 100%; /* Full-width button */
+    padding: 15px; /* Increased padding for easier tap */
+    font-size: 1.2em; /* Slightly larger font size */
+    }
+
+    .modal-content p {
+    font-size: 1.1em; /* Adjusted font size for readability */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+    width: 90%; /* Adjust width for mobile phones */
+    margin: 40% auto; /* Adjust vertical margin */
+    padding: 20px; /* Adjust padding for smaller screens */
+    }
+
+    #okButton {
+    padding: 15px; /* Increased padding for easier tap */
+    font-size: 1.2em; /* Slightly larger font size */
+    }
+
+    .modal-content p {
+    font-size: 1em; /* Adjusted font size for readability */
+    }
+}

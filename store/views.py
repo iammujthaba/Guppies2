@@ -85,6 +85,9 @@ def updateItem(request):
 	if orderItem.quantity <= 0:
 		orderItem.delete()
 
+	if action == 'remove-all':
+		orderItem.delete()
+
 	return JsonResponse('Item was added', safe=False)
 
 # order prossesing fuction deppending on user is authenticated or not

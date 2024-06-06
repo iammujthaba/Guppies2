@@ -1,52 +1,277 @@
 {% extends 'store/Base.html' %}
 {% load static %}
 {% block content %}
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="box-element">
 
-				<a  class="btn btn-outline-dark" href="{% url 'store_app:allProdCat' %}">&#x2190; Continue Shopping</a>
+<link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
 
-				<br>
-				<br>
-				<table class="table">
-					<tr>
-						<th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
-						<th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
-						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'store_app:checkout' %}">Checkout</a>
-						</th>
-					</tr>
-				</table>
-
-			</div>
-
+<div class="container"> <!-- class="container" -->
+	<nav aria-label="breadcrumb" class="breadcrumb-nav mb-1">
+		<div class="container-fluid">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Cart</li>
+			</ol>
+		</div><!-- End .container-fluid -->
+	</nav><!-- End .breadcrumb-nav -->
+	{% if not items %}
+	<div>
+		<div class="text-center mb-3">
 			<br>
-			<div class="box-element">
-				<div class="cart-row">
-					<div style="flex:2"></div>
-					<div style="flex:2"><strong>Item</strong></div>
-					<div style="flex:1"><strong>Price</strong></div>
-					<div style="flex:1"><strong>Quantity</strong></div>
-					<div style="flex:1"><strong>Total</strong></div>
-				</div>
-				{% for item in items %}
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>${{item.product.new_price|floatformat:2}}</p></div>
-					<div style="flex:1">
-						<p class="quantity">{{item.quantity}}</p>
-						<div class="quantity">
-							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
-					
-							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+			<h1>Your shopping cart is empty.</h1>
+			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
+				continue shopping.</p>
+		</div>
+	</div>
+	{% else %}
+	<div class="text-center mb-2">
+		<h1>Shopping Cart</h1>
+	</div>
+
+	<div class="row g-3">
+		{% for cart_item in items %}
+		<div class="col-md-6">
+			<div class="card border rounded shadow-sm">
+				<div class="card-header m-3">
+					{#{{ cart_item.product.get_url }}#}
+					<a href="#">
+						<div class="d-flex align-items-center">
+							<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
+								class="img-fluid" style="width: 50px;">
+							<div class="ms-3 ml-3">
+								<div>{{ cart_item.product.name }}</div>
+								<div
+									class="{% if cart_item.product.available and cart_item.product.stock > 0 %} text-success {% endif %}
+                                              {% if not cart_item.product.available or cart_item.product.stock == 0 %} text-muted {% endif %}">
+									{% if cart_item.product.available and cart_item.product.stock > 0 %}
+									In Stock
+									{% else %}
+									Out of Stock
+									{% endif %}
+								</div>
+							</div>
 						</div>
-					</div>
-					<div style="flex:1"><p>${{item.get_total|floatformat:2}}</p></div>
+					</a>
 				</div>
-				{% endfor %}
+				<div class="card-body">
+
+
+					<div class="d-flex flex-row justify-content-between">
+
+
+						<div class="details-filter-row details-row-size">
+							<label for="qty">Pair:</label>
+							<div class="product-details-quantity">
+								{#{% if cart_item.quantity < cart_item.product.stock %}#} <div
+									class="cart-item-counter">
+
+
+									<div class="cart-item-counter">
+										<button data-product="{{cart_item.product.id}}" data-action="remove"
+											class="cart-decrement chg-quantity update-cart">-</button>
+										<input id="cart-quantity" class="cart-quantity"
+											value="{{ cart_item.quantity }}">
+										<button data-product="{{cart_item.product.id}}" data-action="add"
+											class="cart-increment chg-quantity update-cart">+</button>
+									</div>
+							</div>
+
+							{#{% else %}#}
+							<!-- <div class="cart-item-counter">
+								{#{% url 'cart_app:cart_remove' cart_item.product.id %}#}
+								<a href="#">
+									<button class="cart-decrement" onclick="decrementQuantity()">-</button>
+								</a>
+								{#{{ cart_item.quantity }}#}
+								<input id="cart-quantity" class="cart-quantity" value="#">
+								{#{% url 'cart_app:add_cart' cart_item.product.id %}#}
+								<a href="#">
+									<button onclick="displayPopupMessage('There is no more stock available. If you want more, please contact us')" class="cart-increment">+</button>
+								</a>
+							</div> -->
+							{#{% endif %}#}
+						</div><!-- End .product-details-quantity -->
+					</div><!-- End .details-filter-row -->
+
+
+					<div class="details-filter-row details-row-size" id="femail-options"
+						style="margin-left: 40px; display: none;">
+						<label for="size">Femail:</label>
+						<div class="select-custom">
+							<select name="size" id="size" class="form-control">
+								<option value="#" selected="selected">Additional</option>
+								<option value="1f">1 Femail</option>
+								<option value="2f">2 Femail</option>
+								<option value="3f">3 Femail</option>
+							</select>
+						</div><!-- End .select-custom -->
+					</div><!-- End .details-filter-row -->
+				</div><!-- End .d-flex -->
+
+
+
+
+				<div class="d-flex flex-row justify-content-between">
+					<div>Price: {{ cart_item.product.new_price }} (-{{ cart_item.product.get_discounted_price.diff }})
+					</div>
+					<div>Total: ${{order.get_cart_total|floatformat:2}}</div>
+				</div>
+				{#{% url 'cart_app:full_remove' cart_item.product.id %}#}
+				<button type="button" class="btn btn-danger mt-2 update-cart" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
 			</div>
 		</div>
 	</div>
-{% endblock content %}
+	{% endfor %}
+</div>
+
+
+<!-- Second Product (Repeat structure for other products) -->
+
+
+
+
+
+<aside class="col-lg-3 mb-3">
+
+	<div class="card">
+
+		<div class="card-body">
+			<form id="couponForm">
+				<div class="form-group">
+					<label class="form-label">Have coupon?</label>
+					<div class="input-group">
+						<input type="text" class="form-control pr-2" name="couponCode" placeholder="Coupon code">
+						<button type="submit" class="btn btn-light"
+							style="max-width: 150px; min-width: 100px;">Apply</button>
+					</div>
+				</div>
+			</form>
+			<div id="couponModal" class="modal">
+				<div class="modal-content">
+					<p>Wrong coupon code, try with correct coupon code</p>
+					<button id="okButton">OK</button>
+				</div>
+			</div>
+		</div>
+
+
+	</div> <!-- card.// -->
+
+	<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+				<dt>Total price:</dt>
+				<dd class="text-end"> ₹ {{order.get_cart_total|floatformat:2}}</dd>
+			</dl>
+			{% if totalDiscounts %}
+			<dl class="dlist-align">
+				<dt>You Save:</dt>
+				<dd class="text-end text-success"> - ₹ </dd>
+			</dl>
+			{% else %}
+			{% endif %}
+			<dl class="dlist-align">
+				<dt>Shipping:</dt>
+				<dd class="text-end"> ₹ 60.00 </dd>
+			</dl>
+			<hr>
+			<dl class="dlist-align">
+				<dt>Total:</dt>
+				<dd class="text-end text-dark h5"> ₹ {{ order.get_cart_total|add:60}} </dd>
+			</dl>
+
+			<div class="d-grid gap-2 my-3">
+				<a href="#" class="btn btn-success w-100 mb-2"> Make Purchase </a>
+				<a href="/" class="btn btn-light w-100"> Back to shop </a>
+			</div>
+		</div> <!-- card-body.// -->
+	</div> <!-- card.// -->
+
+</aside> <!-- col.// -->
+
+
+
+
+
+
+
+{% endif %}
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+	crossorigin="anonymous"></script>
+
+<!-- <script>
+      function displayPopupMessage(message) {
+          alert(message); // You can use other methods to display a more styled popup
+      }
+  
+      function updateFemailOptionsVisibility(quantity) {
+          const femailOptions = document.getElementById('femail-options');
+          if (quantity > 3) {
+              femailOptions.style.display = 'flex';
+          } else {
+              femailOptions.style.display = 'none';
+          }
+      }
+  
+      function incrementQuantity(stock) {
+          const quantityInput = document.getElementById('cart-quantity');
+          let currentQuantity = parseInt(quantityInput.value);
+  
+          if (currentQuantity < stock) {
+              quantityInput.value = currentQuantity + 1;
+              updateFemailOptionsVisibility(currentQuantity + 1);
+          } else {
+              displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+          }
+      }
+  
+      function decrementQuantity() {
+          const quantityInput = document.getElementById('cart-quantity');
+          let currentQuantity = parseInt(quantityInput.value);
+  
+          if (currentQuantity > 1) {
+              quantityInput.value = currentQuantity - 1;
+              updateFemailOptionsVisibility(currentQuantity - 1);
+          }
+      }
+  
+      document.addEventListener('DOMContentLoaded', function() {
+          const quantityInput = document.getElementById('cart-quantity');
+          updateFemailOptionsVisibility(parseInt(quantityInput.value));
+      });
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('couponForm');
+  const modal = document.getElementById('couponModal');
+  const okButton = document.getElementById('okButton');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting
+
+    // Show the modal
+    modal.style.display = 'block';
+  });
+
+  okButton.addEventListener('click', function() {
+    // Hide the modal
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+      // Hide the modal if the user clicks outside of it
+      modal.style.display = 'none';
+    }
+  });
+}); -->
+
+
+</script>
+
+
+{% endblock %}

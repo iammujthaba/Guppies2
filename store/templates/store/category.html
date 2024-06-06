@@ -195,10 +195,7 @@
                                     </div>
                                 </a>
                                 {#{% url 'cart_app:add_cart' product.id %}#}
-                                <!-- <a href="#"> -->
-                                    <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
-                                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                                <!-- </a> -->
+                                    <button data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-to-cart add-btn update-cart">Add to Cart</button>
 
                             </div><!-- End .product -->
                         </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -319,10 +316,7 @@
                                         </div>
                                     </a>
                                     {#{% url 'cart_app:add_cart' product.id %}#}
-                                    <!-- <a href="#"> -->
-                                        <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                                        <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
-                                    <!-- </a> -->
+                                        <button data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-btn add-to-cart update-cart">Add to Cart</button>
     
                                 </div><!-- End .product -->
                             </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -619,11 +613,7 @@
                             </div>
                         </a>
                         {#{% url 'cart_app:add_cart' product.id %}#}
-                        <!-- <a href="#"> -->
-                            <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
-                            <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                        <!-- </a> -->
-
+                            <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button>
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
                 {% endfor %}

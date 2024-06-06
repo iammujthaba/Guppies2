@@ -1,13 +1,3 @@
-
-<!-- -------------------------------------------------------------------- -->
-<!-- -------------------------------------------------------------------- -->
-<!-- -------------------------------------------------------------------- -->
-
-
-<!-- ---------------------------------------------------------------------- -->
-<!-- ---------------------------------------------------------------------- -->
-<!-- ---------------------------------------------------------------------- -->
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +107,7 @@
 									
 									{% if user.is_authenticated %}
 									<li>hi {{user.username}}</li>
-									<li><a href="auth/logout" data-toggle="modal" id="signin-button">Sign in</a></li> 
+									<li><a href="auth/logout" data-toggle="modal" id="signin-button">Logout</a></li> 
 									{% else %}
                                     <li><a href="auth/register" data-toggle="modal" id="signup-button">Sign up</a></li>
                                     <li><a href="auth/login" data-toggle="modal" id="signin-button">Sign in</a></li>  
