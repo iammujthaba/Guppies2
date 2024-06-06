@@ -1,14 +1,49 @@
-<!DOCTYPE html>
+
+<!-- -------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------- -->
+
+
+<!-- ---------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------- -->
+
 {% load static %}
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>Ecom</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Guppies & Bettas</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/icons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/icons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'assets/images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'assets/images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'assets/images/icons/favicon.ico' %}">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/demos/demo-4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style2.css' %}">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
 	<script type="text/javascript">
 		var user = '{{request.user}}'
@@ -63,56 +98,465 @@
 	</script>
 
 </head>
+
 <body>
+    <div class="page-wrapper">
+        <header class="header header-intro-clearance header-4">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <a href="tel:#"><i class="icon-phone"></i>Call: +91 8667377338</a>
+                    </div><!-- End .header-left -->
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <a class="navbar-brand" href="/">Ecom</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
+                    <div class="header-right">
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="/">Store <span class="sr-only">(current)</span></a>
-	      </li>
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Account</a>
+                                <ul>
+									
+									{% if user.is_authenticated %}
+									<li>hi {{user.username}}</li>
+									<li><a href="auth/logout" data-toggle="modal" id="signin-button">Sign in</a></li> 
+									{% else %}
+                                    <li><a href="auth/register" data-toggle="modal" id="signup-button">Sign up</a></li>
+                                    <li><a href="auth/login" data-toggle="modal" id="signin-button">Sign in</a></li>  
+									{% endif %}
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
 
-		  {% if user.is_authenticated %}
-		  <li>hi {{user.username}}</li>
-		  <li><a class="nav-link" href="auth/logout">logout</a></li>
-		  {% else %}
-		  <li><a class="nav-link" href="auth/login">login</a></li>
-		  <li><a class="nav-link" href="auth/register">register</a></li>
-		  {% endif %}
-	 
-	    </ul>
-	    <div class="form-inline my-2 my-lg-0">
-	     	<a href="#"class="btn btn-warning">Login</a>
-	     	
-	     	<a href="{% url 'store_app:cart' %}">
-	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	    	</a>
-	    	<p id="cart-total">{{cartItems}}</p>
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
 
-	    </div>
-	  </div>
-	</nav>
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler" style="
+    margin-left: 0px;
+    margin-right: 0px;">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+						{#{% url 'ecommerce_app:allProdCat' %}#}
+                        <a href="#" class="logo">
+                            <!-- logo -->
+                            <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" alt="Molla Logo" width="180" height="25">
+                        </a>
 
-     <div class="container">
-            <br>
-            {% block content %}
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            {#{% url 'search_app:SearchResult' %}#}
+							<a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            {#{% url 'search_app:SearchResult' %}#}
+							<form action="#" method="get">
+                                {% csrf_token %}
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="header-right">
+
+                        <div class="dropdown cart-dropdown">
+
+                            
+                            <a href="{% url 'store_app:cart' %}" class="dropdown-toggle">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    {% if item_count > 0 %}
+                                    <span class="cart-count">{{cartItems}}</span>
+                                    {% endif %}
+                                </div>
+                                <p>Cart</p>
+                            </a>
+        
+
+                            
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li class="megamenu-container {% if request.path == '/' %}active{% endif %}">
+									{#{% url 'ecommerce_app:allProdCat' %}#}
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="megamenu-container {% if request.path == '/shop/' %}active{% endif %}">
+									{#{% url 'ecommerce_app:allProductListing' %}#}
+                                    <a href="#">Shop</a>
+                                </li>
+                                <li class="{% if request.path == '/cart/' %}active{% endif %}">
+									{#{% url 'cart_app:cart_detail' %}#}
+                                    <a href="#">Cart</a>
+                                </li>
+                                <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
+                                <li class="#">
+                                    <a href="#">Account</a>
+                                </li>
+                                <li class="{% if request.path == '/gallery/' %}active{% endif %}">
+									{#{% url 'ecommerce_app:gallery' %}#}
+                                    <a href="#">Gallery</a>
+                                </li>
+                                <li class="{% if request.path == '/about/' %}active{% endif %}">
+									{#{% url 'ecommerce_app:about' %}#}
+                                    <a href="#">About Us</a>
+                                </li>
+                                <li class="{% if request.path == '/contact/' %}active{% endif %}">
+									{#{% url 'ecommerce_app:contact' %}#}
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-center -->
+
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+        </header><!-- End .header -->
+        {% block content %}
+        <!-- -------------------------------------------------------------------------- -->
+
+        <!-- -------------------------------------------------------------------------- -->
+        {% endblock %}
+        <footer class="footer">
+
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget widget-about">
+                                <img src="{% static 'assets/images/demos/demo-4/logo-footer.png' %}" class="footer-logo"
+                                    alt="Footer Logo" width="105" height="25">
+                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
+                                    magna eros eu erat. </p>
+
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-md-12">
+                            <div class="social-icons social-icons-colored justify-content-around mb-3">
+                                <a href="#" class="social-icon social-whatsapp" title="WhatsApp" target="_blank" style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
+                                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                            </div>
+
+                        </div>  
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about/">About me</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="faq/">FAQ</a></li>
+                                    <li><a href="contact/">Contact us</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+            <div>
+				{#{% url 'ecommerce_app:devolopper' %}#}
+                <a href="#">    
+                    <p class="footer-copyright text-center">About Devolopper</p>
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright text-center">Copyright © 2023 CK Guppies & Bettas.</p>
+                    <!-- End .footer-copyright -->
+                    <!-- <figure class="footer-payments">
+                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                    </figure> -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
 
-            {% endblock content %}
-         </div>
 
 
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+
+
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+			{#{% url 'search_app:SearchResult' %}#}
+            <form action="#" method="get" class="mobile-search">
+                {% csrf_token %}
+
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
+				{#{% url 'search_app:SearchResult' %}#}
+                <a href="#">
+                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                </a>
+            </form>
+
+            <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab"
+                        role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab"
+                        aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel"
+                    aria-labelledby="mobile-menu-link">
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li class="active">
+								{#{% url 'ecommerce_app:allProdCat' %}#}
+                                <a href="#">Home</a>
+                            </li>
+                            <li>
+								{#{% url 'ecommerce_app:allProductListing' %}#}
+                                <a href="#">Shop</a>
+                            </li>
+                            <li>
+								{#{% url 'cart_app:cart_detail' %}#}
+                                <a href="#">Cart</a>
+                            </li>
+                            <li>
+                                <a href="#">Account</a>
+                            </li>
+                            <li>
+								{#{% url 'ecommerce_app:gallery' %}#}
+                                <a href="#">Gallery</a>
+                            </li>
+                            <li>
+								{#{% url 'ecommerce_app:about' %}#}
+                                <a href="#">About Us</a>
+                            </li>
+                            <li>
+								{#{% url 'ecommerce_app:contact' %}#}
+                                <a href="#">Contact</a>
+                            </li>
+                        </ul>
+                    </nav><!-- End .mobile-nav -->
+                </div><!-- .End .tab-pane -->
+                <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                    <nav class="mobile-cats-nav">
+                        <ul class="mobile-cats-menu">
+							{#{% url 'ecommerce_app:allProductListing' %}#}
+                            <li><a href="#">Guppies</a></li>
+                            
+
+                            {% for i in links %}
+                            <!-- # 1 - when user "click" eny catogory name, it call "get_url" function under Catogory method (go to model.py) -->
+                                <li><a href="{{i.get_url}}">{{i.name}}</a></li>
+                            {% endfor %}
+
+
+                        </ul><!-- End .mobile-cats-menu -->
+                    </nav><!-- End .mobile-cats-nav -->
+                </div><!-- .End .tab-pane -->
+            </div><!-- End .tab-content -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="WhatsApp"><i class="icon-whatsapp"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+<!-- ------------------------------------------------------------------------------------------- -->
+    <!-- Sign in / Register Modal -->
+
+    <!-- <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email"
+                                                name="singin-email" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password"
+                                                name="singin-password" required>
+                                        </div>
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember
+                                                    Me</label>
+                                            </div>
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div>
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="register-email" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="register-password" required>
+                                        </div>
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy"
+                                                    required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the
+                                                    <a href="#">privacy policy</a> *</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Plugins JS File -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'assets/js/superfish.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.plugin.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.countdown.min.js' %}"></script>
+    <!-- icon js -->
+    <script src="https://kit.fontawesome.com/fc51e437b8.js"></script>
+    <script src="{% static 'assets/js/main2.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/demos/demo-4.js' %}"></script>
+    <!-- nave baar link active -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var currentUrl = window.location.href;
+
+            $('.menu a').each(function() {
+                if ($(this).attr('href') === currentUrl) {
+                    $(this).closest('li').addClass('active');
+                }
+            });
+        });
+    </script>
+<!-- --------------------------------------------------------------------------------- -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
 </body>
+
 </html>

@@ -1,0 +1,224 @@
+.btn-product-icon.btn-wishlist.btn-expandable {
+    float: right;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-product-icon.btn-wishlist.btn-expandable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-product-icon.btn-wishlist.btn-expandable .bi-heart {
+    font-size: 20px;
+    color: red;
+  }
+  
+  .btn-product-icon.btn-wishlist.btn-expandable .bi-heart:hover {
+    color: darkred;
+  }
+
+
+
+    
+
+ .product-sale-label{
+    color: #fff;
+    background: #da5555;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 14px;
+    padding: 5px 11px;
+    border-radius: 12px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: all 0.4s ease;
+}
+.product-sale-label{
+    background: #da5555;
+    left: 10px;
+    right: auto;
+}
+
+.product-discount-label{
+    color: #fff;
+    background: #2ba968;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 14px;
+    padding: 5px 11px;
+    border-radius: 12px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: all 0.4s ease;
+}
+
+.strike-text {
+    color: red;
+    text-decoration: line-through;
+  }
+
+
+  #loadMore {
+    width: 130px;
+    color: #000;
+    display: block;
+    text-align: center;
+    margin: 12px auto;
+    padding: 9px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-color: #e3ebf7;
+    transition: .3s;
+  }
+
+.pricing{
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+
+
+
+.faq-section {
+  background: #fdfdfd;
+  padding: 5vh 0 0;
+}
+.faq-title h2 {
+position: relative;
+margin-bottom: 45px;
+display: inline-block;
+font-weight: 600;
+line-height: 1;
+}
+.faq-title h2::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 60px;
+  height: 2px;
+  background: #E91E63;
+  bottom: -25px;
+  margin-left: -30px;
+}
+.faq-title p {
+padding: 0 190px;
+margin-bottom: 10px;
+}
+
+.faq {
+background: #FFFFFF;
+/* box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.06); */
+border-radius: 4px;
+}
+
+.faq .card {
+border: none;
+background: none;
+border-bottom: 1px dashed #CEE1F8;
+}
+
+.faq .card .card-header {
+padding: 0px;
+border: none;
+background: none;
+-webkit-transition: all 0.3s ease 0s;
+-moz-transition: all 0.3s ease 0s;
+-o-transition: all 0.3s ease 0s;
+transition: all 0.3s ease 0s;
+}
+
+.faq .card .card-header:hover {
+  background: rgba(233, 30, 99, 0.1);
+  padding-left: 10px;
+}
+.faq .card .card-header .faq-title {
+width: 100%;
+text-align: left;
+padding: 0px;
+padding-left: 15px;
+padding-right: 15px;
+font-weight: 400;
+font-size: 15px;
+letter-spacing: 1px;
+color: #3B566E;
+text-decoration: none !important;
+-webkit-transition: all 0.3s ease 0s;
+-moz-transition: all 0.3s ease 0s;
+-o-transition: all 0.3s ease 0s;
+transition: all 0.3s ease 0s;
+cursor: pointer;
+padding-top: 15px;
+padding-bottom: 15px;
+}
+
+.faq .card .card-header .faq-title .badge {
+display: inline-block;
+width: 20px;
+height: 20px;
+line-height: 14px;
+-webkit-border-radius: 100px;
+-moz-border-radius: 100px;
+border-radius: 100px;
+text-align: center;
+background: #3399ff;
+color: #fff;
+font-size: 12px;
+margin-right: 15px;
+
+padding-right: 4px;
+}
+
+.faq .card .card-body {
+padding: 30px;
+padding-left: 35px;
+padding-bottom: 16px;
+font-weight: 400;
+font-size: 16px;
+color: #6F8BA4;
+line-height: 28px;
+letter-spacing: 1px;
+border-top: 1px solid #F3F8FF;
+}
+
+.faq .card .card-body p {
+margin-bottom: 14px;
+}
+
+@media (max-width: 991px) {
+.faq .card .card-header .faq-title {
+  line-height: 26px;
+  margin-top: 10px;
+}
+}
+
+.cart-heading,body > div > main > nav > div > ol > li:nth-child(2) {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.carousel-inner .carousel-item video {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 30%);
+  width: 100%;
+  height: auto;
+}
+
+
+
+
+
+.cart-img {
+  width: 80px;
+  height: auto;
+}

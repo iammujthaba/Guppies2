@@ -52,7 +52,7 @@ class Product(models.Model):
 	update = models.DateField(auto_now=True)
 
 	def get_url(self):
-		return reverse('store:proDetail',args=[self.category.slug,self.slug])
+		return reverse('store_app:proDetail',args=[self.category.slug,self.slug])
 
 	def get_discounted_price(self):
 		if self.old_price and self.new_price:
