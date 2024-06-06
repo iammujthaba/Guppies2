@@ -146,7 +146,7 @@
                                         </ol> -->
                                         <div class="carousel-inner" style="height: 150px;">
                                             <div class="carousel-item active">
-                                                <img src="{{ product.image_1.url }}" class="d-block w-100"
+                                                <img src="{{ product.imageURL }}" class="d-block w-100"
                                                     alt="{{ product.name }}">
                                             </div>
                                             <!-- <div class="carousel-item">
@@ -195,9 +195,10 @@
                                     </div>
                                 </a>
                                 {#{% url 'cart_app:add_cart' product.id %}#}
-                                <a href="#">
-                                    <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button>
-                                </a>
+                                <!-- <a href="#"> -->
+                                    <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
+                                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                                <!-- </a> -->
 
                             </div><!-- End .product -->
                         </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -273,8 +274,8 @@
                                             </ol> -->
                                             <div class="carousel-inner" style="height: 150px;">
                                                 <div class="carousel-item active">
-                                                    <img src="{{ product.image_1.url }}" class="d-block w-100"
-                                                        alt="{{ product.image_1.url }}">
+                                                    <img src="{{ product.imageURL }}" class="d-block w-100"
+                                                        alt="{{ product.name }}">
                                                 </div>
                                                 <!-- <div class="carousel-item">
                                                     <img src="{{ product.image_2.url }}" class="d-block w-100"
@@ -318,9 +319,10 @@
                                         </div>
                                     </a>
                                     {#{% url 'cart_app:add_cart' product.id %}#}
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button>
-                                    </a>
+                                    <!-- <a href="#"> -->
+                                        <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                                        <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
+                                    <!-- </a> -->
     
                                 </div><!-- End .product -->
                             </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -572,8 +574,8 @@
                                 </ol>
                                 <div class="carousel-inner" style="height: 150px;">
                                     <div class="carousel-item active">
-                                        <img src="{{ product.image_1.url }}" class="d-block w-100"
-                                            alt="{{ product.image_1.url }}">
+                                        <img src="{{ product.imageURL }}" class="d-block w-100"
+                                            alt="{{ product.name }}">
                                     </div>
                                     <div class="carousel-item">
                                         <img src="{{ product.image_2.url }}" class="d-block w-100"
@@ -616,9 +618,11 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{% url 'cart_app:add_cart' product.id %}">
-                            <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button>
-                        </a>
+                        {#{% url 'cart_app:add_cart' product.id %}#}
+                        <!-- <a href="#"> -->
+                            <!-- <button class="btn btn-primary btn-lg btn-block add-to-cart">Add to Cart</button> -->
+                            <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                        <!-- </a> -->
 
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
