@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.core.paginator import Paginator,EmptyPage,InvalidPage
 from django.http import JsonResponse
 import json
 import datetime
@@ -6,14 +7,40 @@ import datetime
 from .models import * 
 from . utils import cartData, guestOrder
 
-def store(request):
 
-	data = cartData(request)
-	cartItems = data['cartItems']
+def allProdCat(request, c_slug = None):
+    c_page = None
+    offer = None
+    products_list = None
+    # 4 - tis "if" condition work when "product_by_category" path is call "allProdCat" function [its hpappaning]
+    # and "c_slug" change its valure from "None" to catogory url (go to "get_object_or_404")
+    if c_slug != None:
+        # 5 - tis "get_object_or_404" function return catogory url corresponding Catogory method name (go to 6)
+        c_page = get_object_or_404(Category, slug = c_slug)
+        # 6 - tis line of code take all product listed under, user cliked catogory (done.)
+        products_list = Product.objects.all().filter(category = c_page, available = True, stock__gt=0)
+    else:
+        products_list = Product.objects.all().filter(available = True, stock__gt=0)
 
-	products = Product.objects.all()
-	context = {'products':products, 'cartItems':cartItems}
-	return render(request, 'store/category.html', context)
+
+    paginator = Paginator(products_list,6)
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+
+    try:
+        products = paginator.page(page)
+    except (InvalidPage,EmptyPage):
+        products = paginator.page(paginator.num_pages)
+        
+    offer = Product.objects.filter(old_price__gt=0)
+    
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    return render(request,'store/category.html',{'category':c_page, 'products':products, 'offer':offer, 'cartItems':cartItems})
+
 
 def cart(request):
 
@@ -108,3 +135,11 @@ def processOrder(request):
 
 	
 	return JsonResponse({'success': success, 'message': message}, safe=False)
+
+
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
+
+

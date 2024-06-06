@@ -211,7 +211,7 @@
                         document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
 
                         // Redirect to the home page
-                        window.location.href = "{% url 'store_app:store' %}";
+                        window.location.href = "{% url 'store_app:allProdCat' %}";
                         }
                     });
             } else{
