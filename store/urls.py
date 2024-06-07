@@ -10,4 +10,9 @@ urlpatterns = [
 	path('checkout/', views.checkout, name="checkout"),
     path('update_item/', views.updateItem, name="update_item"),
 	path('process_order/', views.processOrder, name="process_order"),
+    
+	path('<slug:c_slug>/slug',views.allProdCat,name='product_by_category'), #called form models.py
+    path('<slug:c_slug>/<slug:product_slug>/',views.proDetail,name='proDetail'), #called form models.py
+    path('shop/',views.allProductListing,name='allProductListing'),
+    path('offer/',views.offerProductListing,name='offerProductListing'),
 ]

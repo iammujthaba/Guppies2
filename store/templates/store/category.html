@@ -20,7 +20,7 @@
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         {# {% url 'store_app:allProdCat' %} #}
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
                         <li class="breadcrumb-item">{{category}}</li>
                     </ol>
                 </div><!-- End .container-fluid -->
@@ -70,7 +70,7 @@
                                     Experience</h3>
                                 <!-- End .h3 intro-subtitle -->
                                     {#{% url 'store_app:allProductListing' %}#}
-                                <a href="#" class="btn btn-primary btn-round">
+                                <a href="{% url 'store_app:allProductListing' %}" class="btn btn-primary btn-round">
                                     <span>Shop Now</span>
                                     <i class="icon-long-arrow-right"></i>
                                 </a>
@@ -90,7 +90,7 @@
 
                         <div class="col-6 col-sm-3 col-lg-2">
                             {#{% url 'store_app:allProductListing' %}#}
-                            <a href="#" class="cat-block">
+                            <a href="{% url 'store_app:allProductListing' %}" class="cat-block">
                                 <figure>
                                     <span>
                                         <img src="{% static 'assets/images/demos/demo-4/cats/jj.png' %}" alt="Category image">
@@ -137,7 +137,7 @@
                         <div class="col-6 col-md-4 col-lg-2">
                             <div class="product product-2">
                                 {#{{product.get_url}}#}
-                                <a href="#">
+                                <a href="{{product.get_url}}">
                                     <div id="carouselExampleIndicators{{product.slug}}" class="carousel slide">
                                         <!-- <ol class="carousel-indicators">
                                             <li data-target="#carouselExampleIndicators{{product.slug}}" data-slide-to="0" class="active"></li>
@@ -206,7 +206,7 @@
                 </div><!-- End .products -->
                 <!-- ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss -->
                 {#{% url 'store_app:allProductListing' %}#}
-                <a href="#" id="loadMore">Shop more</a>
+                <a href="{% url 'store_app:allProductListing' %}" id="loadMore">Shop more</a>
 
             </div><!-- End .container -->
 
@@ -262,7 +262,7 @@
                             <div class="col-6 col-md-4 col-lg-2">
                                 <div class="product product-2">
                                     {#{{product.get_url}}#}
-                                    <a href="#">
+                                    <a href="{{product.get_url}}">
                                         <div id="carouselExampleIndicators2{{product.slug}}" class="carousel slide">
                                             <!-- <ol class="carousel-indicators">
                                                 <li data-target="#carouselExampleIndicators2{{product.slug}}" data-slide-to="0" class="active"></li>
@@ -331,7 +331,7 @@
 
                     <div class="more-container text-center mb-0">
                         {#{% url 'store_app:offerProductListing' %}#}
-                        <a href="#" id="loadMore">Shop more</a>
+                        <a href="{% url 'store_app:offerProductListing' %}" id="loadMore">Shop more</a>
                     </div><!-- End .more-container -->
                 </div><!-- End .container -->
             </div><!-- End .deal-container -->

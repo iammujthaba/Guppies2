@@ -1,0 +1,428 @@
+{% extends 'store/Base.html' %}
+{% load static %}
+{% load video_tags %}
+
+
+<!-- for base.html body condent -->
+{% block content %}
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container-fluid d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                    <li class="breadcrumb-item">{{product.name}}</li>
+                </ol>
+            </div><!-- End .container-fluid -->
+        </nav><!-- End .breadcrumb-nav -->
+    
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-10">
+                        <div class="product-details-top">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-7">
+                                    <div class="product-gallery">
+                                        <figure class="product-main-image">
+                                            {% if product.new == True %}
+                                            <span class="product-sale-label">NEW</span>
+                                            {% endif %}
+                                    
+                                            {% if product.get_discounted_price %}
+                                            <span class="product-discount-label">{{ product.get_discounted_price.percentage }}%</span>
+                                            {% endif %}
+                                            <div id="product-zoom-container">
+                                                <img id="product-zoom" src="{{ product.image_1.url }}" alt="product image">
+                                            </div>
+                                        </figure><!-- End .product-main-image -->
+                                    
+                                        <div id="product-zoom-gallery" class="product-image-gallery max-col-6">
+                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_1.url }}">
+                                                <img src="{{ product.image_1.url }}" alt="product side">
+                                            </a>
+                                            
+                                            {% if product.image_2 %}
+                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_2.url }}">
+                                                <img src="{{ product.image_2.url }}" alt="product cross">
+                                            </a>
+                                            {% endif %}
+                                            
+                                            {% if product.video_url %}
+                                            <a class="product-gallery-item" href="#" data-type="video" data-url="https://www.youtube.com/embed/{{ product.video_url|youtube_id }}">
+                                                <img src="{% static 'assets/images/demos/demo-4/vid.jpg' %}" alt="product video">
+                                            </a>
+                                            {% endif %}
+                                            
+                                            {% if product.image_3 %}
+                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_3.url }}">
+                                                <img src="{{ product.image_3.url }}" alt="product with model">
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <!-- End .product-image-gallery -->
+                                    </div>
+                                    
+                                    <!-- End .product-gallery -->
+                                    <style>
+/* Styles for the main image */
+.product-main-image {
+    width: 100%;
+}
+
+/* Styles for the video to make it responsive */
+.responsive-video {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+}
+
+.responsive-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Additional styles for the gallery layout */
+.product-image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Add some space between items */
+}
+
+.product-gallery-item {
+    flex: 1 1 calc(33.33% - 20px); /* Adjust width and margins */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+                                    </style>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+    const galleryItems = document.querySelectorAll('.product-gallery-item');
+    const productZoomContainer = document.getElementById('product-zoom-container');
+
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const type = this.getAttribute('data-type');
+            const url = this.getAttribute('data-url');
+
+            if (type === 'image') {
+                productZoomContainer.innerHTML = `<img id="product-zoom" src="${url}" alt="product image">`;
+                productZoomContainer.classList.remove('responsive-video');
+            } else if (type === 'video') {
+                productZoomContainer.innerHTML = `<iframe src="${url}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                productZoomContainer.classList.add('responsive-video');
+            }
+        });
+    });
+});
+
+                                    </script>
+                                                                        
+                                </div><!-- End .col-lg-7 -->
+    
+                                <div class="col-md-6 col-lg-5">
+                                    <div class="product-details">
+                                        <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
+    
+                                        <div class="product-price">
+                                            <span class="new-price">Rs {{product.new_price}}</span>
+
+                                            {% if product.old_price == 0 %}
+                                            {% else %}
+                                            <span class="old-price"><s>Rs {{product.old_price}}</s></span>
+                                            {% endif %}
+
+                                        </div><!-- End .product-price -->
+                                        <div class="product-content">
+                                            <h6>Product Discription</h6>
+                                            <p>{{product.description}}. </p>
+                                        </div><!-- End .product-content -->
+
+                                    {% if product.stock <= 0 %}
+                                        <H5 style="color: #777;"><b>Out of stock</b></H5>
+                                    {% else %}
+
+                                    <!-- ----------------------------------------------------------------- -->
+
+
+
+
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="qty">Pair:</label>
+                                        <div class="product-details-quantity">
+                                            <div class="cart-item-counter">
+                                                <button class="cart-decrement" onclick="decrementQuantity()">-</button>
+                                                <input id="cart-quantity" class="cart-quantity" value="1" readonly>
+                                                <!-- eslint-disable-next-line -->
+                                                <button class="cart-increment" onclick="incrementQuantity({{ product.stock }})">+</button>
+                                            </div>
+                                        </div><!-- End .product-details-quantity -->
+                                    </div>
+                                    
+                                    <style>
+                                        .cart-item-counter {
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            width: 150px;
+                                            border: 1px solid #ccc;
+                                            border-radius: 5px;
+                                            padding: 5px;
+                                        }
+                                    
+                                        .cart-quantity {
+                                            width: 50px;
+                                            text-align: center;
+                                            border: none;
+                                            outline: none;
+                                            background: none;
+                                        }
+                                    
+                                        .cart-decrement,
+                                        .cart-increment {
+                                            width: 30px;
+                                            height: 30px;
+                                            border: none;
+                                            background-color: #f0f0f0;
+                                            cursor: pointer;
+                                        }
+                                    </style>
+                                    
+                                    
+                                    
+                                    
+                                    <!-- ----------------------------------------------------------------- -->
+    
+                                        <div class="details-filter-row details-row-size" style="display: none;" id="femail-options">
+                                            <label for="size">Femail:</label>
+                                            <div class="select-custom">
+                                                <select name="size" id="size" class="form-control" style="width: 50%;">
+                                                    <option value="#" selected="selected">Additional</option>
+                                                    <option value="1f">1 Femail</option>
+                                                    <option value="2f">2 Femail</option>
+                                                    <option value="3f">3 Femail</option>
+                                                </select>
+                                            </div><!-- End .select-custom -->
+                                        </div><!-- End .details-filter-row -->
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const qtyInput = document.getElementById('qty');
+                                                const femailOptions = document.getElementById('femail-options');
+                                        
+                                                qtyInput.addEventListener('input', function() {
+                                                    if (parseInt(qtyInput.value) > 3) {
+                                                        femailOptions.style.display = 'flex';
+                                                    } else {
+                                                        femailOptions.style.display = 'none';
+                                                    }
+                                                });
+                                            });
+                                        </script>
+    
+                                        
+                                        <div class="product-details-action">
+
+                                            {#{% url 'cart_app:add_cart' product.id %}#}
+                                            <a href="#" id="add-to-cart-btn" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    {% endif %}
+
+
+                                        </div><!-- End .product-details-action -->
+    
+                                        <div class="product-details-footer" style="display: block;">
+    
+                                            <div class="social-icons social-icons-colored justify-content-around mb-3" style="margin-bottom: .5rem !important;">
+                                                <span class="social-label">Share:</span>
+                                                <a href="#" class="social-icon social-whatsapp" title="WhatsApp" target="_blank" style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
+                                                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                                <a href="mailto:example@example.com" class="social-icon social-email" title="Email" target="_blank">
+                                                    <i class="fa fa-envelope"></i>
+                                                </a>
+                                                <style>
+                                                    .social-icon {
+                                                        display: inline-flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        width: 40px;
+                                                        height: 40px;
+                                                        border-radius: 50%;
+                                                        color: white;
+                                                        margin: 0 5px;
+                                                        text-decoration: none;
+                                                        transition: transform 0.3s ease, background-color 0.3s ease;
+                                                    }
+                                                
+                                                    .social-icon:hover {
+                                                        transform: scale(1.1);
+                                                    }
+                                                
+                                                    .social-facebook {
+                                                        background-color: #3b5998;
+                                                    }
+                                                
+                                                    .social-email {
+                                                        background-color:cornflowerblue; /* Background color for the email icon */
+                                                    }
+                                                
+                                                    .social-icon i {
+                                                        font-size: 20px;
+                                                    }
+                                                </style>
+
+                                            </div>
+                                        </div><!-- End .product-details-footer -->
+    
+                                        <div class="accordion accordion-plus product-details-accordion" id="product-accordion">
+    
+                                            <div class="card card-box card-sm">
+                                                <div class="card-header" id="product-info-heading">
+                                                    <h2 class="card-title">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-info" aria-expanded="false" aria-controls="product-accordion-info">
+                                                            Additional Information
+                                                        </a>
+                                                    </h2>
+                                                </div><!-- End .card-header -->
+                                                <div id="product-accordion-info" class="collapse" aria-labelledby="product-info-heading" data-parent="#product-accordion">
+                                                    <div class="card-body">
+                                                        <div class="product-desc-content">
+                                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
+    
+                                                            <h3>Fabric & care</h3>
+                                                            <ul>
+                                                                <li>100% Polyester</li>
+                                                                <li>Do not iron</li>
+                                                                <li>Do not wash</li>
+                                                                <li>Do not bleach</li>
+                                                                <li>Do not tumble dry</li>
+                                                                <li>Professional dry clean only</li>
+                                                            </ul>
+    
+                                                            <h3>Size</h3>
+                                                            <p>S, M, L, XL</p>
+                                                        </div><!-- End .product-desc-content -->
+                                                    </div><!-- End .card-body -->
+                                                </div><!-- End .collapse -->
+                                            </div><!-- End .card -->
+    
+                                            <div class="card card-box card-sm">
+                                                <div class="card-header" id="product-shipping-heading">
+                                                    <h2 class="card-title">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-shipping" aria-expanded="false" aria-controls="product-accordion-shipping">
+                                                            Shipping & Returns
+                                                        </a>
+                                                    </h2>
+                                                </div><!-- End .card-header -->
+                                                <div id="product-accordion-shipping" class="collapse" aria-labelledby="product-shipping-heading" data-parent="#product-accordion">
+                                                    <div class="card-body">
+                                                        <div class="product-desc-content">
+                                                            <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
+                                                            We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
+                                                        </div><!-- End .product-desc-content -->
+                                                    </div><!-- End .card-body -->
+                                                </div><!-- End .collapse -->
+                                            </div><!-- End .card -->
+    
+                                            
+                                        </div><!-- End .accordion -->
+                                    </div><!-- End .product-details -->
+                                </div><!-- End .col-lg-5 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product-details-top -->
+                    </div><!-- End .col-xl-10 -->
+    
+                    <aside class="col-xl-2 d-md-none d-xl-block">
+                        <div class="sidebar sidebar-product">
+                            <div class="widget widget-products">
+                                <h4 class="widget-title">Related Product</h4><!-- End .widget-title -->
+    
+                                <div class="products">
+                                    {% for product in products.object_list %}
+                                    <div class="product product-sm">
+                                        
+                                            
+                                        <figure class="product-media">
+                                            <a href="{{product.get_url}}">
+                                                <img src="{{ product.image_1.url }}" alt="Product image" class="product-image">
+                                            </a>
+                                        </figure>
+                                            
+
+    
+                                        <div class="product-body">
+                                            <h5 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a></h5><!-- End .product-title -->
+                                            <div class="product-price">
+                                                <span class="new-price">Rs {{ product.new_price }}</span>
+                                                {% if product.old_price == 0 %}
+                                                {% else %}
+                                                <span class="old-price"><s>Rs {{ product.old_price }}</s></span>
+                                                {% endif %}
+                                            </div><!-- End .product-price -->
+                                        </div><!-- End .product-body -->
+                                        
+                                    </div><!-- End .product product-sm -->
+                                    {% endfor %}
+                            </div><!-- End .products -->     
+                                <a href="{% url 'store_app:allProductListing' %}" class="btn btn-outline-dark-3"><span>View More Products</span><i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .widget widget-products -->
+
+                        </div><!-- End .sidebar sidebar-product -->
+                    </aside><!-- End .col-xl-2 -->
+                </div><!-- End .row -->
+
+
+                <script>
+                    function displayPopupMessage(message) {
+                        alert(message); // You can use other methods to display a more styled popup
+                    }
+                
+                    function incrementQuantity(stock) {
+                        const quantityInput = document.getElementById('cart-quantity');
+                        let currentQuantity = parseInt(quantityInput.value);
+                
+                        if (currentQuantity < stock) {
+                            quantityInput.value = currentQuantity + 1;
+                        } else {
+                            displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+                        }
+                        updateAddToCartLink(currentQuantity + 1);
+                    }
+                
+                    function decrementQuantity() {
+                        const quantityInput = document.getElementById('cart-quantity');
+                        let currentQuantity = parseInt(quantityInput.value);
+                
+                        if (currentQuantity > 1) {
+                            quantityInput.value = currentQuantity - 1;
+                            updateAddToCartLink(currentQuantity - 1);
+                        }
+                    }
+                
+                    function updateAddToCartLink(quantity) {
+                        const addToCartBtn = document.getElementById('add-to-cart-btn');
+                        
+                        // {#{% url 'cart_app:add_cart' product.id %}#}
+                        const baseUrl = "#";
+                        addToCartBtn.href = `${baseUrl}?quantity=${quantity}`;
+                    }
+                </script>
+                  
+{% endblock %}
+
+
+<!-- ------------------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------------------ -->
+
+

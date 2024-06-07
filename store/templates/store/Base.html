@@ -186,7 +186,7 @@
                                 </li>
                                 <li class="megamenu-container {% if request.path == '/shop/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:allProductListing' %}#}
-                                    <a href="#">Shop</a>
+                                    <a href="{% url 'store_app:allProductListing' %}">Shop</a>
                                 </li>
                                 <li class="{% if request.path == '/cart/' %}active{% endif %}">
 									{#{% url 'cart_app:cart_detail' %}#}
@@ -326,7 +326,7 @@
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:allProductListing' %}#}
-                                <a href="#">Shop</a>
+                                <a href="{% url 'store_app:allProductListing' %}">Shop</a>
                             </li>
                             <li>
 								{#{% url 'cart_app:cart_detail' %}#}
@@ -354,7 +354,7 @@
                     <nav class="mobile-cats-nav">
                         <ul class="mobile-cats-menu">
 							{#{% url 'ecommerce_app:allProductListing' %}#}
-                            <li><a href="#">Guppies</a></li>
+                            <li><a href="{% url 'store_app:allProductListing' %}">Guppies</a></li>
                             
 
                             {% for i in links %}
