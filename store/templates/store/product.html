@@ -234,7 +234,7 @@
                                         <div class="product-details-action">
 
                                             {#{% url 'cart_app:add_cart' product.id %}#}
-                                            <a data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a>
+                                            <a data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a>
                                             <!-- <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button> -->
                                     {% endif %}
 

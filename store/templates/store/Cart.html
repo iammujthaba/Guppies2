@@ -33,7 +33,7 @@
 				<div class="card border rounded shadow-sm">
 					<div class="card-header m-3">
 						{#{{ cart_item.product.get_url }}#}
-						<a href="#">
+						<a href="{{cart_item.product.get_url}}">
 							<div class="d-flex align-items-center">
 								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
 									class="img-fluid" style="width: 50px;">
@@ -70,7 +70,7 @@
 												class="cart-decrement chg-quantity update-cart">-</button>
 											<input id="cart-quantity" class="cart-quantity"
 												value="{{ cart_item.quantity }}">
-											<button data-product="{{cart_item.product.id}}" data-action="add"
+											<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" data-action="add" 
 												class="cart-increment chg-quantity update-cart">+</button>
 										</div>
 								</div>

@@ -4,14 +4,14 @@ for (i = 0; i < updateBtns.length; i++) {
 	updateBtns[i].addEventListener('click', function(){
 		var productId = this.dataset.product
 		var action = this.dataset.action
-		console.log('productId:', productId, 'Action:', action)
+		var stock = this.dataset.quntity;
+		console.log('productId:', productId, 'Action:', action, 'stock', stock)
 
 		// checing button clicked user is authenticatec or not
 		console.log('USER:', user)
 		if (user == 'AnonymousUser'){
 			// run this function to add or remove item into cart (if user is no't authenticated)
-			addCookieItem(productId, action)
-			
+			addCookieItem(productId, action, stock)
 		}else{
 			// run this function to add or remove item into cart (if user is authenticated)
 			updateUserOrder(productId, action)
@@ -45,7 +45,7 @@ function updateUserOrder(productId, action){
 }
 
 // run this function if user is no't authenticated (to add or remove item into cart)
-function addCookieItem(productId, action){
+function addCookieItem(productId, action, stock){
 	console.log('User is not authenticated')
 
 	if (action == 'add'){
@@ -53,7 +53,11 @@ function addCookieItem(productId, action){
 		cart[productId] = {'quantity':1}
 
 		}else{
-			cart[productId]['quantity'] += 1
+			if (cart[productId]['quantity'] < stock) {
+				cart[productId]['quantity'] += 1
+			} else {
+				displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+			}
 		}
 	}
 
@@ -74,4 +78,9 @@ function addCookieItem(productId, action){
 	console.log('CART:', cart)
 	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 	location.reload()
+}
+
+function displayPopupMessage(message) {
+    // For now, we'll just use alert. You might want to replace this with a nicer UI element
+    alert(message);
 }
