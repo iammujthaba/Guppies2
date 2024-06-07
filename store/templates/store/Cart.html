@@ -29,98 +29,98 @@
 
 	<div class="row g-3">
 		{% for cart_item in items %}
-		<div class="col-md-6">
-			<div class="card border rounded shadow-sm">
-				<div class="card-header m-3">
-					{#{{ cart_item.product.get_url }}#}
-					<a href="#">
-						<div class="d-flex align-items-center">
-							<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
-								class="img-fluid" style="width: 50px;">
-							<div class="ms-3 ml-3">
-								<div>{{ cart_item.product.name }}</div>
-								<div
-									class="{% if cart_item.product.available and cart_item.product.stock > 0 %} text-success {% endif %}
-                                              {% if not cart_item.product.available or cart_item.product.stock == 0 %} text-muted {% endif %}">
-									{% if cart_item.product.available and cart_item.product.stock > 0 %}
-									In Stock
-									{% else %}
-									Out of Stock
-									{% endif %}
+			<div class="col-md-6">
+				<div class="card border rounded shadow-sm">
+					<div class="card-header m-3">
+						{#{{ cart_item.product.get_url }}#}
+						<a href="#">
+							<div class="d-flex align-items-center">
+								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
+									class="img-fluid" style="width: 50px;">
+								<div class="ms-3 ml-3">
+									<div>{{ cart_item.product.name }}</div>
+									<div
+										class="{% if cart_item.product.available and cart_item.product.stock > 0 %} text-success {% endif %}
+												{% if not cart_item.product.available or cart_item.product.stock == 0 %} text-muted {% endif %}">
+										{% if cart_item.product.available and cart_item.product.stock > 0 %}
+										In Stock
+										{% else %}
+										Out of Stock
+										{% endif %}
+									</div>
 								</div>
 							</div>
-						</div>
-					</a>
-				</div>
-				<div class="card-body">
+						</a>
+					</div>
+					<div class="card-body">
+
+
+						<div class="d-flex flex-row justify-content-between">
+
+
+							<div class="details-filter-row details-row-size">
+								<label for="qty">Pair:</label>
+								<div class="product-details-quantity">
+									{#{% if cart_item.quantity < cart_item.product.stock %}#} <div
+										class="cart-item-counter">
+
+
+										<div class="cart-item-counter">
+											<button data-product="{{cart_item.product.id}}" data-action="remove"
+												class="cart-decrement chg-quantity update-cart">-</button>
+											<input id="cart-quantity" class="cart-quantity"
+												value="{{ cart_item.quantity }}">
+											<button data-product="{{cart_item.product.id}}" data-action="add"
+												class="cart-increment chg-quantity update-cart">+</button>
+										</div>
+								</div>
+
+								{#{% else %}#}
+								<!-- <div class="cart-item-counter">
+									{#{% url 'cart_app:cart_remove' cart_item.product.id %}#}
+									<a href="#">
+										<button class="cart-decrement" onclick="decrementQuantity()">-</button>
+									</a>
+									{#{{ cart_item.quantity }}#}
+									<input id="cart-quantity" class="cart-quantity" value="#">
+									{#{% url 'cart_app:add_cart' cart_item.product.id %}#}
+									<a href="#">
+										<button onclick="displayPopupMessage('There is no more stock available. If you want more, please contact us')" class="cart-increment">+</button>
+									</a>
+								</div> -->
+								{#{% endif %}#}
+							</div><!-- End .product-details-quantity -->
+						</div><!-- End .details-filter-row -->
+
+
+						<div class="details-filter-row details-row-size" id="femail-options"
+							style="margin-left: 40px; display: none;">
+							<label for="size">Femail:</label>
+							<div class="select-custom">
+								<select name="size" id="size" class="form-control">
+									<option value="#" selected="selected">Additional</option>
+									<option value="1f">1 Femail</option>
+									<option value="2f">2 Femail</option>
+									<option value="3f">3 Femail</option>
+								</select>
+							</div><!-- End .select-custom -->
+						</div><!-- End .details-filter-row -->
+					</div><!-- End .d-flex -->
+
+
 
 
 					<div class="d-flex flex-row justify-content-between">
-
-
-						<div class="details-filter-row details-row-size">
-							<label for="qty">Pair:</label>
-							<div class="product-details-quantity">
-								{#{% if cart_item.quantity < cart_item.product.stock %}#} <div
-									class="cart-item-counter">
-
-
-									<div class="cart-item-counter">
-										<button data-product="{{cart_item.product.id}}" data-action="remove"
-											class="cart-decrement chg-quantity update-cart">-</button>
-										<input id="cart-quantity" class="cart-quantity"
-											value="{{ cart_item.quantity }}">
-										<button data-product="{{cart_item.product.id}}" data-action="add"
-											class="cart-increment chg-quantity update-cart">+</button>
-									</div>
-							</div>
-
-							{#{% else %}#}
-							<!-- <div class="cart-item-counter">
-								{#{% url 'cart_app:cart_remove' cart_item.product.id %}#}
-								<a href="#">
-									<button class="cart-decrement" onclick="decrementQuantity()">-</button>
-								</a>
-								{#{{ cart_item.quantity }}#}
-								<input id="cart-quantity" class="cart-quantity" value="#">
-								{#{% url 'cart_app:add_cart' cart_item.product.id %}#}
-								<a href="#">
-									<button onclick="displayPopupMessage('There is no more stock available. If you want more, please contact us')" class="cart-increment">+</button>
-								</a>
-							</div> -->
-							{#{% endif %}#}
-						</div><!-- End .product-details-quantity -->
-					</div><!-- End .details-filter-row -->
-
-
-					<div class="details-filter-row details-row-size" id="femail-options"
-						style="margin-left: 40px; display: none;">
-						<label for="size">Femail:</label>
-						<div class="select-custom">
-							<select name="size" id="size" class="form-control">
-								<option value="#" selected="selected">Additional</option>
-								<option value="1f">1 Femail</option>
-								<option value="2f">2 Femail</option>
-								<option value="3f">3 Femail</option>
-							</select>
-						</div><!-- End .select-custom -->
-					</div><!-- End .details-filter-row -->
-				</div><!-- End .d-flex -->
-
-
-
-
-				<div class="d-flex flex-row justify-content-between">
-					<div>Price: {{ cart_item.product.new_price }} (-{{ cart_item.product.get_discounted_price.diff }})
+						<div>Price: {{ cart_item.product.new_price }} (-{{ cart_item.product.get_discounted_price.diff }})
+						</div>
+						<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
 					</div>
-					<div>Total: ${{order.get_cart_total|floatformat:2}}</div>
+					{#{% url 'cart_app:full_remove' cart_item.product.id %}#}
+					<button type="button" class="btn btn-danger mt-2 update-cart" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
 				</div>
-				{#{% url 'cart_app:full_remove' cart_item.product.id %}#}
-				<button type="button" class="btn btn-danger mt-2 update-cart" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
 			</div>
-		</div>
+		{% endfor %}
 	</div>
-	{% endfor %}
 </div>
 
 

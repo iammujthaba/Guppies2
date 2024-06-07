@@ -102,15 +102,15 @@
 
                         <ul class="top-menu">
                             <li>
-                                <a href="#">Account</a>
+                                <a>Account</a>
                                 <ul>
 									
 									{% if user.is_authenticated %}
-									<li>hi {{user.username}}</li>
-									<li><a href="auth/logout" data-toggle="modal" id="signin-button">Logout</a></li> 
+									<li><a href="#">{{user.username}}</a></li>
+									<li><a href="{% url 'auth_app:logout' %}" id="signin-button">Logout</a></li> 
 									{% else %}
-                                    <li><a href="auth/register" data-toggle="modal" id="signup-button">Sign up</a></li>
-                                    <li><a href="auth/login" data-toggle="modal" id="signin-button">Sign in</a></li>  
+                                    <li><a href="{% url 'auth_app:register' %}" id="signup-button">Sign up</a></li>
+                                    <li><a href="{% url 'auth_app:login' %}" id="signin-button">Sign in</a></li>  
 									{% endif %}
                                 </ul>
                             </li>
@@ -279,11 +279,6 @@
         </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
-
-
-
-
-
 
 
 
