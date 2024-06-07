@@ -137,11 +137,6 @@ def processOrder(request):
 	return JsonResponse({'success': success, 'message': message}, safe=False)
 
 
-# ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
-
-
 def proDetail(request, c_slug, product_slug):
     try:
         product = Product.objects.get(category__slug = c_slug, slug = product_slug)
