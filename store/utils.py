@@ -28,7 +28,7 @@ def cookieCart(request):
 			order['get_cart_items'] += cart[i]['quantity']
 
 			price_difference = product.new_price - product.old_price
-			total_price_difference = (cart[i]['quantity'])*price_difference
+			total_price_difference += (cart[i]['quantity'])*price_difference
 
             # get and uppend into items, all information about product
 			item = {

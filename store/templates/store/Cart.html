@@ -165,7 +165,7 @@
 			{% if total_price_difference %}
 			<dl class="dlist-align">
 				<dt>You Save:</dt>
-				<dd class="text-end text-success"> {{total_price_difference}} ₹ </dd>
+				<dd class="text-end text-success"> {{total_price_difference}}</dd>
 			</dl>
 			{% else %}
 			{% endif %}
@@ -180,7 +180,7 @@
 			</dl>
 
 			<div class="d-grid gap-2 my-3">
-				<a href="#" class="btn btn-success w-100 mb-2"> Make Purchase </a>
+				<a href="{% url 'store_app:checkout' %}" class="btn btn-success w-100 mb-2"> Make Purchase </a>
 				<a href="/" class="btn btn-light w-100"> Back to shop </a>
 			</div>
 		</div> <!-- card-body.// -->
