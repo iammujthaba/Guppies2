@@ -2,7 +2,6 @@ import json
 from .models import *
 
 def cookieCart(request):
-
 	# if user is not authenticated, load user data from cookies
 	try:
 		cart = json.loads(request.COOKIES['cart'])
@@ -14,6 +13,7 @@ def cookieCart(request):
 	items = []
 	order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 	cartItems = order['get_cart_items']
+	total_price_difference = 0
 
 	for i in cart:
 		#We use try block to prevent items in cart that may have been removed from causing error
@@ -27,15 +27,20 @@ def cookieCart(request):
 			order['get_cart_total'] += total
 			order['get_cart_items'] += cart[i]['quantity']
 
+			price_difference = product.new_price - product.old_price
+			total_price_difference = (cart[i]['quantity'])*price_difference
+
             # get and uppend into items, all information about product
 			item = {
 				'id':product.id,
-				'product':{'id':product.id,'name':product.name, 'new_price':product.new_price, 
+				'product':{'id':product.id,'name':product.name, 
+			   	'new_price':product.new_price, 'old_price':product.old_price,
 				'imageURL':product.imageURL, 'get_url':product.get_url, 
-				'available':product.available, 'stock':product.stock}, 
+				'available':product.available, 'stock':product.stock, 
+				'price_difference':price_difference}, 
+
 				'quantity':cart[i]['quantity'],
-				'digital':product.digital,'get_total':total,
-				}
+				'digital':product.digital,'get_total':total,}
 			items.append(item)
 
             # cheking if product is digital or not
@@ -43,8 +48,7 @@ def cookieCart(request):
 				order['shipping'] = True
 		except:
 			pass
-			
-	return {'cartItems':cartItems ,'order':order, 'items':items}
+	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
 
 def cartData(request):
 	if request.user.is_authenticated:
@@ -52,13 +56,16 @@ def cartData(request):
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
+		total_price_difference = 0
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
 		order = cookieData['order']
 		items = cookieData['items']
+		total_price_difference = cookieData['total_price_difference']
+		print("............cartData.............")
 
-	return {'cartItems':cartItems ,'order':order, 'items':items}
+	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
 
 # from django.core.exceptions import ObjectDoesNotExist
 

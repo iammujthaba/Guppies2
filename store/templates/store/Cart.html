@@ -111,7 +111,7 @@
 
 
 					<div class="d-flex flex-row justify-content-between">
-						<div>Price: {{ cart_item.product.new_price }} (-{{ cart_item.product.get_discounted_price.diff }})
+						<div>Price: {{ cart_item.product.new_price }} ({{ cart_item.product.price_difference }})
 						</div>
 						<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
 					</div>
@@ -162,10 +162,10 @@
 				<dt>Total price:</dt>
 				<dd class="text-end"> ₹ {{order.get_cart_total|floatformat:2}}</dd>
 			</dl>
-			{% if totalDiscounts %}
+			{% if total_price_difference %}
 			<dl class="dlist-align">
 				<dt>You Save:</dt>
-				<dd class="text-end text-success"> - ₹ </dd>
+				<dd class="text-end text-success"> {{total_price_difference}} ₹ </dd>
 			</dl>
 			{% else %}
 			{% endif %}

@@ -40,17 +40,16 @@ def allProdCat(request, c_slug = None):
 
 
 def cart(request):
-
 	data = cartData(request)
 	cartItems = data['cartItems']
 	order = data['order']
 	items = data['items']
+	total_price_difference = data['total_price_difference']
 
-	context = {'items':items, 'order':order, 'cartItems':cartItems}
+	context = {'items':items, 'order':order, 'cartItems':cartItems, 'total_price_difference':total_price_difference}
 	return render(request, 'store/cart.html', context)
 
 def checkout(request):
-
 	data = cartData(request)
 	cartItems = data['cartItems']
 	order = data['order']
