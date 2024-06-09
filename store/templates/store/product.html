@@ -148,9 +148,6 @@
                                             <p>{{product.description}}. </p>
                                         </div><!-- End .product-content -->
 
-                                    {% if product.stock <= 0 %}
-                                        <H5 style="color: #777;"><b>Out of stock</b></H5>
-                                    {% else %}
 
                                     <!-- ----------------------------------------------------------------- -->
 
@@ -162,7 +159,7 @@
                                         <div class="product-details-quantity">
                                             <div class="cart-item-counter">
                                                 <button class="cart-decrement" onclick="decrementQuantity()">-</button>
-                                                <input id="cart-quantity" class="cart-quantity" value="1" readonly>
+                                                <input id="cart-quantity" class="cart-quantity" value="1"  min="1" max="{{product.stock}}" readonly>
                                                 <!-- eslint-disable-next-line -->
                                                 <button class="cart-increment" onclick="incrementQuantity({{ product.stock }})">+</button>
                                             </div>
@@ -234,9 +231,10 @@
                                         <div class="product-details-action">
 
                                             {#{% url 'cart_app:add_cart' product.id %}#}
-                                            <a data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a>
+                                            <!-- <a data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a> -->
+                                            <a data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a>
                                             <!-- <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button> -->
-                                    {% endif %}
+                                    {#{% endif %}#}
 
 
                                         </div><!-- End .product-details-action -->
@@ -391,13 +389,16 @@
                     function incrementQuantity(stock) {
                         const quantityInput = document.getElementById('cart-quantity');
                         let currentQuantity = parseInt(quantityInput.value);
-                
+                        
+                        // console.log('stock...',stock)
+                        // console.log('currentQuantity...',currentQuantity)
                         if (currentQuantity < stock) {
                             quantityInput.value = currentQuantity + 1;
+                            
+                            // updateAddToCartLink(currentQuantity + 1);
                         } else {
                             displayPopupMessage('There is no more stock available. If you want more, please contact us.');
                         }
-                        updateAddToCartLink(currentQuantity + 1);
                     }
                 
                     function decrementQuantity() {
@@ -406,17 +407,17 @@
                 
                         if (currentQuantity > 1) {
                             quantityInput.value = currentQuantity - 1;
-                            updateAddToCartLink(currentQuantity - 1);
+                            // updateAddToCartLink(currentQuantity - 1);
                         }
                     }
                 
-                    function updateAddToCartLink(quantity) {
-                        const addToCartBtn = document.getElementById('add-to-cart-btn');
+                    // function updateAddToCartLink(quantity) {
+                    //     const addToCartBtn = document.getElementById('add-to-cart-btn');
                         
-                        // {#{% url 'cart_app:add_cart' product.id %}#}
-                        const baseUrl = "#";
-                        addToCartBtn.href = `${baseUrl}?quantity=${quantity}`;
-                    }
+                    //     // {#{% url 'cart_app:add_cart' product.id %}#}
+                    //     const baseUrl = "#";
+                    //     addToCartBtn.href = `${baseUrl}?quantity=${quantity}`;
+                    // }
                 </script>
                   
 {% endblock %}

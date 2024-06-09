@@ -4,14 +4,20 @@ for (i = 0; i < updateBtns.length; i++) {
 	updateBtns[i].addEventListener('click', function(){
 		var productId = this.dataset.product
 		var action = this.dataset.action
-		var stock = this.dataset.quntity;
-		console.log('productId:', productId, 'Action:', action, 'stock', stock)
+		var stock = parseInt(this.dataset.quntity);
+		if (isNaN(stock)){
+			const quantityInput = document.getElementById('cart-quantity');
+			var currentQuantity = parseInt(quantityInput.value);
+			var stock = parseInt(quantityInput.getAttribute('max'));
+			console.log('stock', stock, 'currentQuantity', currentQuantity)
+		}
+		console.log('productId:', productId, 'Action:', action, 'stock', stock, 'currentQuantity', currentQuantity)
 
 		// checing button clicked user is authenticatec or not
 		console.log('USER:', user)
 		if (user == 'AnonymousUser'){
 			// run this function to add or remove item into cart (if user is no't authenticated)
-			addCookieItem(productId, action, stock)
+			addCookieItem(productId, action, stock, currentQuantity)
 		}else{
 			// run this function to add or remove item into cart (if user is authenticated)
 			updateUserOrder(productId, action)
@@ -45,19 +51,32 @@ function updateUserOrder(productId, action){
 }
 
 // run this function if user is no't authenticated (to add or remove item into cart)
-function addCookieItem(productId, action, stock){
+function addCookieItem(productId, action, stock, currentQuantity = NaN){
 	console.log('User is not authenticated')
+	console.log('productId:', productId, 'Action:', action, 'stock', stock, 'currentQuantity', currentQuantity)
 
 	if (action == 'add'){
-		if (cart[productId] == undefined){
-		cart[productId] = {'quantity':1}
-
-		}else{
-			if (cart[productId]['quantity'] < stock) {
-				cart[productId]['quantity'] += 1
-			} else {
-				displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+		if (currentQuantity > 1) {			
+            if (cart[productId] == undefined){
+				cart[productId] = {'quantity':currentQuantity}
+			}else{
+				if (cart[productId]['quantity'] + currentQuantity < stock) {
+					cart[productId]['quantity'] += currentQuantity
+				} else {
+					displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+				}
 			}
+        }else{
+			if (cart[productId] == undefined){
+				cart[productId] = {'quantity':1}
+		
+				}else{
+					if (cart[productId]['quantity'] < stock) {
+						cart[productId]['quantity'] += 1
+					} else {
+						displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+					}
+				}
 		}
 	}
 
