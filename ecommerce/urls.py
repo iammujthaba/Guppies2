@@ -21,11 +21,17 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('auth_app.urls')),
-    path('', include('store.urls')),
+    path('auth/', include('auth_app.urls', namespace='auth_app')),
+    path('', include('store.urls', namespace='store_app')),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+# Add this to handle favicon.ico
+from django.views.generic import RedirectView
+urlpatterns += [
+    path('favicon.ico', RedirectView.as_view(url='/static/images/favicon.ico'))
+]
