@@ -60,19 +60,39 @@ def checkout(request):
 
 def updateItem(request):
 	data = json.loads(request.body)
+	print(data)
+      
 	productId = data['productId']
 	action = data['action']
-	print('Action:', action)
-	print('Product:', productId)
-
+	currentQuantity = data['currentQuantity']
+      
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
+	# if action == 'add':
+	# 	orderItem.quantity = (orderItem.quantity + 1)
+	# elif action == 'remove':
+	# 	orderItem.quantity = (orderItem.quantity - 1)
+	added = True
+	message = ""
+      
 	if action == 'add':
-		orderItem.quantity = (orderItem.quantity + 1)
+		if currentQuantity != None: 			
+			if (orderItem.quantity + currentQuantity) <= product.stock:
+				orderItem.quantity += currentQuantity
+			else:
+				added = False
+				message = "There is no more This stock available. If you want more, please contact us."
+		else:
+			if orderItem.quantity < product.stock:
+				orderItem.quantity = (orderItem.quantity + 1)
+			else:
+				added = False
+				message = "There is no more This stock available. If you want more, please contact us."
+                        
 	elif action == 'remove':
 		orderItem.quantity = (orderItem.quantity - 1)
 
@@ -84,7 +104,7 @@ def updateItem(request):
 	if action == 'remove-all':
 		orderItem.delete()
 
-	return JsonResponse('Item was added', safe=False)
+	return JsonResponse({'added': added, 'message': message}, safe=False)
 
 # order prossesing fuction deppending on user is authenticated or not
 def processOrder(request):

@@ -9,7 +9,6 @@ for (i = 0; i < updateBtns.length; i++) {
 			const quantityInput = document.getElementById('cart-quantity');
 			var currentQuantity = parseInt(quantityInput.value);
 			var stock = parseInt(quantityInput.getAttribute('max'));
-			console.log('stock', stock, 'currentQuantity', currentQuantity)
 		}
 		console.log('productId:', productId, 'Action:', action, 'stock', stock, 'currentQuantity', currentQuantity)
 
@@ -20,14 +19,14 @@ for (i = 0; i < updateBtns.length; i++) {
 			addCookieItem(productId, action, stock, currentQuantity)
 		}else{
 			// run this function to add or remove item into cart (if user is authenticated)
-			updateUserOrder(productId, action)
+			updateUserOrder(productId, action, currentQuantity)
 		}
 
 	})
 }
 
 // run this function if user is authenticated (for add or remove item into cart)
-function updateUserOrder(productId, action){
+function updateUserOrder(productId, action, currentQuantity = NaN){
 	console.log('User is authenticated, sending data...')
 
 		var url = '/update_item/'
@@ -39,14 +38,27 @@ function updateUserOrder(productId, action){
 				'Content-Type':'application/json',
                 'X-CSRFToken':csrftoken,
 			}, 
-			body:JSON.stringify({'productId':productId, 'action':action})
+			body:JSON.stringify({'productId':productId, 'action':action, 'currentQuantity':currentQuantity})
 		})
 		.then((response) => {
 		   return response.json();
 		})
 		.then((data) => {
 		    console.log('Data:', data)
-            location.reload()
+
+			if (data.added == false) {
+				Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: data.message,
+				}).then((result) => {
+				if (result.isConfirmed) {
+					location.reload()
+						}
+					});
+			}else{
+				location.reload()
+			}
 		});
 }
 
@@ -60,7 +72,7 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN){
             if (cart[productId] == undefined){
 				cart[productId] = {'quantity':currentQuantity}
 			}else{
-				if (cart[productId]['quantity'] + currentQuantity < stock) {
+				if ((cart[productId]['quantity'] + currentQuantity) < stock) {
 					cart[productId]['quantity'] += currentQuantity
 				} else {
 					displayPopupMessage('There is no more stock available. If you want more, please contact us.');
