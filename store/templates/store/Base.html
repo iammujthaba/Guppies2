@@ -130,7 +130,7 @@
                             <i class="icon-bars"></i>
                         </button>
 						{#{% url 'ecommerce_app:allProdCat' %}#}
-                        <a href="#" class="logo">
+                        <a href="{% url 'store_app:allProdCat' %}" class="logo">
                             <!-- logo -->
                             <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" alt="Molla Logo" width="180" height="25">
                         </a>
@@ -182,7 +182,7 @@
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container {% if request.path == '/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:allProdCat' %}#}
-                                    <a href="#">Home</a>
+                                    <a href="{% url 'store_app:allProdCat' %}">Home</a>
                                 </li>
                                 <li class="megamenu-container {% if request.path == '/shop/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:allProductListing' %}#}
@@ -190,23 +190,23 @@
                                 </li>
                                 <li class="{% if request.path == '/cart/' %}active{% endif %}">
 									{#{% url 'cart_app:cart_detail' %}#}
-                                    <a href="#">Cart</a>
+                                    <a href="{% url 'store_app:cart' %}">Cart</a>
                                 </li>
                                 <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
                                 <li class="#">
-                                    <a href="#">Account</a>
+                                    <a>Account</a>
                                 </li>
                                 <li class="{% if request.path == '/gallery/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:gallery' %}#}
-                                    <a href="#">Gallery</a>
+                                    <a href="{% url 'store_app:gallery' %}">Gallery</a>
                                 </li>
                                 <li class="{% if request.path == '/about/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:about' %}#}
-                                    <a href="#">About Us</a>
+                                    <a href="{% url 'store_app:about' %}">About</a>
                                 </li>
                                 <li class="{% if request.path == '/contact/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:contact' %}#}
-                                    <a href="#">Contact</a>
+                                    <a href="{% url 'store_app:contact' %}">Contact</a>
                                 </li>
                             </ul>
                         </nav><!-- End .main-nav -->
@@ -249,11 +249,11 @@
                                 <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
 
                                 <ul class="widget-list">
-                                    <li><a href="about/">About me</a></li>
+                                    <li><a href="#">About me</a></li>
                                     <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="faq/">FAQ</a></li>
-                                    <li><a href="contact/">Contact us</a></li>
+                                    <li><a href="{% url 'store_app:allProductListing' %}">Shipping</a></li>
+                                    <li><a href="{% url 'store_app:faq' %}">FAQ</a></li>
+                                    <li><a href="{% url 'store_app:about' %}">Contact us</a></li>
                                 </ul><!-- End .widget-list -->
                             </div><!-- End .widget -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
@@ -263,7 +263,7 @@
             </div><!-- End .footer-middle -->
             <div>
 				{#{% url 'ecommerce_app:devolopper' %}#}
-                <a href="#">    
+                <a href="{% url 'store_app:devolopper' %}">    
                     <p class="footer-copyright text-center">About Devolopper</p>
                 </a>
             </div>
@@ -322,7 +322,7 @@
                         <ul class="mobile-menu">
                             <li class="active">
 								{#{% url 'ecommerce_app:allProdCat' %}#}
-                                <a href="#">Home</a>
+                                <a href="{% url 'store_app:allProdCat' %}">Home</a>
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:allProductListing' %}#}
@@ -330,22 +330,22 @@
                             </li>
                             <li>
 								{#{% url 'cart_app:cart_detail' %}#}
-                                <a href="#">Cart</a>
+                                <a href="{% url 'store_app:cart' %}">Cart</a>
                             </li>
                             <li>
-                                <a href="#">Account</a>
+                                <a>Account</a>
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:gallery' %}#}
-                                <a href="#">Gallery</a>
+                                <a href="{% url 'store_app:gallery' %}">Gallery</a>
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:about' %}#}
-                                <a href="#">About Us</a>
+                                <a href="{% url 'store_app:about' %}">About</a>
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:contact' %}#}
-                                <a href="#">Contact</a>
+                                <a href="{% url 'store_app:contact' %}">Contact</a>
                             </li>
                         </ul>
                     </nav><!-- End .mobile-nav -->

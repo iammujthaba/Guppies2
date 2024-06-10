@@ -215,3 +215,18 @@ def offerProductListing(request):
     return render(request,'store/shop.html',{'products':products})
 
 
+
+def about(request):
+    return render(request,'resources/about.html')
+
+def gallery(request):
+    return render(request,'resources/gallery.html')
+
+def contact(request):
+    return render(request,'resources/contact.html')
+
+def faq(request):
+    return render(request,'resources/faq.html')
+
+def devolopper(request):
+    return render(request,'resources/About_Devolopper.html')
