@@ -5,8 +5,8 @@ import json
 import datetime
 
 from .models import * 
-from . utils import cartData, guestOrder
-
+from . utils import cartData
+# guestOrder
 
 def allProdCat(request, c_slug = None):
     c_page = None
@@ -50,13 +50,16 @@ def cart(request):
 	return render(request, 'store/cart.html', context)
 
 def checkout(request):
-	data = cartData(request)
-	cartItems = data['cartItems']
-	order = data['order']
-	items = data['items']
+    if request.user.is_authenticated:
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
 
-	context = {'items':items, 'order':order, 'cartItems':cartItems}
-	return render(request, 'store/checkout.html', context)
+        context = {'items':items, 'order':order, 'cartItems':cartItems}
+        return render(request, 'store/checkout.html', context)
+    else:
+        return render(request, 'loginOrRegister.html')
 
 def updateItem(request):
 	data = json.loads(request.body)
@@ -115,9 +118,9 @@ def processOrder(request):
 		customer = request.user.customer
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-	else:
+	# else:
 		# calling guestOrder function from util.py for un-authenticated user to prossess order
-		customer, order = guestOrder(request, data)
+		# customer, order = guestOrder(request, data)
 
 	# cheking if user pyed amount and we requsted amount is same (cheking for any manupulation is happening)
 	total = data['form']['total']

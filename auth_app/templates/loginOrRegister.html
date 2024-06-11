@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Authentication required to proceed with your purchase. Register or log in to continue.">
+    <title>Authentication Required</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset some basic styles for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h2 {
+            margin-bottom: 16px;
+            color: #343a40;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 24px;
+            color: #6c757d;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 420px) {
+            .buttons {
+                flex-direction: column;
+            }
+            .button {
+                width: 100%;
+                margin-bottom: 12px;
+            }
+            .button:last-child {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Authentication Required</h2>
+        <p>To proceed with your purchase, please either register for an account or log in if you already have one.</p>
+        <div class="buttons">
+            <a href="{% url 'auth_app:register' %}" class="button" aria-label="Register for an account">Register</a>
+            <a href="{% url 'auth_app:login' %}" class="button" aria-label="Log in to your account">Login</a>
+        </div>
+    </div>
+</body>
+</html>

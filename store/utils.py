@@ -88,34 +88,34 @@ def cartData(request):
 
 
 # unautherized user order prosessed here
-def guestOrder(request, data):
-    # save data in backend of an-authenticated user
-    print('User is not logged in')
+# def guestOrder(request, data):
+#     # save data in backend of an-authenticated user
+#     print('User is not logged in')
 
-    # print('COOKIES:', request.COOKIES)
-    name = data['form']['name']
-    email = data['form']['email']
+#     # print('COOKIES:', request.COOKIES)
+#     name = data['form']['name']
+#     email = data['form']['email']
 
-    cookieData = cookieCart(request)
-    items = cookieData['items']
+#     cookieData = cookieCart(request)
+#     items = cookieData['items']
 
-    customer, created = Customer.objects.get_or_create(
-            email=email,
-            )
-    customer.name = name
-    customer.save()
+#     customer, created = Customer.objects.get_or_create(
+#             email=email,
+#             )
+#     customer.name = name
+#     customer.save()
 
-    order = Order.objects.create(
-        customer=customer,
-        complete=False,
-        )
+#     order = Order.objects.create(
+#         customer=customer,
+#         complete=False,
+#         )
 
-    for item in items:
-        product = Product.objects.get(id=item['id'])
-        orderItem = OrderItem.objects.create(
-            product=product,
-            order=order,
-            quantity=item['quantity'],
-        )
+#     for item in items:
+#         product = Product.objects.get(id=item['id'])
+#         orderItem = OrderItem.objects.create(
+#             product=product,
+#             order=order,
+#             quantity=item['quantity'],
+#         )
 		
-    return customer, order
+#     return customer, order
