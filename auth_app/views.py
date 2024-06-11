@@ -24,7 +24,7 @@ def login(request):
             return redirect('/')
         else:
             messages.info(request,'invalid credential')
-            return redirect('login')
+            return redirect('auth_app:login')
     return render(request,'login.html')
     
 
@@ -44,11 +44,11 @@ def register(request):
                 user.save()
                 Customer.objects.create(user=user,name=username,email=email)
                 print('user is created...')
-                return redirect('login')
+                return redirect('auth_app:login')
                 
         else:
             messages.info(request,'Pssword is no\'t match')
-        return redirect('register')
+        return redirect('auth_app:register')
     return render(request,'register.html')
 
 def logout(request):

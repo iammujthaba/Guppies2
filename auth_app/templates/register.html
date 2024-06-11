@@ -1,22 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'CSS/auth.css' %}">
 </head>
 <body>
-    <h2>Registration</h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Enter your Userame"><br>
-        <input type="email" name="email" placeholder="Enter your E-mail"><br>
-        <input type="password" name="password1" placeholder="Enter your password"><br>
-        <input type="password" name="password2" placeholder="confirom password"><br>
-        <input type="submit"><br>
-    </form>
-    {% for mes in messages %}
-    <h2>{{mes}}</h2>
-    {% endfor %}
+    <div class="container">
+        <h2>Registration</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username"><br>
+            
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="Enter your E-mail"><br>
+            
+            <label for="password1">Password</label>
+            <input type="password" id="password1" name="password1" placeholder="Enter your password"><br>
+            
+            <label for="password2">Confirm Password</label>
+            <input type="password" id="password2" name="password2" placeholder="Confirm password"><br>
+            
+            <input type="submit" value="Register"><br>
+        </form>
+        <p class="login-link">Already have an account? <a href="{% url 'auth_app:login' %}">Login here</a></p>
+        {% for mes in messages %}
+        <h2 class="message">{{mes}}</h2>
+        {% endfor %}
+    </div>
 </body>
 </html>

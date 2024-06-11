@@ -5,79 +5,225 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <style>
+        /* Custom CSS for the Checkout Page */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+.box-element {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-<div class="row">
-	<div class="col-lg-6">
-		<div class="box-element" id="form-wrapper">
-            <form id="form">
-                {% csrf_token %}
-                <div id="user-info">
-                    <div class="form-field">
-                        <input required class="form-control" type="text" name="name" placeholder="Name.." required>
-                    </div>
-                    <div class="form-field">
-                        <input required class="form-control" type="email" name="email" placeholder="Email.." required>
-                    </div>
+#form-wrapper {
+    padding: 20px;
+}
+
+#form-wrapper h5 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-control {
+    border-radius: 5px;
+    height: 45px;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+    width: 43vh;
+}
+
+#form-button {
+    border-radius: 5px;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#payment-info {
+    text-align: center;
+    padding: 20px;
+}
+
+#payment-info button {
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.cart-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.cart-row img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.cart-row p {
+    margin: 0;
+}
+
+.cart-row div {
+    padding: 0 10px;
+}
+
+.cart-row div:first-child {
+    flex: 2;
+}
+
+.cart-row div:nth-child(2) {
+    flex: 2;
+}
+
+.cart-row div:nth-child(3),
+.cart-row div:nth-child(4) {
+    flex: 1;
+    text-align: center;
+}
+
+.order-summary h3,
+.order-summary h5 {
+    margin-bottom: 15px;
+}
+
+.order-summary hr {
+    border-top: 1px solid #dee2e6;
+}
+
+.btn-outline-dark {
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.btn-outline-dark:hover {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Container styling */
+#payment-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Button styling */
+        #rzp-button1 {
+            background-color: #007BFF; /* Bootstrap Primary Color */
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #rzp-button1:hover {
+            background-color: #0056b3; /* Darker shade of the primary color */
+            transform: scale(1.05);
+        }
+
+        #rzp-button1:active {
+            background-color: #004085; /* Even darker shade for active state */
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="box-element" id="form-wrapper">
+                    <form id="form">
+                        {% csrf_token %}
+                        <div id="user-info">
+                            <h5>User Information</h5>
+                            <div class="form-field">
+                                <label for="name">Name</label>
+                                <input required class="form-control" type="text" id="name" name="name" placeholder="Name.." required>
+                            </div>
+                            <div class="form-field">
+                                <label for="email">Email</label>
+                                <input required class="form-control" type="email" id="email" name="email" placeholder="Email.." required>
+                            </div>
+                            <hr>
+                        </div>
+                        
+                        <div id="shipping-info">
+                            
+                            <h5>Shipping Information</h5>
+                            <div class="form-field">
+                                <label for="number">Phone Number</label>
+                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." required>
+                            </div>
+                            <div class="form-field">
+                                <label for="address">Address</label>
+                                <input class="form-control" type="text" id="address" name="address" placeholder="Address.." required>
+                            </div>
+                            <div class="form-field">
+                                <label for="city">City</label>
+                                <input class="form-control" type="text" id="city" name="city" placeholder="City.." required>
+                            </div>
+                            <div class="form-field">
+                                <label for="state">State</label>
+                                <input class="form-control" type="text" id="state" name="state" placeholder="State.." required>
+                            </div>
+                            <div class="form-field">
+                                <label for="zipcode">Zip Code</label>
+                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Zip code.." required>
+                            </div>
+                        </div>
+                        <hr>
+                        <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                    </form>
                 </div>
-                
-                <div id="shipping-info">
-                    <hr>
-                    <p>Shipping Information:</p>
-                    <hr>
-                    <div class="form-field">
-                        <input required class="form-control" type="text" name="number" placeholder="Number.." required>
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="address" placeholder="Address.." required>
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="city" placeholder="City.." required>
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="state" placeholder="State.." required>
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code.." required>
-                    </div>
+
+                <br>
+                <div class="box-element hidden" id="payment-info">
+                    <!-- this peyment button only seen after address submission -->
+                    <!-- <button id="make-payment">Make Payment</button> -->
+                    <button id="rzp-button1">Proceed to pay</button>
                 </div>
-                <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-            </form>
-		</div>
-
-		<br>
-        <div class="box-element hidden" id="payment-info">
-            <small>Paypal Options</small>
-            <!-- this peyment button only seen after address submission -->
-            <!-- <button id="make-payment">Make Payment</button> -->
-            <button id="rzp-button1">Pay</button>
-
-        </div>
-	</div>
-
-	<div class="col-lg-6">
-		<div class="box-element">
-            <div class="box-element">
-                <a  class="btn btn-outline-dark" href="{% url 'store_app:cart' %}">&#x2190; Back to Cart</a>
-                <hr>
-                <h3>Order Summary</h3>
-                <hr>
-                {% for item in items %}
-                <div class="cart-row">
-                    <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-                    <div style="flex:2"><p>{{item.product.name}}</p></div>
-                    <div style="flex:1"><p>${{item.product.new_price|floatformat:2}}</p></div>
-                    <div style="flex:1"><p>X  {{item.quantity}}</p></div>
-                </div>
-                {% endfor %}
-                <h5>Items:   {{order.get_cart_items}}</h5>
-                <h5 name="total">Total:   ${{order.get_cart_total|floatformat:2}}</h5>
             </div>
-		</div>
-	</div>
-</div>
+
+            <div class="col-lg-6">
+                <div class="box-element order-summary">
+                    <a class="btn btn-outline-dark" href="{% url 'store_app:cart' %}">&#x2190; Back to Cart</a>
+                    <hr>
+                    <h3>Order Summary</h3>
+                    <hr>
+                    {% for item in items %}
+                    <div class="cart-row">
+                        <div><img class="row-image" src="{{item.product.imageURL}}"></div>
+                        <div><p>{{item.product.name}}</p></div>
+                        <div><p>₹{{item.product.new_price|floatformat:2}}</p></div>
+                        <div><p>X  {{item.quantity}}</p></div>
+                    </div>
+                    {% endfor %}
+                    <h5>Items: {{order.get_cart_items}}</h5>
+                    <h5 name="total">Total: ₹{{order.get_cart_total|floatformat:2}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
