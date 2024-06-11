@@ -11,7 +11,7 @@ def cookieCart(request):
 
     #Create empty cart for now for non-logged in user
 	items = []
-	order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+	order = {'get_cart_total':0, 'get_cart_items':0}
 	cartItems = order['get_cart_items']
 	total_price_difference = 0
 
@@ -40,12 +40,12 @@ def cookieCart(request):
 				'price_difference':price_difference}, 
 
 				'quantity':cart[i]['quantity'],
-				'digital':product.digital,'get_total':total,}
+				'get_total':total,}
 			items.append(item)
 
             # cheking if product is digital or not
-			if product.digital == False:
-				order['shipping'] = True
+			# if product.digital == False:
+			# 	order['shipping'] = True
 		except:
 			pass
 	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}

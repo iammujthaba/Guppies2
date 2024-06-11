@@ -131,7 +131,8 @@ def processOrder(request):
 		message = "Transaction completed, \nYou'r Order placed Successfully..."
 
 		# after peyment was succeed order.shipping will True, wich allow to save shipping address in database
-		if order.shipping == True:
+        # if order.shipping == True:   
+		if order:
 			ShippingAddress.objects.create(
 			customer=customer,
 			order=order,

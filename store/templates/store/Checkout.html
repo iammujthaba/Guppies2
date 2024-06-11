@@ -267,23 +267,23 @@ body {
 
 <script type="text/javascript">
     // if it's digital product don't show shipping address
-    var shipping = '{{order.shipping}}'
+    var order = '{{order}}'
 
-    if (shipping == 'False'){
-         document.getElementById('shipping-info').innerHTML = ''
-    }
+    // if (shipping == 'False'){
+    //      document.getElementById('shipping-info').innerHTML = ''
+    // }
 
     // cheking user is anonymous or not (if anonymous show the filed to submit user name and email)
     if (user != 'AnonymousUser'){
         document.getElementById('user-info').innerHTML = ''
         }
 
-    if (shipping == 'False' && user != 'AnonymousUser'){
-        //Hide entire form if user is logged in and shipping is false
-            document.getElementById('form-wrapper').classList.add("hidden");
-            //Show payment if logged in user wants to buy an item that does not require shipping
-            document.getElementById('payment-info').classList.remove("hidden");
-    }
+    // if (shipping == 'False' && user != 'AnonymousUser'){
+    //     //Hide entire form if user is logged in and shipping is false
+    //         document.getElementById('form-wrapper').classList.add("hidden");
+    //         //Show payment if logged in user wants to buy an item that does not require shipping
+    //         document.getElementById('payment-info').classList.remove("hidden");
+    // }
 
     // conforming shipping address then showing payment option
     var form = document.getElementById('form')
@@ -319,7 +319,7 @@ body {
             'zipcode':null,
         }
 
-        if (shipping != 'False'){
+        if (order){
             shippingInfo.number = form.number.value
             shippingInfo.address = form.address.value
             shippingInfo.city = form.city.value

@@ -32,7 +32,7 @@ class Customer(models.Model):
 class Product(models.Model):
 	# name = models.CharField(max_length=200)
 	# price = models.DecimalField(max_digits=7, decimal_places=2)
-	digital = models.BooleanField(default=False,null=True, blank=True)
+	# digital = models.BooleanField(default=False,null=True, blank=True)
 	# image = models.ImageField(null=True, blank=True)
 
 	name = models.CharField(max_length=250,unique=True)
@@ -93,14 +93,14 @@ class Order(models.Model):
 	
 	# cheking if product is digital or not to show shipping address
 		# if eny one of the product have phesical to ship it will show address entering section by sending shipping is 'true'
-	@property
-	def shipping(self):
-		shipping = False
-		orderitems = self.orderitem_set.all()
-		for i in orderitems:
-			if i.product.digital == False:
-				shipping = True
-		return shipping
+	# @property
+	# def shipping(self):
+	# 	shipping = False
+	# 	orderitems = self.orderitem_set.all()
+	# 	for i in orderitems:
+	# 		if i.product.digital == False:
+	# 			shipping = True
+	# 	return shipping
 
 	@property
 	def get_cart_total(self):
