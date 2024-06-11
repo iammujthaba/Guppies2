@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # 'store.apps.StoreConfig',
     'store',
     'auth_app',
+    'search_app',
 ]
 
 MIDDLEWARE = [

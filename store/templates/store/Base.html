@@ -140,9 +140,9 @@
                     <div class="header-center">
                         <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
                             {#{% url 'search_app:SearchResult' %}#}
-							<a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+							<a href="{% url 'search_app:SearchResult' %}" class="search-toggle" role="button"><i class="icon-search"></i></a>
                             {#{% url 'search_app:SearchResult' %}#}
-							<form action="#" method="get">
+							<form action="{% url 'search_app:SearchResult' %}" method="get">
                                 {% csrf_token %}
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
@@ -293,13 +293,13 @@
             <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
 			{#{% url 'search_app:SearchResult' %}#}
-            <form action="#" method="get" class="mobile-search">
+            <form action="{% url 'search_app:SearchResult' %}" method="get" class="mobile-search">
                 {% csrf_token %}
 
                 <label for="mobile-search" class="sr-only">Search</label>
                 <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
 				{#{% url 'search_app:SearchResult' %}#}
-                <a href="#">
+                <a href="{% url 'search_app:SearchResult' %}">
                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </a>
             </form>
