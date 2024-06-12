@@ -1,0 +1,109 @@
+{% extends 'store/Base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+.container {
+    max-width: 100%;
+    padding: 10px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.col-6, .col-md-4, .col-lg-3 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.cat-block {
+    display: block;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cat-block:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.cat-image-wrapper {
+    display: block;
+    overflow: hidden;
+    border-radius: 8px;
+    max-height: 150px;
+}
+
+.cat-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.cat-block:hover .cat-image {
+    transform: scale(1.05);
+}
+
+.cat-block-title {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+</style>
+<div class="container">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Categorys</a></li>
+            </ol>
+        </div><!-- End .container-fluid -->
+    </nav><!-- End .breadcrumb-nav -->
+    
+    <div class="container">
+        <div class="row">
+            {% for i in categorys_list %}
+            <div class="col-6 col-md-4 col-lg-3 mb-3">
+                <a href="{{i.get_url}}" class="cat-block text-center">
+                    <figure>
+                        <span class="cat-image-wrapper">
+                            <img src="{{i.image.url}}" alt="{{i.name}}" class="img-fluid cat-image">
+                        </span>
+                    </figure>
+                    <h3 class="cat-block-title">{{i.name}}</h3>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+        
+</div>
+
+{% endblock %}

@@ -23,18 +23,22 @@ def allProdCat(request, c_slug = None):
         products_list = Product.objects.all().filter(available = True, stock__gt=0)
 
 
-    paginator = Paginator(products_list,6)
+    offer_list = Product.objects.filter(old_price__gt=0)
+
+    paginator1 = Paginator(products_list,6)
+    paginator2 = Paginator(offer_list,6)
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
 
     try:
-        products = paginator.page(page)
+        products = paginator1.page(page)
+        offer = paginator2.page(page)
     except (InvalidPage,EmptyPage):
-        products = paginator.page(paginator.num_pages)
+        products = paginator1.page(paginator1.num_pages)
+        offer = paginator2.page(paginator2.num_pages)
         
-    offer = Product.objects.filter(old_price__gt=0)
 
     return render(request,'store/category.html',{'category':c_page, 'products':products, 'offer':offer})
 
@@ -218,6 +222,11 @@ def offerProductListing(request):
         
     return render(request,'store/shop.html',{'products':products})
 
+# home page category list located in context_processors.py file
+# this function for "explore more" button
+def Category_list(request):
+    categorys_list = Category.objects.all()  
+    return render(request,'store/category_listing.html',{'categorys_list':categorys_list})
 
 
 def about(request):

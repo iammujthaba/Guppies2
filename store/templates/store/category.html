@@ -82,43 +82,84 @@
                 <!-- <span class="slider-loader"></span>End .slider-loader -->
             </div><!-- End .intro-slider-container -->
 
-            <div class="container">
-                <h2 class="title text-center mb-4">Explore Our Categories</h2><!-- End .title text-center -->
 
+            <style>
+                .cat-block {
+    background-color: #39f; 
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff; 
+    margin-bottom: 1.5rem;
+}
+
+.cat-block:hover {
+    transform: scale(1.05);
+}
+
+.cat-block figure {
+    margin: 0 0 10px;
+}
+
+.cat-block img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.cat-block-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+            </style>
+            <div class="container">
+                <h2 class="title text-center mb-4">Explore Categories</h2><!-- End .title text-center -->
+            
                 <div class="cat-blocks-container">
                     <div class="row justify-content-center">
-
-                        <div class="col-6 col-sm-3 col-lg-2">
-                            {#{% url 'store_app:allProductListing' %}#}
-                            <a href="{% url 'store_app:allProductListing' %}" class="cat-block">
+            
+                        <div class="col-4 col-sm-3 col-md-2">
+                            <a href="{% url 'store_app:allProductListing' %}" class="cat-block text-center">
                                 <figure>
                                     <span>
-                                        <img src="{% static 'assets/images/demos/demo-4/cats/jj.png' %}" alt="Category image">
+                                        <img src="{% static 'assets/images/demos/demo-4/cats/jj.png' %}" alt="Category image" class="img-fluid">
                                     </span>
                                 </figure>
-
                                 <h3 class="cat-block-title">Guppies</h3><!-- End .cat-block-title -->
                             </a>
-                        </div><!-- End .col-sm-4 col-lg-2 -->
-
+                        </div><!-- End .col -->
+            
                         {% for i in links %}
-                        <div class="col-6 col-sm-3 col-lg-2">
-                            <a href="{{i.get_url}}" class="cat-block">
+                        <div class="col-4 col-sm-3 col-md-2">
+                            <a href="{{i.get_url}}" class="cat-block text-center">
                                 <figure>
                                     <span>
-                                        <img src="{{i.image.url}}" alt="{{i.name}}">
+                                        <img src="{{i.image.url}}" alt="{{i.name}}" class="img-fluid">
                                     </span>
                                 </figure>
-
                                 <h3 class="cat-block-title">{{i.name}}</h3><!-- End .cat-block-title -->
                             </a>
-                        </div><!-- End .col-sm-4 col-lg-2 -->
+                        </div><!-- End .col -->
                         {% endfor %}
 
-                        
+                        <a href="{% url 'store_app:category_list' %}" class="btn btn-primary btn-round mt-2 mb-1">
+                            <span>Explore More</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+            
                     </div><!-- End .row -->
                 </div><!-- End .cat-blocks-container -->
-            </div><!-- End .container -->
+            </div>
+
+            
+
 
             <div class="mb-3"></div><!-- End .mb-4 -->
 

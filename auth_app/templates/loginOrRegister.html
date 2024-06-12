@@ -59,6 +59,7 @@
         .buttons {
             display: flex;
             justify-content: space-between;
+            flex-direction: column-reverse;
         }
 
         .button {
@@ -98,7 +99,7 @@
         <p>To proceed with your purchase, please either register for an account or log in if you already have one.</p>
         <div class="buttons">
             <a href="{% url 'auth_app:register' %}" class="button" aria-label="Register for an account">Register</a>
-            <a href="{% url 'auth_app:login' %}" class="button" aria-label="Log in to your account">Login</a>
+            <a href="{% url 'auth_app:login' %}" class="button" aria-label="Log in to your account" style="margin-bottom: 18px;">Login</a>
         </div>
     </div>
 </body>
