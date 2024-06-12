@@ -40,15 +40,10 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
     .then(data => {
         console.log('Data:', data);
         if (data.added == false) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                }
+            showWarningAlert(data.message, () => {
+                // Code to execute if the user confirms the alert
             });
+            return;
         } else {
             location.reload();
         }
@@ -67,7 +62,10 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
                 if ((cart[productId]['quantity'] + currentQuantity) < stock) {
                     cart[productId]['quantity'] += currentQuantity;
                 } else {
-                    displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+                    showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
+                        // Code to execute if the user confirms the alert
+                    });
+                    return;
                 }
             }
         } else {
@@ -77,7 +75,10 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
                 if (cart[productId]['quantity'] < stock) {
                     cart[productId]['quantity'] += 1;
                 } else {
-                    displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+                    showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
+                        // Code to execute if the user confirms the alert
+                    });
+                    return;
                 }
             }
         }
@@ -100,6 +101,14 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
     location.reload();
 }
 
-function displayPopupMessage(message) {
-    alert(message);
+function showWarningAlert(message, callback) {
+    Swal.fire({
+        icon: "warning",
+        title: "Warning...",
+        text: message,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback();
+        }
+    });
 }
