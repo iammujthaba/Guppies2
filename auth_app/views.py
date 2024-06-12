@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 from store.models import Customer
 
+# from django.shortcuts import redirect
+# from django.contrib import messages, auth
+# from django.contrib.auth.models import User
+from store.models import Product, Order, OrderItem
+import json
 
 # Create your views here.
 def login(request):
@@ -11,21 +16,49 @@ def login(request):
         login_input = request.POST['login_input']
         password = request.POST['password']
 
-        # Check if the login_input is an email
         if User.objects.filter(email=login_input).exists():
             user = User.objects.get(email=login_input)
             username = user.username
         else:
             username = login_input
 
-        user = auth.authenticate(username=username,password=password)
+        user = auth.authenticate(username=username, password=password)
         if user is not None:
-            auth.login(request,user)
+            auth.login(request, user)
+            merge_cookie_cart_with_user_cart(request, user)
             return redirect('/')
         else:
-            messages.info(request,'invalid credential')
+            messages.info(request, 'Invalid credentials')
             return redirect('auth_app:login')
-    return render(request,'login.html')
+
+    return render(request, 'login.html')
+
+def merge_cookie_cart_with_user_cart(request, user):
+    try:
+        cart = json.loads(request.COOKIES.get('cart', '{}'))
+    except json.JSONDecodeError:
+        cart = {}
+
+    if cart:
+        customer = user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+        for product_id, cart_item in cart.items():
+            product = Product.objects.get(id=product_id)
+            quantity = cart_item['quantity']
+
+            order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+            if created:
+                order_item.quantity = quantity
+            else:
+                order_item.quantity += quantity
+
+            order_item.save()
+
+        # Clear the cart cookie after merging
+        response = redirect('/')
+        response.delete_cookie('cart')
+        return response
     
 
 def register(request):
