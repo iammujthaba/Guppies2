@@ -382,8 +382,16 @@
 
 
                 <script>
-                    function displayPopupMessage(message) {
-                        alert(message); // You can use other methods to display a more styled popup
+                    function showWarningAlert(message, callback) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Warning...",
+                            text: message,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                callback();
+                            }
+                        });
                     }
                 
                     function incrementQuantity(stock) {
@@ -397,7 +405,10 @@
                             
                             // updateAddToCartLink(currentQuantity + 1);
                         } else {
-                            displayPopupMessage('There is no more stock available. If you want more, please contact us.');
+                            showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
+                                // Code to execute if the user confirms the alert
+                            });
+                            return;
                         }
                     }
                 

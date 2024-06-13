@@ -1,15 +1,63 @@
-
-
-
-
-<!-- ------------------------------------------------------------------- -->
-<!-- ------------------------------------------------------------------- -->
-<!-- ------------------------------------------------------------------- -->
-
 {% extends 'store/Base.html' %}
 {% load static %}
 {% block content %}
 <!-- for base.html body condent -->
+
+<style>
+    .popup-message-container {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        width: 300px; /* Width of the popup container */
+        text-align: center;
+    }
+
+    .popup-message {
+        display: none;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        animation: fadeInOut 5s ease-in-out;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .popup-message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .popup-message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .popup-message.info {
+        background-color: #cce5ff;
+        color: #004085;
+        border: 1px solid #b8daff;
+    }
+
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateY(-20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        90% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+    }
+</style>
+
+<!-- popup message displaying section -->
+<div id="popup-message-container" class="popup-message-container"></div>
+
+<script src="{% static 'js/popup_message.js' %}"></script>
+<script>
+    var messagesData = {{ messages|safe }};
+</script>
 
     <!-- its work when i am in category page -->
 

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator,EmptyPage,InvalidPage
 from django.http import JsonResponse
@@ -38,9 +39,16 @@ def allProdCat(request, c_slug = None):
     except (InvalidPage,EmptyPage):
         products = paginator1.page(paginator1.num_pages)
         offer = paginator2.page(paginator2.num_pages)
-        
 
-    return render(request,'store/category.html',{'category':c_page, 'products':products, 'offer':offer})
+    # Gather messages
+    message_list = []
+    for message in messages.get_messages(request):
+        message_list.append({
+            'message': message.message,
+            'tags': message.tags
+        })
+
+    return render(request,'store/category.html',{'category':c_page, 'products':products, 'offer':offer, 'messages': message_list})
 
 
 def cart(request):

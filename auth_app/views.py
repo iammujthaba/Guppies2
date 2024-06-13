@@ -6,6 +6,7 @@ from store.models import Product, Order, OrderItem, Customer
 import json
 
 # Create your views here.
+
 # def merge_cookie_cart_with_user_cart(request, user):
 #     try:
 #         cart = json.loads(request.COOKIES.get('cart', '{}'))
@@ -21,51 +22,52 @@ import json
 #                 product = Product.objects.get(id=product_id)
 #                 quantity = cart_item['quantity']
 
-#                 print("product.available",product.available)
-#                 print("product.stock",product.stock)
-#                 print("quantity",quantity)
-
 #                 try:
-#                     order_item, created = OrderItem.objects.get(order=order, product=product)
+#                     order_item = OrderItem.objects.get(order=order, product=product)
 
 #                     if product.available and product.stock >= (quantity + order_item.quantity):
-#                         # order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
-#                         # if created:
-#                         #     order_item.quantity = quantity
-#                         # else:
-#                         #     order_item.quantity += quantity
-
-#                         print("order_item.quantity",order_item.quantity)
-#                         print("quantity + order_item.quantity",quantity + order_item.quantity)
-
 #                         order_item.quantity += quantity
 #                         order_item.save()
-                
+
+#                         # messages.success(request, "Your Koocies Cart items added into your Cart.")
+#                         messages.add_message(request, messages.success, 'Your Koocies Cart items added into your Cart.')
 #                     else:
 #                         if not product.available:
-#                             messages.warning(request, f"The product {product.name} is no longer available.")
-#                         if product.stock < quantity + order_item.quantity:
-#                             messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
-#                 except order_item.DoesNotCreated:
+#                             # messages.warning(request, f"The product {product.name} is no longer available.")
+#                             messages.add_message(request, messages.warning, f"The product {product.name} is no longer available.")
+#                         if product.stock < (quantity + order_item.quantity):
+#                             # messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {(quantity + order_item.quantity)}")
+#                             messages.add_message(request, messages.warning, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {(quantity + order_item.quantity)}")
 
+#                 except OrderItem.DoesNotExist:
 #                     if product.available and product.stock >= quantity:
-#                         order_item, created = OrderItem.objects.create(order=order, product=product)
-#                         order_item.quantity = quantity
-
+#                         order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
 #                         order_item.save()
-                
+
+#                         # messages.success(request, "Your Koocies Cart items added into your Cart.")
+#                         messages.add_message(request, messages.success, 'Your Koocies Cart items added into your Cart.')
+
 #                     else:
 #                         if not product.available:
-#                             messages.warning(request, f"The product {product.name} is no longer available.")
+#                             # messages.warning(request, f"The product {product.name} is no longer available.")
+#                             messages.add_message(request, messages.warning, f"The product {product.name} is no longer available.")
 #                         if product.stock < quantity:
-#                             messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
+#                             # messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
+#                             messages.add_message(request, messages.warning, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
+
 #             except Product.DoesNotExist:
-#                 messages.error(request, f"Product with ID {product_id} does not exist.")
+#                 # messages.error(request, f"Product with ID {product_id} does not exist.")
+#                 messages.add_message(request, messages.error, f"Product with ID {product_id} does not exist.")
 
 #         # Clear the cart cookie after merging
 #         response = redirect('/')
 #         response.delete_cookie('cart')
 #         return response
+
+#     else:
+#         # messages.info(request, "Your cart is empty.")
+#         messages.add_message(request, messages.info, "Your cart is empty.")
+#         return redirect('/')
 
 
 
@@ -84,44 +86,49 @@ def merge_cookie_cart_with_user_cart(request, user):
                 product = Product.objects.get(id=product_id)
                 quantity = cart_item['quantity']
 
-                print("product.available", product.available)
-                print("product.stock", product.stock)
-                print("quantity", quantity)
-
                 try:
                     order_item = OrderItem.objects.get(order=order, product=product)
 
                     if product.available and product.stock >= (quantity + order_item.quantity):
                         order_item.quantity += quantity
                         order_item.save()
+                        messages.success(request, "Your Cookies Cart items added into your Cart.")
                     else:
                         if not product.available:
-                            messages.warning(request, f"The product {product.name} is no longer available.")
-                            print(f"The product {product.name} is no longer available.")
+                            messages.info(request, f"The product {product.name} is no longer available.")
                         if product.stock < (quantity + order_item.quantity):
-                            messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {(quantity + order_item.quantity)}")
-                            print(f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {(quantity + order_item.quantity)}")
+                            messages.info(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity + order_item.quantity}")
 
                 except OrderItem.DoesNotExist:
                     if product.available and product.stock >= quantity:
                         order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
                         order_item.save()
+                        messages.success(request, "Your Cookies Cart items added into your Cart.")
                     else:
                         if not product.available:
-                            messages.warning(request, f"The product {product.name} is no longer available.")
-                            print(f"OrderItem.DoesNotExist: The product {product.name} is no longer available.")
+                            messages.info(request, f"The product {product.name} is no longer available.")
                         if product.stock < quantity:
-                            messages.warning(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
-                            print(f"OrderItem.DoesNotExist: The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
+                            messages.info(request, f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
 
             except Product.DoesNotExist:
                 messages.error(request, f"Product with ID {product_id} does not exist.")
-                print(f"Product.DoesNotExist: Product with ID {product_id} does not exist.")
 
         # Clear the cart cookie after merging
         response = redirect('/')
         response.delete_cookie('cart')
         return response
+
+    else:
+        customer = user.customer
+        order = Order.objects.get(customer=customer, complete=False)
+        order_item = OrderItem.objects.get(order=order)
+        if order_item.quantity > 0:
+            messages.info(request, f"Your cart has {order_item.quantity} quantities waiting to completing the order😊")
+        else:
+            messages.info(request, "Your cart is empty.")
+        return redirect('/')
+
+
 
 # Add the merge_cookie_cart_with_user_cart function call in your login view
 def login(request):
