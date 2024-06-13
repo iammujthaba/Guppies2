@@ -13,7 +13,6 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categorys'
 
-    # 2 - tis function is trigerd, and it call "product_by_category" url path name and pass catogory url as argument (go to urls.py)
     def get_url(self):
         return reverse('store_app:product_by_category',args=[self.slug])
 
@@ -30,11 +29,6 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
-	# name = models.CharField(max_length=200)
-	# price = models.DecimalField(max_digits=7, decimal_places=2)
-	# digital = models.BooleanField(default=False,null=True, blank=True)
-	# image = models.ImageField(null=True, blank=True)
-
 	name = models.CharField(max_length=250,unique=True)
 	slug = models.SlugField(max_length=250,unique=True)
 	description = models.TextField(blank=True)
@@ -67,13 +61,9 @@ class Product(models.Model):
 		verbose_name = 'product'
 		verbose_name_plural = 'products'
 
-    # def __str__(self):
-    #     return '{}'.format(self.name)
-
 	def __str__(self):
 		return self.name
 
-# if image is empty debug it with following code
 	@property
 	def imageURL(self):
 		try:
@@ -90,17 +80,6 @@ class Order(models.Model):
 
 	def __str__(self):
 		return str(self.id)
-	
-	# cheking if product is digital or not to show shipping address
-		# if eny one of the product have phesical to ship it will show address entering section by sending shipping is 'true'
-	# @property
-	# def shipping(self):
-	# 	shipping = False
-	# 	orderitems = self.orderitem_set.all()
-	# 	for i in orderitems:
-	# 		if i.product.digital == False:
-	# 			shipping = True
-	# 	return shipping
 
 	@property
 	def get_cart_total(self):
