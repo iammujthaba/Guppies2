@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'customer', 'date_ordered', 'complete', 'status')
+    list_display = ('id', 'customer', 'date_ordered', 'complete', 'status', 'processing_time', 'shipped_time', 'delivered_time')
     list_editable = ('status',)
 
 admin.site.register(Order, OrderAdmin)

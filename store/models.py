@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
@@ -73,6 +74,35 @@ class Product(models.Model):
         return url
 
 
+# class Order(models.Model):
+#     STATUS_CHOICES = [
+#         ('Processing', 'Processing'),
+#         ('Shipped', 'Shipped'),
+#         ('Delivered', 'Delivered')
+#     ]
+
+#     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+#     date_ordered = models.DateTimeField(auto_now_add=True)
+#     complete = models.BooleanField(default=False)
+#     transaction_id = models.CharField(max_length=100, null=True)
+#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
+
+#     def __str__(self):
+#         return str(self.id)
+
+#     @property
+#     def get_cart_total(self):
+#         orderitems = self.orderitem_set.all()
+#         total = sum([item.get_total for item in orderitems])
+#         return total
+
+#     @property
+#     def get_cart_items(self):
+#         orderitems = self.orderitem_set.all()
+#         total = sum([item.quantity for item in orderitems])
+#         return total
+
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('Processing', 'Processing'),
@@ -85,6 +115,9 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
+    processing_time = models.DateTimeField(null=True, blank=True)
+    shipped_time = models.DateTimeField(null=True, blank=True)
+    delivered_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return str(self.id)
@@ -100,6 +133,15 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+
+    def save(self, *args, **kwargs):
+        if self.status == 'Processing' and not self.processing_time:
+            self.processing_time = timezone.now()
+        elif self.status == 'Shipped' and not self.shipped_time:
+            self.shipped_time = timezone.now()
+        elif self.status == 'Delivered' and not self.delivered_time:
+            self.delivered_time = timezone.now()
+        super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):

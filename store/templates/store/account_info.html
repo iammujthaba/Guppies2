@@ -1,10 +1,8 @@
 {% extends "store/Base.html" %}
-
 {% block content %}
 <div class="container mt-5">
     <h1>Account Information</h1>
     <hr>
-    
     <!-- User Information Section -->
     <div class="row">
         <div class="col-md-12">
@@ -26,7 +24,6 @@
         </div>
     </div>
     <hr>
-    
     <!-- Pending Orders Section -->
     <div class="row mt-4">
         <div class="col-md-12">
@@ -48,17 +45,17 @@
                 <tbody>
                     {% for order in pending_orders %}
                         {% for item in order.orderitem_set.all %}
-                            <tr>
-                                <td>{{ item.product.name }}</td>
-                                <td>${{ item.price_at_purchase }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>${{ item.price_at_purchase|floatformat:2 }}</td>
-                                <td>{{ order.date_ordered }}</td>
-                                <td>{{ order.status }}</td>
-                                <td>{{ order.processing_time }}</td>
-                                <td>{{ order.shipped_time }}</td>
-                                <td>{{ order.delivered_time }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>${{ item.price_at_purchase }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.price_at_purchase|floatformat:2 }}</td>
+                            <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.processing_time|date:"Y-m-d" }}</td>
+                            <td>{{ order.shipped_time|date:"Y-m-d" }}</td>
+                            <td>{{ order.delivered_time|date:"Y-m-d" }}</td>
+                        </tr>
                         {% endfor %}
                     {% empty %}
                         <tr>
@@ -70,7 +67,6 @@
         </div>
     </div>
     <hr>
-    
     <!-- Purchase History Section -->
     <div class="row mt-4">
         <div class="col-md-12">
@@ -92,17 +88,17 @@
                 <tbody>
                     {% for order in delivered_orders %}
                         {% for item in order.orderitem_set.all %}
-                            <tr>
-                                <td>{{ item.product.name }}</td>
-                                <td>${{ item.price_at_purchase }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>${{ item.price_at_purchase|floatformat:2 }}</td>
-                                <td>{{ order.date_ordered }}</td>
-                                <td>{{ order.status }}</td>
-                                <td>{{ order.processing_time }}</td>
-                                <td>{{ order.shipped_time }}</td>
-                                <td>{{ order.delivered_time }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>${{ item.price_at_purchase }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.price_at_purchase|floatformat:2 }}</td>
+                            <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.processing_time|date:"Y-m-d" }}</td>
+                            <td>{{ order.shipped_time|date:"Y-m-d" }}</td>
+                            <td>{{ order.delivered_time|date:"Y-m-d" }}</td>
+                        </tr>
                         {% endfor %}
                     {% empty %}
                         <tr>
@@ -114,7 +110,6 @@
         </div>
     </div>
     <hr>
-    
     <!-- Shipping Info Section -->
     <div class="row mt-4">
         <div class="col-md-12">
@@ -132,18 +127,18 @@
                 </thead>
                 <tbody>
                     {% for shipping in shipping_info %}
-                        <tr>
-                            <td>{{ shipping.order.id }}</td>
-                            <td>{{ shipping.address }}</td>
-                            <td>{{ shipping.city }}</td>
-                            <td>{{ shipping.state }}</td>
-                            <td>{{ shipping.zipcode }}</td>
-                            <td>{{ shipping.order.status }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ shipping.order.id }}</td>
+                        <td>{{ shipping.address }}</td>
+                        <td>{{ shipping.city }}</td>
+                        <td>{{ shipping.state }}</td>
+                        <td>{{ shipping.zipcode }}</td>
+                        <td>{{ shipping.order.status }}</td>
+                    </tr>
                     {% empty %}
-                        <tr>
-                            <td colspan="6">No shipping information available.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="6">No shipping information available.</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>

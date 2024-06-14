@@ -202,17 +202,14 @@ def updateOrderStatus(request, order_id):
     else:
         return redirect('some_view_to_redirect_to')
 
-
 def account_info(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
     customer = request.user.customer
     orders = Order.objects.filter(customer=customer, complete=True)
-    
     pending_orders = orders.exclude(status='Delivered')
     delivered_orders = orders.filter(status='Delivered')
-    
     shipping_info = ShippingAddress.objects.filter(customer=customer)
     
     context = {
@@ -221,29 +218,37 @@ def account_info(request):
         'delivered_orders': delivered_orders,
         'shipping_info': shipping_info,
     }
-    
     return render(request, 'store/account_info.html', context)
+
+# def updateOrderStatus(request, order_id):
+#     if request.method == "POST":
+#         status = request.POST.get("status")
+#         order = get_object_or_404(Order, id=order_id)
+#         order.status = status
+#         order.save()
+#         messages.success(request, f"Order status updated to {status}")
+#         return redirect('some_view_to_redirect_to')
+#     else:
+#         return redirect('some_view_to_redirect_to')
+
 
 # def account_info(request):
 #     if not request.user.is_authenticated:
 #         return redirect('login')
-
+    
 #     customer = request.user.customer
 #     orders = Order.objects.filter(customer=customer, complete=True)
-#     purchase_history = []
-#     for order in orders:
-#         for item in order.orderitem_set.all():
-#             purchase_history.append({
-#                 'product': item.product,
-#                 'price_at_purchase': item.price_at_purchase,
-#                 'quantity': item.quantity,
-#                 'date_added': order.date_ordered,
-#             })
+    
+#     pending_orders = orders.exclude(status='Delivered')
+#     delivered_orders = orders.filter(status='Delivered')
+    
 #     shipping_info = ShippingAddress.objects.filter(customer=customer)
-
+    
 #     context = {
 #         'user': request.user,
-#         'purchase_history': purchase_history,
+#         'pending_orders': pending_orders,
+#         'delivered_orders': delivered_orders,
 #         'shipping_info': shipping_info,
 #     }
+    
 #     return render(request, 'store/account_info.html', context)
