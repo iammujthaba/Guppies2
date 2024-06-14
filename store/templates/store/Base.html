@@ -106,7 +106,7 @@
                                 <ul>
 									
 									{% if user.is_authenticated %}
-									<li><a href="#">{{user.username}}</a></li>
+									<li><a href="{% url 'store_app:account_info' %}">{{user.username}}</a></li>
 									<li><a href="{% url 'auth_app:logout' %}" id="signin-button">Logout</a></li> 
 									{% else %}
                                     <li><a href="{% url 'auth_app:register' %}" id="signup-button">Sign up</a></li>

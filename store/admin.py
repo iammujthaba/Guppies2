@@ -1,13 +1,18 @@
 from django.contrib import admin
-
 from .models import *
 
-admin.site.register(Customer)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer', 'date_ordered', 'complete', 'status')
+    list_editable = ('status',)
+
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Category)
 admin.site.register(Product)
-admin.site.register(Order)
+admin.site.register(Customer)
 admin.site.register(OrderItem)
 admin.site.register(ShippingAddress)
+admin.site.register(PurchaseHistory)
+
 
 # class CategoryAdmin(admin.ModelAdmin):
 #     list_display = ['name', 'slug']

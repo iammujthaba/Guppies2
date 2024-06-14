@@ -1,0 +1,153 @@
+{% extends "store/Base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Account Information</h1>
+    <hr>
+    
+    <!-- User Information Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>User Information</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Username</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ user.customer.name }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr>
+    
+    <!-- Pending Orders Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Pending Orders</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price at Purchase</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Processing Time</th>
+                        <th>Shipped Time</th>
+                        <th>Delivered Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in pending_orders %}
+                        {% for item in order.orderitem_set.all %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>${{ item.price_at_purchase }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.price_at_purchase|floatformat:2 }}</td>
+                                <td>{{ order.date_ordered }}</td>
+                                <td>{{ order.status }}</td>
+                                <td>{{ order.processing_time }}</td>
+                                <td>{{ order.shipped_time }}</td>
+                                <td>{{ order.delivered_time }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="9">No pending orders available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    
+    <!-- Purchase History Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Purchase History</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price at Purchase</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Processing Time</th>
+                        <th>Shipped Time</th>
+                        <th>Delivered Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in delivered_orders %}
+                        {% for item in order.orderitem_set.all %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>${{ item.price_at_purchase }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.price_at_purchase|floatformat:2 }}</td>
+                                <td>{{ order.date_ordered }}</td>
+                                <td>{{ order.status }}</td>
+                                <td>{{ order.processing_time }}</td>
+                                <td>{{ order.shipped_time }}</td>
+                                <td>{{ order.delivered_time }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="9">No purchase history available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    
+    <!-- Shipping Info Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Shipping Information</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Zipcode</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipping in shipping_info %}
+                        <tr>
+                            <td>{{ shipping.order.id }}</td>
+                            <td>{{ shipping.address }}</td>
+                            <td>{{ shipping.city }}</td>
+                            <td>{{ shipping.state }}</td>
+                            <td>{{ shipping.zipcode }}</td>
+                            <td>{{ shipping.order.status }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">No shipping information available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
