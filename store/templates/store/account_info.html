@@ -1,147 +1,141 @@
 {% extends "store/Base.html" %}
+{% load static %}
 {% block content %}
-<div class="container mt-5">
-    <h1>Account Information</h1>
-    <hr>
-    <!-- User Information Section -->
+
+<style>
+    /* General Styles */
+    .info-card {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    .info-card .card-header {
+        background-color: #39f;
+        color: #fff;
+        padding: 15px;
+    }
+
+    .info-card .card-body {
+        padding: 20px;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .info-table th,
+    .info-table td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .info-table th {
+        font-weight: bold;
+        width: 30%;
+    }
+
+    .info-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 767px) {
+        .info-table th,
+        .info-table td {
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+
+        .info-table th {
+            padding-bottom: 0;
+        }
+
+        .info-table td {
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    }
+
+    /* Styles for the h6 element */
+    .info-card h6 {
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+</style>
+
+<div class="container my-5">
     <div class="row">
-        <div class="col-md-12">
-            <h2>User Information</h2>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Username</th>
-                    <td>{{ user.username }}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ user.customer.name }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <hr>
-    <!-- Pending Orders Section -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h2>Pending Orders</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price at Purchase</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Order Date</th>
-                        <th>Status</th>
-                        <th>Processing Time</th>
-                        <th>Shipped Time</th>
-                        <th>Delivered Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in pending_orders %}
-                        {% for item in order.orderitem_set.all %}
+        <div class="col-12">
+            <div class="info-card">
+                <div class="card-header">
+                    <h5 class="mb-0">User Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="info-table">
                         <tr>
-                            <td>{{ item.product.name }}</td>
-                            <td>${{ item.price_at_purchase }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>${{ item.price_at_purchase|floatformat:2 }}</td>
-                            <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>{{ order.processing_time|date:"Y-m-d" }}</td>
-                            <td>{{ order.shipped_time|date:"Y-m-d" }}</td>
-                            <td>{{ order.delivered_time|date:"Y-m-d" }}</td>
+                            <th>Username:</th>
+                            <td>{{ user.username }}</td>
                         </tr>
-                        {% endfor %}
-                    {% empty %}
                         <tr>
-                            <td colspan="9">No pending orders available.</td>
+                            <th>Email:</th>
+                            <td>{{ user.email }}</td>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr>
-    <!-- Purchase History Section -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h2>Purchase History</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price at Purchase</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Order Date</th>
-                        <th>Status</th>
-                        <th>Processing Time</th>
-                        <th>Shipped Time</th>
-                        <th>Delivered Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in delivered_orders %}
-                        {% for item in order.orderitem_set.all %}
                         <tr>
-                            <td>{{ item.product.name }}</td>
-                            <td>${{ item.price_at_purchase }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>${{ item.price_at_purchase|floatformat:2 }}</td>
-                            <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>{{ order.processing_time|date:"Y-m-d" }}</td>
-                            <td>{{ order.shipped_time|date:"Y-m-d" }}</td>
-                            <td>{{ order.delivered_time|date:"Y-m-d" }}</td>
+                            <th>Name:</th>
+                            <td>{{ user.customer.name }}</td>
                         </tr>
-                        {% endfor %}
-                    {% empty %}
-                        <tr>
-                            <td colspan="9">No purchase history available.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr>
-    <!-- Shipping Info Section -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h2>Shipping Information</h2>
-            <h3>You can edit your shipping info while cart chekout</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Address</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Zipcode</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="info-card">
+                <h6>This shipping address will update based on your last purchase address.</h6>
+                <div class="card-header">
+                    <h5 class="mb-0">Shipping Address</h5>
+                </div>
+                <div class="card-body">
                     {% if shipping_info %}
-                    <tr>
-                        <td>{{ shipping_info.address }}</td>
-                        <td>{{ shipping_info.city }}</td>
-                        <td>{{ shipping_info.state }}</td>
-                        <td>{{ shipping_info.zipcode }}</td>
-                        <td>{{ shipping_info.order.status }}</td>
-                    </tr>
+                    <table class="info-table">
+                        <tr>
+                            <th>Address:</th>
+                            <td>{{ shipping_info.address }}</td>
+                        </tr>
+                        <tr>
+                            <th>City:</th>
+                            <td>{{ shipping_info.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>State:</th>
+                            <td>{{ shipping_info.state }}</td>
+                        </tr>
+                        <tr>
+                            <th>Zipcode:</th>
+                            <td>{{ shipping_info.zipcode }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>{{ shipping_info.order.status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact Number:</th>
+                            <td>{{ shipping_info.number }}</td>
+                        </tr>
+                    </table>
                     {% else %}
-                    <tr>
-                        <td colspan="6">You can add shipping info during cart chekout.</td>
-                    </tr>
+                    <p>You can add shipping information during cart checkout.</p>
                     {% endif %}
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

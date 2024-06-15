@@ -17,6 +17,7 @@ urlpatterns = [
     path('offer/',views.offerProductListing,name='offerProductListing'),
     path('category/',views.Category_list,name='category_list'),
     path('account/',views.account_info,name='account_info'),
+    path('orders/',views.orders,name='orders'),
 
     path('about/',views.about,name='about'),
     path('gallery/',views.gallery,name='gallery'),

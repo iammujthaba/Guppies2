@@ -193,6 +193,22 @@ def Category_list(request):
     categorys_list = Category.objects.all()
     return render(request, 'store/category_listing.html', {'categorys_list': categorys_list})
 
+def orders(request):
+    if not request.user.is_authenticated:
+        return redirect('auth_app:login')
+    
+    customer = request.user.customer
+    orders = Order.objects.filter(customer=customer, complete=True)
+    pending_orders = orders.exclude(status='Delivered')
+    delivered_orders = orders.filter(status='Delivered')
+    
+    context = {
+        'user': request.user,
+        'pending_orders': pending_orders,
+        'delivered_orders': delivered_orders,
+    }
+    return render(request, 'store/orders.html', context)
+
 def about(request):
     return render(request, 'resources/about.html')
 
@@ -221,18 +237,13 @@ def updateOrderStatus(request, order_id):
 
 def account_info(request):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('auth_app:login')
     
     customer = request.user.customer
-    orders = Order.objects.filter(customer=customer, complete=True)
-    pending_orders = orders.exclude(status='Delivered')
-    delivered_orders = orders.filter(status='Delivered')
     last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
     
     context = {
         'user': request.user,
-        'pending_orders': pending_orders,
-        'delivered_orders': delivered_orders,
         'shipping_info': last_shipping,
     }
     return render(request, 'store/account_info.html', context)

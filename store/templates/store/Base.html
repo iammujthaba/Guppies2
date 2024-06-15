@@ -332,8 +332,13 @@
 								{#{% url 'cart_app:cart_detail' %}#}
                                 <a href="{% url 'store_app:cart' %}">Cart</a>
                             </li>
+                            {% if user.is_authenticated %}
                             <li>
-                                <a>Account</a>
+                                <a href="{% url 'store_app:orders' %}">Orders</a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'store_app:account_info' %}">Account</a>
                             </li>
                             <li>
 								{#{% url 'ecommerce_app:gallery' %}#}
