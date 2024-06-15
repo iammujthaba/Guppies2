@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
+# from django import forms
 
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
@@ -25,6 +26,11 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200)
 
+    # default_phone = models.CharField(max_length=15, null=True, blank=True)
+    # default_address = models.CharField(max_length=200, null=True, blank=True)
+    # default_city = models.CharField(max_length=200, null=True, blank=True)
+    # default_state = models.CharField(max_length=200, null=True, blank=True)
+    # default_zipcode = models.CharField(max_length=10, null=True, blank=True)
     def __str__(self):
         return self.name
 
@@ -72,35 +78,6 @@ class Product(models.Model):
         except:
             url = ''
         return url
-
-
-# class Order(models.Model):
-#     STATUS_CHOICES = [
-#         ('Processing', 'Processing'),
-#         ('Shipped', 'Shipped'),
-#         ('Delivered', 'Delivered')
-#     ]
-
-#     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-#     date_ordered = models.DateTimeField(auto_now_add=True)
-#     complete = models.BooleanField(default=False)
-#     transaction_id = models.CharField(max_length=100, null=True)
-#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
-
-#     def __str__(self):
-#         return str(self.id)
-
-#     @property
-#     def get_cart_total(self):
-#         orderitems = self.orderitem_set.all()
-#         total = sum([item.get_total for item in orderitems])
-#         return total
-
-#     @property
-#     def get_cart_items(self):
-#         orderitems = self.orderitem_set.all()
-#         total = sum([item.quantity for item in orderitems])
-#         return total
 
 
 class Order(models.Model):
@@ -185,3 +162,15 @@ class PurchaseHistory(models.Model):
 
     def __str__(self):
         return f"{self.customer.name} - {self.product.name}"
+
+# class ShippingInfoForm(forms.ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = ['default_phone', 'default_address', 'default_city', 'default_state', 'default_zipcode']
+#         widgets = {
+#             'default_phone': forms.TextInput(attrs={'class': 'form-control'}),
+#             'default_address': forms.TextInput(attrs={'class': 'form-control'}),
+#             'default_city': forms.TextInput(attrs={'class': 'form-control'}),
+#             'default_state': forms.TextInput(attrs={'class': 'form-control'}),
+#             'default_zipcode': forms.TextInput(attrs={'class': 'form-control'}),
+#         }

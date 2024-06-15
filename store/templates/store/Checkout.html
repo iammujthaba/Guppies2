@@ -151,50 +151,39 @@ body {
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
+
                 <div class="box-element" id="form-wrapper">
                     <form id="form">
                         {% csrf_token %}
-                        <!-- <div id="user-info">
-                            <h5>User Information</h5>
-                            <div class="form-field">
-                                <label for="name">Name</label>
-                                <input required class="form-control" type="text" id="name" name="name" placeholder="Name.." required>
-                            </div>
-                            <div class="form-field">
-                                <label for="email">Email</label>
-                                <input required class="form-control" type="email" id="email" name="email" placeholder="Email.." required>
-                            </div>
-                            <hr>
-                        </div> -->
                         
                         <div id="shipping-info">
-                            
                             <h5>Shipping Information</h5>
                             <div class="form-field">
                                 <label for="number">Phone Number</label>
-                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." required>
+                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." value="" required>
                             </div>
                             <div class="form-field">
                                 <label for="address">Address</label>
-                                <input class="form-control" type="text" id="address" name="address" placeholder="Address.." required>
+                                <input class="form-control" type="text" id="address" name="address" placeholder="Address.." value="" required>
                             </div>
                             <div class="form-field">
                                 <label for="city">City</label>
-                                <input class="form-control" type="text" id="city" name="city" placeholder="City.." required>
+                                <input class="form-control" type="text" id="city" name="city" placeholder="City.." value="" required>
                             </div>
                             <div class="form-field">
                                 <label for="state">State</label>
-                                <input class="form-control" type="text" id="state" name="state" placeholder="State.." required>
+                                <input class="form-control" type="text" id="state" name="state" placeholder="State.." value="" required>
                             </div>
                             <div class="form-field">
                                 <label for="zipcode">Zip Code</label>
-                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Zip code.." required>
+                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Zip code.." value="" required>
                             </div>
                         </div>
                         <hr>
                         <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
                     </form>
                 </div>
+
 
                 <br>
                 <div class="box-element hidden" id="payment-info">

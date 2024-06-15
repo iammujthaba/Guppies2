@@ -6,6 +6,7 @@ import json
 import datetime
 from .models import *
 from .utils import cartData
+from django.contrib.auth.decorators import login_required
 
 def allProdCat(request, c_slug=None):
     c_page = None
@@ -220,35 +221,26 @@ def account_info(request):
     }
     return render(request, 'store/account_info.html', context)
 
-# def updateOrderStatus(request, order_id):
-#     if request.method == "POST":
-#         status = request.POST.get("status")
-#         order = get_object_or_404(Order, id=order_id)
-#         order.status = status
-#         order.save()
-#         messages.success(request, f"Order status updated to {status}")
-#         return redirect('some_view_to_redirect_to')
-#     else:
-#         return redirect('some_view_to_redirect_to')
-
-
+# @login_required
 # def account_info(request):
-#     if not request.user.is_authenticated:
-#         return redirect('login')
-    
 #     customer = request.user.customer
-#     orders = Order.objects.filter(customer=customer, complete=True)
+#     if request.method == 'POST':
+#         form = ShippingInfoForm(request.POST, instance=customer)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('store_app:account_info')
+#     else:
+#         form = ShippingInfoForm(instance=customer)
     
-#     pending_orders = orders.exclude(status='Delivered')
-#     delivered_orders = orders.filter(status='Delivered')
-    
+#     pending_orders = Order.objects.filter(customer=customer, complete=True)
+#     delivered_orders = Order.objects.filter(customer=customer, status='Delivered')
 #     shipping_info = ShippingAddress.objects.filter(customer=customer)
-    
+
 #     context = {
 #         'user': request.user,
 #         'pending_orders': pending_orders,
 #         'delivered_orders': delivered_orders,
 #         'shipping_info': shipping_info,
+#         'form': form,
 #     }
-    
 #     return render(request, 'store/account_info.html', context)
