@@ -227,13 +227,13 @@ def account_info(request):
     orders = Order.objects.filter(customer=customer, complete=True)
     pending_orders = orders.exclude(status='Delivered')
     delivered_orders = orders.filter(status='Delivered')
-    shipping_info = ShippingAddress.objects.filter(customer=customer)
+    last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
     
     context = {
         'user': request.user,
         'pending_orders': pending_orders,
         'delivered_orders': delivered_orders,
-        'shipping_info': shipping_info,
+        'shipping_info': last_shipping,
     }
     return render(request, 'store/account_info.html', context)
 

@@ -114,10 +114,10 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <h2>Shipping Information</h2>
+            <h3>You can edit your shipping info while cart chekout</h3>
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
                         <th>Address</th>
                         <th>City</th>
                         <th>State</th>
@@ -126,20 +126,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for shipping in shipping_info %}
+                    {% if shipping_info %}
                     <tr>
-                        <td>{{ shipping.order.id }}</td>
-                        <td>{{ shipping.address }}</td>
-                        <td>{{ shipping.city }}</td>
-                        <td>{{ shipping.state }}</td>
-                        <td>{{ shipping.zipcode }}</td>
-                        <td>{{ shipping.order.status }}</td>
+                        <td>{{ shipping_info.address }}</td>
+                        <td>{{ shipping_info.city }}</td>
+                        <td>{{ shipping_info.state }}</td>
+                        <td>{{ shipping_info.zipcode }}</td>
+                        <td>{{ shipping_info.order.status }}</td>
                     </tr>
-                    {% empty %}
+                    {% else %}
                     <tr>
-                        <td colspan="6">No shipping information available.</td>
+                        <td colspan="6">You can add shipping info during cart chekout.</td>
                     </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
