@@ -109,17 +109,40 @@
             </table>
         </div>
     </div>
+    <hr>
     <!-- Shipping Info Section -->
-    <!--<hr>
-     <div class="row mt-4">
+    <div class="row mt-4">
         <div class="col-md-12">
             <h2>Shipping Information</h2>
-            <form method="POST" action="">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Update Shipping Info</button>
-            </form>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Zipcode</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipping in shipping_info %}
+                    <tr>
+                        <td>{{ shipping.order.id }}</td>
+                        <td>{{ shipping.address }}</td>
+                        <td>{{ shipping.city }}</td>
+                        <td>{{ shipping.state }}</td>
+                        <td>{{ shipping.zipcode }}</td>
+                        <td>{{ shipping.order.status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No shipping information available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div> -->
+    </div>
 </div>
 {% endblock %}

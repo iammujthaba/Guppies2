@@ -160,29 +160,30 @@ body {
                             <h5>Shipping Information</h5>
                             <div class="form-field">
                                 <label for="number">Phone Number</label>
-                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." value="" required>
+                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." value="{{ last_shipping.number|default:'' }}" required>
                             </div>
                             <div class="form-field">
                                 <label for="address">Address</label>
-                                <input class="form-control" type="text" id="address" name="address" placeholder="Address.." value="" required>
+                                <input class="form-control" type="text" id="address" name="address" placeholder="Address.." value="{{ last_shipping.address|default:'' }}" required>
                             </div>
                             <div class="form-field">
                                 <label for="city">City</label>
-                                <input class="form-control" type="text" id="city" name="city" placeholder="City.." value="" required>
+                                <input class="form-control" type="text" id="city" name="city" placeholder="City.." value="{{ last_shipping.city|default:'' }}" required>
                             </div>
                             <div class="form-field">
                                 <label for="state">State</label>
-                                <input class="form-control" type="text" id="state" name="state" placeholder="State.." value="" required>
+                                <input class="form-control" type="text" id="state" name="state" placeholder="State.." value="{{ last_shipping.state|default:'' }}" required>
                             </div>
                             <div class="form-field">
                                 <label for="zipcode">Zip Code</label>
-                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Zip code.." value="" required>
+                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Zip code.." value="{{ last_shipping.zipcode|default:'' }}" required>
                             </div>
                         </div>
                         <hr>
                         <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
                     </form>
                 </div>
+                
 
 
                 <br>

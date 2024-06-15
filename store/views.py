@@ -47,13 +47,24 @@ def cart(request):
     context = {'items': items, 'order': order, 'cartItems': cartItems, 'total_price_difference': total_price_difference}
     return render(request, 'store/cart.html', context)
 
+
 def checkout(request):
     if request.user.is_authenticated:
         data = cartData(request)
         cartItems = data['cartItems']
         order = data['order']
         items = data['items']
-        context = {'items': items, 'order': order, 'cartItems': cartItems}
+
+        # Get the last shipping information
+        customer = request.user.customer
+        last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
+
+        context = {
+            'items': items,
+            'order': order,
+            'cartItems': cartItems,
+            'last_shipping': last_shipping,
+        }
         return render(request, 'store/checkout.html', context)
     else:
         return render(request, 'loginOrRegister.html')
@@ -91,6 +102,7 @@ def updateItem(request):
         orderItem.delete()
     return JsonResponse({'added': added, 'message': message}, safe=False)
 
+
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
@@ -102,18 +114,17 @@ def processOrder(request):
         if total == str(order.get_cart_total):
             order.complete = True
             order.save()
-            # Save purchase history
+            # Save purchase history for items in the order
             for item in order.orderitem_set.all():
                 if item.price_at_purchase is None:
                     item.price_at_purchase = item.product.new_price
-                    item.save()
+                item.save()
                 PurchaseHistory.objects.create(
                     customer=customer,
                     product=item.product,
                     price_at_purchase=item.price_at_purchase
                 )
-            success = True
-            message = "Transaction completed, \nYour order placed successfully..."
+            # Save new shipping information
             ShippingAddress.objects.create(
                 customer=customer,
                 order=order,
@@ -122,10 +133,15 @@ def processOrder(request):
                 city=data['shipping']['city'],
                 state=data['shipping']['state'],
                 zipcode=data['shipping']['zipcode'],
+                date_added=timezone.now()
             )
+
+            success = True
+            message = "Transaction completed, \nYour order placed successfully..."
         else:
             success = False
             message = "Something went wrong! \nOrder not placed, For more contact us."
+
         return JsonResponse({'success': success, 'message': message}, safe=False)
 
 def proDetail(request, c_slug, product_slug):
@@ -221,26 +237,3 @@ def account_info(request):
     }
     return render(request, 'store/account_info.html', context)
 
-# @login_required
-# def account_info(request):
-#     customer = request.user.customer
-#     if request.method == 'POST':
-#         form = ShippingInfoForm(request.POST, instance=customer)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('store_app:account_info')
-#     else:
-#         form = ShippingInfoForm(instance=customer)
-    
-#     pending_orders = Order.objects.filter(customer=customer, complete=True)
-#     delivered_orders = Order.objects.filter(customer=customer, status='Delivered')
-#     shipping_info = ShippingAddress.objects.filter(customer=customer)
-
-#     context = {
-#         'user': request.user,
-#         'pending_orders': pending_orders,
-#         'delivered_orders': delivered_orders,
-#         'shipping_info': shipping_info,
-#         'form': form,
-#     }
-#     return render(request, 'store/account_info.html', context)
