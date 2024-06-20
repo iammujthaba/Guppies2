@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CategoryForm, ProductForm
-from store.models import Category, Product, Order, Customer
+from store.models import Category, Product, Order, Customer, ShippingAddress
 from django.db.models import Q
-
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 def is_admin(user):
@@ -101,11 +101,30 @@ def order_list(request):
     orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
     return render(request, 'admin_app/order_list.html', {'orders': orders})
 
+# @login_required
+# @user_passes_test(is_admin)
+# def order_detail(request, pk):
+#     order = get_object_or_404(Order, pk=pk)
+#     return render(request, 'admin_app/order_detail.html', {'order': order})
+
 @login_required
 @user_passes_test(is_admin)
 def order_detail(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    return render(request, 'admin_app/order_detail.html', {'order': order})
+    shipping_address = ShippingAddress.objects.filter(order=order).first()
+    
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status and new_status != order.status:
+            order.status = new_status
+            order.save()
+            return redirect('admin_app:order_detail', pk=pk)
+    
+    return render(request, 'admin_app/order_detail.html', {
+        'order': order,
+        'shipping_address': shipping_address
+    })
+
 
 @login_required
 @user_passes_test(is_admin)
