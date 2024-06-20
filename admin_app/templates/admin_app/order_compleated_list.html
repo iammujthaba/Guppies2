@@ -9,20 +9,22 @@
             <th>Customer</th>
             <th>Ordered</th>
             <th>Delivered</th>
+            <th>Quantity</th>
+            <th>Total</th>
             <th>State</th>
             <th>Status</th>
-            <th>Total</th>
-            <th>Quantity</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{ order.id }}</td>
+            <td>{{ forloop.counter }}</td>
             <td>{{ order.customer.name }}</td>
             <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
             <td>{{ order.delivered_time|date:"Y-m-d" }}</td>
+            <td>{{ order.total_quantity }}</td>
+            <td>{{ order.get_cart_total }}</td>
             <td>
                 {% if order.shipping_address %}
                     {{ order.shipping_address.state }}
@@ -31,8 +33,6 @@
                 {% endif %}
             </td>
             <td>{{ order.status }}</td>
-            <td>{{ order.get_cart_total }}</td>
-            <td>{{ order.total_quantity }}</td>
             <td>
                 <a href="{% url 'admin_app:order_pending' order.pk %}">View</a>
             </td>

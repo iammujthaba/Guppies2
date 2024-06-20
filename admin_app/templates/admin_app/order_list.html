@@ -1,4 +1,5 @@
 {% extends 'admin_app/base_admin.html' %}
+
 {% block content %}
 <h1>Pending Order List</h1>
 <table>
@@ -6,22 +7,26 @@
         <tr>
             <th>ID</th>
             <th>Customer</th>
-            <th>Order Date</th>
-            <th>Status</th>
+            <th>Ordered</th>
+            <th>Total Quantity</th>
             <th>Total</th>
+            <th>State</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        {% for order in orders %}
+        {% for order_detail in orders_with_details %}
         <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.customer.name }}</td>
-            <td>{{ order.date_ordered|date:"Y-m-d" }}</td>
-            <td>{{ order.status }}</td>
-            <td>{{ order.get_cart_total }}</td>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ order_detail.order.customer.name }}</td>
+            <td>{{ order_detail.order.date_ordered|date:"Y-m-d" }}</td>
+            <td>{{ order_detail.total_quantity }}</td>
+            <td>{{ order_detail.order.get_cart_total }}</td>
+            <td>{{ order_detail.state }}</td>
+            <td>{{ order_detail.order.status }}</td>
             <td>
-                <a href="{% url 'admin_app:order_pending' order.pk %}">View</a>
+                <a href="{% url 'admin_app:order_pending' order_detail.order.pk %}">View</a>
             </td>
         </tr>
         {% endfor %}

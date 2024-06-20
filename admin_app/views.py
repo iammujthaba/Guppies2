@@ -97,11 +97,27 @@ def product_update(request, pk):
 #         return redirect('admin_app:product_list')
 #     return render(request, 'admin_app/product_confirm_delete.html', {'product': product})
 
+# @login_required
+# @user_passes_test(is_admin)
+# def order_list(request):
+#     orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
+#     return render(request, 'admin_app/order_list.html', {'orders': orders})
 @login_required
 @user_passes_test(is_admin)
 def order_list(request):
     orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
-    return render(request, 'admin_app/order_list.html', {'orders': orders})
+
+    orders_with_details = []
+    for order in orders:
+        shipping_address = ShippingAddress.objects.filter(order=order).first()
+        total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
+        orders_with_details.append({
+            'order': order,
+            'state': shipping_address.state if shipping_address else 'N/A',
+            'total_quantity': total_quantity or 0
+        })
+
+    return render(request, 'admin_app/order_list.html', {'orders_with_details': orders_with_details})
 
 @login_required
 @user_passes_test(is_admin)

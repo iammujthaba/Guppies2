@@ -36,29 +36,29 @@
     <div class="content">
         <div id="total_users" class="section">
             <h1>All Users</h1>
-            <ul>
+            <ol>
                 {% for user in total_users %}
                     <li>{{ user.name }}</li>
                 {% endfor %}
-            </ul>
+            </ol>
         </div>
 
         <div id="customers_with_complete_orders" class="section hidden">
             <h1>Customers</h1>
-            <ul>
+            <ol>
                 {% for user in customers_with_complete_orders %}
                     <li>{{ user.name }}</li>
                 {% endfor %}
-            </ul>
+            </ol>
         </div>
 
         <div id="only_users" class="section hidden">
             <h1>Users</h1>
-            <ul>
+            <ol>
                 {% for user in only_users %}
                     <li>{{ user.name }}</li>
                 {% endfor %}
-            </ul>
+            </ol>
         </div>
     </div>
 

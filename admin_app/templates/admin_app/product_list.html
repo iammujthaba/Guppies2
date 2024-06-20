@@ -5,10 +5,11 @@
 <table>
     <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
-            <th>Price</th>
             <th>Stock</th>
             <th>active</th>
+            <th>Price</th>
             <th>category</th>
             <th>Actions</th>
         </tr>
@@ -16,10 +17,11 @@
     <tbody>
         {% for product in products %}
         <tr>
+            <td>{{ forloop.counter }}</td>
             <td>{{ product.name }}</td>
-            <td>{{ product.new_price }}</td>
             <td>{{ product.stock }}</td>
             <td>{{ product.active }}</td>
+            <td>{{ product.new_price }}</td>
             <td>{{ product.category.name }}</td>
             <td>
                 <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>
