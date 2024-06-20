@@ -1,0 +1,27 @@
+{% extends 'admin_app/base_admin.html' %}
+{% block content %}
+<h1>Order Detail - {{ order.id }}</h1>
+<p>Customer: {{ order.customer.name }}</p>
+<p>Status: {{ order.status }}</p>
+<p>Total: {{ order.get_cart_total }}</p>
+<p>Date Ordered: {{ order.date_ordered }}</p>
+<h2>Items</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.orderitem_set.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.get_total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
