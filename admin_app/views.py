@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CategoryForm, ProductForm
-from store.models import Category, Product, Order, Customer, ShippingAddress
-from django.db.models import Count, Q
+from store.models import Category, OrderItem, Product, Order, Customer, ShippingAddress
+from django.db.models import Count, Q, Sum
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -125,7 +125,12 @@ def order_detail(request, pk):
 @login_required
 @user_passes_test(is_admin)
 def order_compleated_list(request):
-    orders = Order.objects.all().filter(complete = True, status = 'Delivered')
+    orders = Order.objects.filter(complete=True, status='Delivered').select_related('customer')
+
+    for order in orders:
+        order.shipping_address = ShippingAddress.objects.filter(order=order).first()
+        order.total_quantity = OrderItem.objects.filter(order=order).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
     return render(request, 'admin_app/order_compleated_list.html', {'orders': orders})
 
 

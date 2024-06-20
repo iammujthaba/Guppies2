@@ -8,6 +8,8 @@
             <th>Name</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>active</th>
+            <th>category</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,6 +19,8 @@
             <td>{{ product.name }}</td>
             <td>{{ product.new_price }}</td>
             <td>{{ product.stock }}</td>
+            <td>{{ product.active }}</td>
+            <td>{{ product.category.name }}</td>
             <td>
                 <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>
                 <!-- <a href="{#{% url 'admin_app:product_delete' product.pk %}#}">Delete</a> -->
