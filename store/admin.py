@@ -11,8 +11,8 @@ class OrderAdmin(admin.ModelAdmin):
 # admin.site.register(Category,CategoryAdmin)
 
 # class ProductAdmin(admin.ModelAdmin):
-#     list_display = ['name', 'old_price','new_price', 'stock', 'available','new', 'category','update']
-#     list_editable = ['new_price','old_price','new', 'stock', 'available']
+#     list_display = ['name', 'old_price','new_price', 'stock', 'active','new', 'category','update']
+#     list_editable = ['new_price','old_price','new', 'stock', 'active']
 #     prepopulated_fields = {'slug':('name',)}
 #     list_per_page = 20
 # admin.site.register(Product,ProductAdmin)

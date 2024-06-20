@@ -47,7 +47,7 @@ class Product(models.Model):
     image_3 = models.ImageField(upload_to='product', blank=True)
     video_url = models.URLField(max_length=200, blank=True)
     stock = models.IntegerField()
-    available = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
     new = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateField(auto_now=True)

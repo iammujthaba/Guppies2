@@ -14,9 +14,9 @@ def allProdCat(request, c_slug=None):
     products_list = None
     if c_slug != None:
         c_page = get_object_or_404(Category, slug=c_slug)
-        products_list = Product.objects.all().filter(category=c_page, available=True, stock__gt=0)
+        products_list = Product.objects.all().filter(category=c_page, active=True, stock__gt=0)
     else:
-        products_list = Product.objects.all().filter(available=True, stock__gt=0)
+        products_list = Product.objects.all().filter(active=True, stock__gt=0)
     offer_list = Product.objects.filter(old_price__gt=0)
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
@@ -178,7 +178,7 @@ def proDetail(request, c_slug, product_slug):
 
     if c_slug:
         c_page = get_object_or_404(Category, slug=c_slug)
-        products_list = Product.objects.filter(category=c_page, available=True)
+        products_list = Product.objects.filter(category=c_page, active=True)
         paginator = Paginator(products_list, 5)
         try:
             page = int(request.GET.get('page', '1'))
@@ -192,7 +192,7 @@ def proDetail(request, c_slug, product_slug):
 
 
 def allProductListing(request):
-    products_list = Product.objects.all().filter(available=True)
+    products_list = Product.objects.all().filter(active=True)
     paginator = Paginator(products_list, 14)
     try:
         page = int(request.GET.get('page', '1'))

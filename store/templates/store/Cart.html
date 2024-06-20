@@ -40,9 +40,9 @@
 								<div class="ms-3 ml-3">
 									<div>{{ cart_item.product.name }}</div>
 									<div
-										class="{% if cart_item.product.available and cart_item.product.stock > 0 %} text-success {% endif %}
-												{% if not cart_item.product.available or cart_item.product.stock == 0 %} text-muted {% endif %}">
-										{% if cart_item.product.available and cart_item.product.stock > 0 %}
+										class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %}
+												{% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
+										{% if cart_item.product.active and cart_item.product.stock > 0 %}
 										In Stock
 										{% else %}
 										Out of Stock
