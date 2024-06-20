@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CategoryForm, ProductForm
-from store.models import Category, Product, Order
+from store.models import Category, Product, Order, Customer
+from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -97,7 +98,7 @@ def product_delete(request, pk):
 @login_required
 @user_passes_test(is_admin)
 def order_list(request):
-    orders = Order.objects.all()
+    orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
     return render(request, 'admin_app/order_list.html', {'orders': orders})
 
 @login_required
@@ -105,3 +106,32 @@ def order_list(request):
 def order_detail(request, pk):
     order = get_object_or_404(Order, pk=pk)
     return render(request, 'admin_app/order_detail.html', {'order': order})
+
+@login_required
+@user_passes_test(is_admin)
+def order_compleated_list(request):
+    orders = Order.objects.all().filter(complete = True, status = 'Delivered')
+    return render(request, 'admin_app/order_compleated_list.html', {'orders': orders})
+
+# @login_required
+# @user_passes_test(is_admin)
+# def users_list(request):
+#     total_users = Customer.objects.all()
+#     customers_with_complete_orders = Order.objects.all().filter(complete = True)
+#     only_users = total_users.difference(customers_with_complete_orders)
+#     return render(request, 'admin_app/users_list.html', {'users': total_users,'customers': customers_with_complete_orders,'only_users': only_users})
+
+
+@login_required
+@user_passes_test(is_admin)
+def users_list(request):
+    total_users = Customer.objects.all()
+    complete_orders = Order.objects.filter(complete=True)
+    customer_ids_with_complete_orders = set(complete_orders.values_list('customer_id', flat=True))
+    customers_with_complete_orders = Customer.objects.filter(id__in=customer_ids_with_complete_orders)
+    only_users = total_users.exclude(id__in=customer_ids_with_complete_orders)
+    return render(request, 'admin_app/users_list.html', {
+        'total_users': total_users,
+        'customers_with_complete_orders': customers_with_complete_orders,
+        'only_users': only_users
+    })
