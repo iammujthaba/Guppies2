@@ -34,7 +34,7 @@
             <td>{{ order.get_cart_total }}</td>
             <td>{{ order.total_quantity }}</td>
             <td>
-                <a href="{% url 'admin_app:order_detail' order.pk %}">View</a>
+                <a href="{% url 'admin_app:order_pending' order.pk %}">View</a>
             </td>
         </tr>
         {% endfor %}

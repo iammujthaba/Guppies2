@@ -105,7 +105,7 @@ def order_list(request):
 
 @login_required
 @user_passes_test(is_admin)
-def order_detail(request, pk):
+def order_pending(request, pk):
     order = get_object_or_404(Order, pk=pk)
     shipping_address = ShippingAddress.objects.filter(order=order).first()
     
@@ -114,9 +114,9 @@ def order_detail(request, pk):
         if new_status and new_status != order.status:
             order.status = new_status
             order.save()
-            return redirect('admin_app:order_detail', pk=pk)
+            return redirect('admin_app:order_pending', pk=pk)
     
-    return render(request, 'admin_app/order_detail.html', {
+    return render(request, 'admin_app/order_pending.html', {
         'order': order,
         'shipping_address': shipping_address
     })
@@ -124,7 +124,7 @@ def order_detail(request, pk):
 
 @login_required
 @user_passes_test(is_admin)
-def order_compleated_list(request):
+def order_compleated(request):
     orders = Order.objects.filter(complete=True, status='Delivered').select_related('customer')
 
     for order in orders:
