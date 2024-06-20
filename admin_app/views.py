@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CategoryForm, ProductForm
 from store.models import Category, Product, Order, Customer, ShippingAddress
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -18,7 +18,8 @@ def dashboard(request):
 @login_required
 @user_passes_test(is_admin)
 def category_list(request):
-    categories = Category.objects.all()
+    # categories = Category.objects.all()
+    categories = Category.objects.annotate(num_products=Count('product')).all()
     return render(request, 'admin_app/category_list.html', {'categories': categories})
 
 @login_required

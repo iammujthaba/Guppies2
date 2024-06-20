@@ -1,9 +1,14 @@
 from . models import Category
 from . utils import cartData
+from django.db.models import Count, Q
 from django.core.paginator import Paginator,EmptyPage,InvalidPage
 
 def menu_link(request): #this function don't wanna call to work, it's defined in setting to work
-    links_list = Category.objects.all()
+
+    # Get categories that have at least one active product in stock
+    links_list = Category.objects.annotate(
+        num_products=Count('product', filter=Q(product__active=True, product__stock__gt=0))
+    ).filter(num_products__gt=0)
 
     paginator3 = Paginator(links_list,8)
     try:
