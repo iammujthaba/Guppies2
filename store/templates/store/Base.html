@@ -193,9 +193,16 @@
                                     <a href="{% url 'store_app:cart' %}">Cart</a>
                                 </li>
                                 <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
-                                <li class="#">
-                                    <a>Account</a>
+                                
+                                    {% if user.is_authenticated %}
+                                <li class="{% if request.path == '/orders/' %}active{% endif %}">
+                                    <a href="{% url 'store_app:orders' %}">Orders</a>
                                 </li>
+                                {% endif %}
+                                <li class="{% if request.path == '/account/' %}active{% endif %}">
+                                    <a href="{% url 'store_app:account_info' %}">Account</a>
+                                </li>
+
                                 <li class="{% if request.path == '/gallery/' %}active{% endif %}">
 									{#{% url 'ecommerce_app:gallery' %}#}
                                     <a href="{% url 'store_app:gallery' %}">Gallery</a>

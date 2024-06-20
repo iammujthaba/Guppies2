@@ -19,7 +19,7 @@
             <td>{{ product.stock }}</td>
             <td>
                 <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>
-                <a href="{% url 'admin_app:product_delete' product.pk %}">Delete</a>
+                <!-- <a href="{#{% url 'admin_app:product_delete' product.pk %}#}">Delete</a> -->
             </td>
         </tr>
         {% endfor %}

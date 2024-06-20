@@ -97,7 +97,7 @@
                 </div>
             </div>
             <div class="info-card">
-                <h6>This shipping address will update based on your last purchase address.</h6>
+                <h6>This displayed shipping address is your last purchase shipping address.</h6>
                 <div class="card-header">
                     <h5 class="mb-0">Shipping Address</h5>
                 </div>
@@ -121,12 +121,12 @@
                             <td>{{ shipping_info.zipcode }}</td>
                         </tr>
                         <tr>
-                            <th>Status:</th>
-                            <td>{{ shipping_info.order.status }}</td>
-                        </tr>
-                        <tr>
                             <th>Contact Number:</th>
                             <td>{{ shipping_info.number }}</td>
+                        </tr>
+                        <tr>
+                            <th>WhatsApp Number:</th>
+                            <td>{{ shipping_info.whatsapp }}</td>
                         </tr>
                     </table>
                     {% else %}

@@ -87,26 +87,20 @@ def product_update(request, pk):
         form = ProductForm(instance=product)
     return render(request, 'admin_app/product_form.html', {'form': form})
 
-@login_required
-@user_passes_test(is_admin)
-def product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == 'POST':
-        product.delete()
-        return redirect('admin_app:product_list')
-    return render(request, 'admin_app/product_confirm_delete.html', {'product': product})
+# @login_required
+# @user_passes_test(is_admin)
+# def product_delete(request, pk):
+#     product = get_object_or_404(Product, pk=pk)
+#     if request.method == 'POST':
+#         product.delete()
+#         return redirect('admin_app:product_list')
+#     return render(request, 'admin_app/product_confirm_delete.html', {'product': product})
 
 @login_required
 @user_passes_test(is_admin)
 def order_list(request):
     orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
     return render(request, 'admin_app/order_list.html', {'orders': orders})
-
-# @login_required
-# @user_passes_test(is_admin)
-# def order_detail(request, pk):
-#     order = get_object_or_404(Order, pk=pk)
-#     return render(request, 'admin_app/order_detail.html', {'order': order})
 
 @login_required
 @user_passes_test(is_admin)
@@ -132,14 +126,6 @@ def order_detail(request, pk):
 def order_compleated_list(request):
     orders = Order.objects.all().filter(complete = True, status = 'Delivered')
     return render(request, 'admin_app/order_compleated_list.html', {'orders': orders})
-
-# @login_required
-# @user_passes_test(is_admin)
-# def users_list(request):
-#     total_users = Customer.objects.all()
-#     customers_with_complete_orders = Order.objects.all().filter(complete = True)
-#     only_users = total_users.difference(customers_with_complete_orders)
-#     return render(request, 'admin_app/users_list.html', {'users': total_users,'customers': customers_with_complete_orders,'only_users': only_users})
 
 
 @login_required
