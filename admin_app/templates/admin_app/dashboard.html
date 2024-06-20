@@ -1,0 +1,9 @@
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+<ul>
+    <li><a href="{% url 'admin_app:category_list' %}">Manage Categories</a></li>
+    <li><a href="{% url 'admin_app:product_list' %}">Manage Products</a></li>
+    <li><a href="{% url 'admin_app:order_list' %}">Manage Orders</a></li>
+</ul>
+{% endblock %}

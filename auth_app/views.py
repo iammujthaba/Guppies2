@@ -95,6 +95,9 @@ def login(request):
 
         user = auth.authenticate(username=username, password=password)
         if user is not None:
+            if user and user.is_superuser:
+                auth.login(request, user)
+                return redirect('admin_app:dashboard')
             auth.login(request, user)
             response = merge_cookie_cart_with_user_cart(request, user)
             return response

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'store',
     'auth_app',
     'search_app',
+    'admin_app',
 ]
 
 MIDDLEWARE = [

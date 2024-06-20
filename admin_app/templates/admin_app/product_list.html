@@ -1,0 +1,28 @@
+
+{% block content %}
+<h1>Product List</h1>
+<a href="{% url 'admin_app:product_create' %}">Add New Product</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.new_price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>
+                <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>
+                <a href="{% url 'admin_app:product_delete' product.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
