@@ -2,7 +2,7 @@ from . models import Category
 from . utils import cartData
 from django.core.paginator import Paginator,EmptyPage,InvalidPage
 
-def menu_link(request):
+def menu_link(request): #this function don't wanna call to work, it's defined in setting to work
     links_list = Category.objects.all()
 
     paginator3 = Paginator(links_list,8)

@@ -41,7 +41,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     old_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
     new_price = models.DecimalField(max_digits=7, blank=False, decimal_places=2)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     image_1 = models.ImageField(upload_to='product')
     image_2 = models.ImageField(upload_to='product', blank=True)
     image_3 = models.ImageField(upload_to='product', blank=True)

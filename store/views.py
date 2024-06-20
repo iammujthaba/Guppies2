@@ -13,17 +13,22 @@ def allProdCat(request, c_slug=None):
     offer = None
     products_list = None
     if c_slug != None:
+        print('c_slug...........',c_slug)
         c_page = get_object_or_404(Category, slug=c_slug)
+        print('c_page...........',c_page)
         products_list = Product.objects.all().filter(category=c_page, active=True, stock__gt=0)
     else:
         products_list = Product.objects.all().filter(active=True, stock__gt=0)
+
     offer_list = Product.objects.filter(old_price__gt=0)
+
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
+        
     try:
         products = paginator1.page(page)
         offer = paginator2.page(page)
