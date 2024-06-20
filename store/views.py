@@ -129,6 +129,7 @@ def processOrder(request):
                 customer=customer,
                 order=order,
                 number=data['shipping']['number'],
+                whatsapp=data['shipping']['whatsapp'],
                 address=data['shipping']['address'],
                 city=data['shipping']['city'],
                 state=data['shipping']['state'],

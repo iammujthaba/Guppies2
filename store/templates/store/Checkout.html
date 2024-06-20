@@ -159,8 +159,12 @@ body {
                         <div id="shipping-info">
                             <h5>Shipping Information</h5>
                             <div class="form-field">
-                                <label for="number">Phone Number</label>
-                                <input required class="form-control" type="text" id="number" name="number" placeholder="Number.." value="{{ last_shipping.number|default:'' }}" required>
+                                <label for="number">Contact Number</label>
+                                <input required class="form-control" type="text" id="number" name="number" placeholder="Contact Number.." value="{{ last_shipping.number|default:'' }}" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="number">whatsapp Number</label>
+                                <input required class="form-control" type="text" id="whatsapp" name="whatsapp" placeholder="whatsapp Number.." value="{{ last_shipping.whatsapp|default:'' }}" required>
                             </div>
                             <div class="form-field">
                                 <label for="address">Address</label>
@@ -303,6 +307,7 @@ body {
 
         var shippingInfo = {
             'number':null,
+            'whatsapp':null,
             'address':null,
             'city':null,
             'state':null,
@@ -312,6 +317,7 @@ body {
 
         if (order){
             shippingInfo.number = form.number.value
+            shippingInfo.whatsapp = form.whatsapp.value
             shippingInfo.address = form.address.value
             shippingInfo.city = form.city.value
             shippingInfo.state = form.state.value

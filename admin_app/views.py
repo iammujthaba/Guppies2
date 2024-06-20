@@ -43,6 +43,7 @@ def category_update(request, pk):
             form.save()
             return redirect('admin_app:category_list')
     else:
+        # get exact admin panal
         form = CategoryForm(instance=category)
     return render(request, 'admin_app/category_form.html', {'form': form})
 
