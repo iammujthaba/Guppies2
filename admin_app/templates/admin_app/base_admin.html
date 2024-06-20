@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'CSS/admin_dashboard.css' %}">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="{% url 'admin_app:dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'admin_app:category_list' %}">Manage Categories</a></li>
+            <li><a href="{% url 'admin_app:product_list' %}">Manage Products</a></li>
+            <li><a href="{% url 'admin_app:order_list' %}">Manage Orders</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

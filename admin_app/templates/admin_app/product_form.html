@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'admin_app/base_admin.html' %}
 {% block content %}
 <h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Product</h1>
 <form method="post" enctype="multipart/form-data">

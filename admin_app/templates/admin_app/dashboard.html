@@ -1,9 +1,6 @@
+{% extends 'admin_app/base_admin.html' %}
 
 {% block content %}
-<h1>Admin Dashboard</h1>
-<ul>
-    <li><a href="{% url 'admin_app:category_list' %}">Manage Categories</a></li>
-    <li><a href="{% url 'admin_app:product_list' %}">Manage Products</a></li>
-    <li><a href="{% url 'admin_app:order_list' %}">Manage Orders</a></li>
-</ul>
+    <h1>Welcome to the Admin Dashboard</h1>
+    <p>Use the sidebar to navigate to different sections of the admin panel.</p>
 {% endblock %}
