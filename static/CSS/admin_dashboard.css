@@ -139,7 +139,7 @@ form input, form select, form textarea {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 100%;
+    /* width: 100%; */
     box-sizing: border-box;
 }
 
