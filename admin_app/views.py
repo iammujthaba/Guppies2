@@ -121,7 +121,7 @@ def order_list(request):
 
 @login_required
 @user_passes_test(is_admin)
-def order_pending(request, pk):
+def order_view(request, pk):
     order = get_object_or_404(Order, pk=pk)
     shipping_address = ShippingAddress.objects.filter(order=order).first()
     
@@ -130,9 +130,9 @@ def order_pending(request, pk):
         if new_status and new_status != order.status:
             order.status = new_status
             order.save()
-            return redirect('admin_app:order_pending', pk=pk)
+            return redirect('admin_app:order_view', pk=pk)
     
-    return render(request, 'admin_app/order_pending.html', {
+    return render(request, 'admin_app/order_view.html', {
         'order': order,
         'shipping_address': shipping_address
     })

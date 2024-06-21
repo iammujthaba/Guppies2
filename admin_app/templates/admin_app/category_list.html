@@ -1,14 +1,14 @@
 {% extends 'admin_app/base_admin.html' %}
-
 {% block content %}
 <h1>Category List</h1>
-<a href="{% url 'admin_app:category_create' %}">Add New Category</a>
+<a href="{% url 'admin_app:category_create' %}" class="button">Add New Category</a>
 <table>
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Actions</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -18,10 +18,12 @@
             <td>{{ category.name }}</td>
             <td>
                 <a href="{% url 'admin_app:category_update' category.pk %}">Edit</a>
+            </td>
+            <td>
                 {% if category.num_products == 0 %}
-                    <a href="{% url 'admin_app:category_delete' category.pk %}">Delete</a>
+                <a href="{% url 'admin_app:category_delete' category.pk %}">Delete</a>
                 {% else %}
-                    <span class="disabled-span" style="color: #888888;cursor: not-allowed;opacity: 0.6;">Delete</span>
+                <span class="disabled-span">Delete</span>
                 {% endif %}
             </td>
         </tr>

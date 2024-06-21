@@ -1,6 +1,13 @@
 {% extends 'admin_app/base_admin.html' %}
-
 {% block content %}
+<style>
+    .status-processing {
+        color: red;
+    }
+    .status-shipped {
+        color: green;
+    }
+</style>
 <h1>Pending Order List</h1>
 <table>
     <thead>
@@ -8,7 +15,7 @@
             <th>ID</th>
             <th>Customer</th>
             <th>Ordered</th>
-            <th>Total Quantity</th>
+            <th>Quantity</th>
             <th>Total</th>
             <th>State</th>
             <th>Status</th>
@@ -24,9 +31,11 @@
             <td>{{ order_detail.total_quantity }}</td>
             <td>{{ order_detail.order.get_cart_total }}</td>
             <td>{{ order_detail.state }}</td>
-            <td>{{ order_detail.order.status }}</td>
+            <td class="{% if order_detail.order.status == 'Processing' %}status-processing{% elif order_detail.order.status == 'Shipped' %}status-shipped{% endif %}">
+                {{ order_detail.order.status }}
+            </td>
             <td>
-                <a href="{% url 'admin_app:order_pending' order_detail.order.pk %}">View</a>
+                <a href="{% url 'admin_app:order_view' order_detail.order.pk %}">View</a>
             </td>
         </tr>
         {% endfor %}

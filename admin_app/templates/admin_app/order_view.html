@@ -1,9 +1,9 @@
 {% extends 'admin_app/base_admin.html' %}
-
 {% block content %}
+
 <h1>Order Detail - {{ order.customer.name }}</h1>
 <p>Customer: {{ order.customer.name }}</p>
-<p>email: {{ order.customer.email }}</p>
+<p>Email: {{ order.customer.email }}</p>
 <p>Status: {{ order.status }}</p>
 <p>Total: {{ order.get_cart_total }}</p>
 <p>Date Ordered: {{ order.date_ordered }}</p>
@@ -13,20 +13,19 @@
 {% endif %}
 {% if order.status == 'Delivered' %}
 <p>Shipped date: {{ order.shipped_time }}</p>
-<p>delivered date: {{ order.delivered_time }}</p>
+<p>Delivered date: {{ order.delivered_time }}</p>
 {% endif %}
-
 
 <h2>Shipping Address</h2>
 {% if shipping_address %}
-    <p>Number: {{ shipping_address.number }}</p>
-    <p>whatsapp: {{ shipping_address.whatsapp }}</p>
-    <p>Address: {{ shipping_address.address }}</p>
-    <p>City: {{ shipping_address.city }}</p>
-    <p>State: {{ shipping_address.state }}</p>
-    <p>Zipcode: {{ shipping_address.zipcode }}</p>
+<p>Number: {{ shipping_address.number }}</p>
+<p>WhatsApp: {{ shipping_address.whatsapp }}</p>
+<p>Address: {{ shipping_address.address }}</p>
+<p>City: {{ shipping_address.city }}</p>
+<p>State: {{ shipping_address.state }}</p>
+<p>Zipcode: {{ shipping_address.zipcode }}</p>
 {% else %}
-    <p>No shipping address available.</p>
+<p>No shipping address available.</p>
 {% endif %}
 
 <h2>Items</h2>
@@ -62,7 +61,7 @@
     <button type="submit">Update</button>
 </form>
 {% else %}
-<h2>Order Compleated</h2>
+<h2>Order Completed</h2>
 {% endif %}
 
 {% endblock %}

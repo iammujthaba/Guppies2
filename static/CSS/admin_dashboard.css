@@ -3,53 +3,152 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+}
+
+.wrapper {
     display: flex;
 }
 
 .sidebar {
-    width: 200px;
-    background: #333;
-    color: #fff;
-    height: 100vh;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
+    width: 220px;
+    background-color: #333;
     padding: 0;
+    margin: 0;
+    list-style: none;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
 }
 
 .sidebar li {
-    margin: 15px 0;
+    border-bottom: 1px solid #444;
 }
 
 .sidebar a {
-    text-decoration: none;
-    color: #fff;
     display: block;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    transition: background 0.3s;
 }
 
 .sidebar a:hover {
     background-color: #575757;
 }
 
-.content {
-    flex: 1;
-    padding: 20px;
-    background: #fff;
+.container {
     margin-left: 220px;
+    padding: 20px;
+    width: calc(100% - 220px);
+    box-sizing: border-box;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-.content h1 {
+h1 {
+    text-align: center;
     color: #333;
     margin-bottom: 20px;
+}
+
+a.button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+a.button:hover {
+    background: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+    background: #007bff;
+    color: #fff;
+}
+
+thead th {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #0056b3;
+}
+
+tbody tr:nth-child(even) {
+    background: #f4f4f4;
+}
+
+tbody tr:hover {
+    background: #e9ecef;
+}
+
+td, th {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+td a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+td a:hover {
+    color: #0056b3;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #218838;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input, form select, form textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.disabled-span {
+    color: #888888;
+    cursor: not-allowed;
+    opacity: 0.6;
 }

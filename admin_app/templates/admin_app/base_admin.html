@@ -8,20 +8,19 @@
     <link rel="stylesheet" href="{% static 'CSS/admin_dashboard.css' %}">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Admin Panel</h2>
-        <ul>
-            <li><a href="{% url 'admin_app:dashboard' %}">Dashboard</a></li>
-            <li><a href="{% url 'admin_app:category_list' %}">Categories Manage</a></li>
-            <li><a href="{% url 'admin_app:product_list' %}">Products Manage</a></li>
-            <li><a href="{% url 'admin_app:order_list' %}">Orders Pending</a></li>
-            <li><a href="{% url 'admin_app:order_compleated' %}">Orders Compleated</a></li>
-            <li><a href="{% url 'admin_app:users_list' %}">Users List</a></li>
+    <div class="wrapper">
+        <ul class="sidebar">
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:dashboard' %}">Dashboard</a></li>
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:category_list' %}">Categories Manage</a></li>
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:product_list' %}">Products Manage</a></li>
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:order_list' %}">Orders Pending</a></li>
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:order_compleated' %}">Orders Completed</a></li>
+            <li style="padding: 0px;"><a style="padding: 20px;" href="{% url 'admin_app:users_list' %}">Users List</a></li>
         </ul>
-    </div>
-    <div class="content">
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>

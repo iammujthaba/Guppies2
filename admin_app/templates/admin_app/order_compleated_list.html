@@ -1,5 +1,4 @@
 {% extends 'admin_app/base_admin.html' %}
-
 {% block content %}
 <h1>Completed Order List</h1>
 <table>
@@ -27,14 +26,14 @@
             <td>{{ order.get_cart_total }}</td>
             <td>
                 {% if order.shipping_address %}
-                    {{ order.shipping_address.state }}
+                {{ order.shipping_address.state }}
                 {% else %}
-                    N/A
+                N/A
                 {% endif %}
             </td>
             <td>{{ order.status }}</td>
             <td>
-                <a href="{% url 'admin_app:order_pending' order.pk %}">View</a>
+                <a href="{% url 'admin_app:order_view' order.pk %}">View</a>
             </td>
         </tr>
         {% endfor %}
