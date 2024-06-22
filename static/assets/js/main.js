@@ -588,7 +588,7 @@ $(document).ready(function () {
     // On click animate to top
     $scrollTop.on('click', function (e) {
         $('html, body').animate({
-            'scrollTop': 0
+            scrollTop: 0
         }, 800);
         e.preventDefault();
     });

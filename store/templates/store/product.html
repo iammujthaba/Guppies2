@@ -214,9 +214,9 @@
 
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
-                                                const qtyInput = document.getElementById('qty');
+                                                const qtyInput = document.getElementById('cart-quantity'); // Update the ID here
                                                 const femailOptions = document.getElementById('femail-options');
-                                        
+
                                                 qtyInput.addEventListener('input', function() {
                                                     if (parseInt(qtyInput.value) > 3) {
                                                         femailOptions.style.display = 'flex';

@@ -179,7 +179,8 @@ def proDetail(request, c_slug, product_slug):
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
-        raise Http404("Product does not exist")
+        return render(request, 'loginOrRegister.html')
+        # raise Http404("Product does not exist")
 
     if c_slug:
         c_page = get_object_or_404(Category, slug=c_slug)
