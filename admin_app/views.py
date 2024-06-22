@@ -1,17 +1,41 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CategoryForm, ProductForm
 from store.models import Category, OrderItem, Product, Order, Customer, ShippingAddress
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, Q, Sum, F, FloatField
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 def is_admin(user):
     return user.is_superuser
 
+# @login_required
+# @user_passes_test(is_admin)
+# def dashboard(request):
+#     return render(request, 'admin_app/dashboard.html')
 @login_required
 @user_passes_test(is_admin)
 def dashboard(request):
-    return render(request, 'admin_app/dashboard.html')
+    total_categories = Category.objects.count()
+    total_products = Product.objects.count()
+    total_customers = Customer.objects.count()
+    
+    delivered_orders_count = Order.objects.filter(status='Delivered').count()
+    pending_orders_count = Order.objects.filter(complete=True).exclude(status='Delivered').count()
+    
+    total_revenue = OrderItem.objects.filter(order__complete=True).aggregate(
+        total_revenue=Sum(F('price_at_purchase') * F('quantity'), output_field=FloatField())
+    )['total_revenue'] or 0
+
+    context = {
+        'total_categories': total_categories,
+        'total_products': total_products,
+        'delivered_orders_count': delivered_orders_count,
+        'pending_orders_count': pending_orders_count,
+        'total_customers': total_customers,
+        'total_revenue': total_revenue,
+    }
+    
+    return render(request, 'admin_app/dashboard.html', context)
 
 # Apply the same decorators to the other views
 
