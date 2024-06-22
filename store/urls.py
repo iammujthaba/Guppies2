@@ -4,7 +4,6 @@ from . import views
 
 app_name = 'store_app'
 urlpatterns = [
-        #Leave as empty string for base url
 	path('', views.allProdCat, name="allProdCat"),
 	path('cart/', views.cart, name="cart"),
 	path('checkout/', views.checkout, name="checkout"),

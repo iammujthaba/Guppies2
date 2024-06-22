@@ -25,12 +25,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200)
-
-    # default_phone = models.CharField(max_length=15, null=True, blank=True)
-    # default_address = models.CharField(max_length=200, null=True, blank=True)
-    # default_city = models.CharField(max_length=200, null=True, blank=True)
-    # default_state = models.CharField(max_length=200, null=True, blank=True)
-    # default_zipcode = models.CharField(max_length=10, null=True, blank=True)
+    
     def __str__(self):
         return self.name
 
@@ -163,15 +158,3 @@ class PurchaseHistory(models.Model):
 
     def __str__(self):
         return f"{self.customer.name} - {self.product.name}"
-
-# class ShippingInfoForm(forms.ModelForm):
-#     class Meta:
-#         model = Customer
-#         fields = ['default_phone', 'default_address', 'default_city', 'default_state', 'default_zipcode']
-#         widgets = {
-#             'default_phone': forms.TextInput(attrs={'class': 'form-control'}),
-#             'default_address': forms.TextInput(attrs={'class': 'form-control'}),
-#             'default_city': forms.TextInput(attrs={'class': 'form-control'}),
-#             'default_state': forms.TextInput(attrs={'class': 'form-control'}),
-#             'default_zipcode': forms.TextInput(attrs={'class': 'form-control'}),
-#         }
