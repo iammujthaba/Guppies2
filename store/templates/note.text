@@ -1,0 +1,37 @@
+{About}
+backgrounds/bg-4
+team/member-1
+team/member-2
+team/member-3
+testimonials/user-1
+testimonials/user-2
+
+{faq}
+page-header-bg
+backgrounds/cta/bj-7
+
+{gallery}
+blog/mask/masonry/post-4
+blog/mask/masonry/post-9
+blog/mask/masonry/post-8
+
+<!-- /////////////////////////////////// -->
+{Base}
+icons/apple-touch-icon
+icons/favicon-32x32
+icons/favicon-16x16
+icons/site
+icons/safari-pinned-tab
+icons/favicon
+icons/browserconfig
+demos/demo-4/logo 19a
+demos/demo-4/logo-footer
+
+{catogory}
+demos/demo-4/slider/slide-5
+demos/demo-4/cats/jj
+testimonials/user-1
+testimonials/user-2
+
+{product}
+demos/demo-4/vid
