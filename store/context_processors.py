@@ -1,16 +1,16 @@
-from . models import Category
-from . utils import cartData
+from .models import Category
+from .utils import cartData
 from django.db.models import Count, Q
-from django.core.paginator import Paginator,EmptyPage,InvalidPage
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
-def menu_link(request): #this function don't wanna call to work, it's defined in setting to work
+def menu_link(request): # this function don't wanna call to work, it's defined in setting to work
 
     # Get categories that have at least one active product in stock
     links_list = Category.objects.annotate(
         num_products=Count('product', filter=Q(product__active=True, product__stock__gt=0))
-    ).filter(num_products__gt=0)
+    ).filter(num_products__gt=0).order_by('name')  # Add an order_by clause here
 
-    paginator3 = Paginator(links_list,8)
+    paginator3 = Paginator(links_list, 8)
     try:
         page = int(request.GET.get('page', '1'))
     except:
@@ -18,12 +18,12 @@ def menu_link(request): #this function don't wanna call to work, it's defined in
 
     try:
         links = paginator3.page(page)
-    except (InvalidPage,EmptyPage):
+    except (InvalidPage, EmptyPage):
         links = paginator3.page(paginator3.num_pages)
 
-    return dict(links = links)
+    return dict(links=links)
 
 def cart_data(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    return dict(cartItems = cartItems)
+    return dict(cartItems=cartItems)
