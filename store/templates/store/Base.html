@@ -102,7 +102,7 @@
 
                         <ul class="top-menu">
                             <li>
-                                <a>Account</a>
+                                <p>Account</p>
                                 <ul>
 									
 									{% if user.is_authenticated %}
@@ -348,6 +348,9 @@
                                 <a href="{% url 'store_app:orders' %}">Orders</a>
                             </li>
                             {% endif %}
+                            <li>
+                                <a href="{% url 'store_app:faq' %}">Questions</a>
+                            </li>
                             <li>
                                 <a href="{% url 'store_app:account_info' %}">Account</a>
                             </li>
