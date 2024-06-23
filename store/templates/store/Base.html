@@ -238,10 +238,9 @@
                     <div class="row">
                         <div class="col-sm-6 col-lg-3">
                             <div class="widget widget-about">
-                                <img src="{% static 'assets/images/demos/demo-4/logo-footer.png' %}" class="footer-logo"
-                                    alt="Footer Logo" width="105" height="25">
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
-                                    magna eros eu erat. </p>
+                                <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                                <p>Welcome to our online store, where we offer a wide variety of guppies and bettas for your aquarium. Enjoy your shopping experience!</p>
+                                
 
                             </div><!-- End .widget about-widget -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
@@ -254,21 +253,42 @@
                                 <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
                             </div>
 
-                        </div>  
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+                        </div> 
 
-                                <ul class="widget-list">
-                                    <li><a href="#">About me</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="{% url 'store_app:allProductListing' %}">Shipping</a></li>
-                                    <li><a href="{% url 'store_app:faq' %}">FAQ</a></li>
-                                    <li><a href="{% url 'store_app:about' %}">Contact us</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="widget">
+                                            <h4 class="widget-title">Quick Links</h4>
+                                            <ul class="widget-list">
+                                                <li><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                                                <li><a href="{% url 'store_app:cart' %}">Cart</a></li>
+                                                <li><a href="{% url 'store_app:allProductListing' %}">shopping</a></li>
+                                                <li><a href="{% url 'store_app:contact' %}">Contact</a></li>
+                                                <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="widget">
+                                            <h4 class="widget-title">My Account</h4>
+                                            <ul class="widget-list">
+                                                <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
+                                                <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
+                                                <li><a href="#">Shipping</a></li>
+                                                <li><a href="#">My Orders</a></li>
+                                                <li><a href="{% url 'store_app:account_info' %}">My Account</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            <div>
+                        </div>
+                        
                     </div><!-- End .row -->
                 </div><!-- End .container -->
             </div><!-- End .footer-middle -->
