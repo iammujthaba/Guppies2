@@ -46,10 +46,10 @@ class Product(models.Model):
     new = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateField(auto_now=True)
-
+    
     def get_url(self):
         return reverse('store_app:proDetail', args=[self.category.slug, self.slug])
-
+    
     def get_discounted_price(self):
         if self.old_price and self.new_price:
             diff = self.old_price - self.new_price
@@ -57,15 +57,15 @@ class Product(models.Model):
             percentage = int(round(discount_percentage))
             return dict(percentage=percentage, diff=diff)
         return None
-
+    
     class Meta:
         ordering = ('name',)
         verbose_name = 'product'
         verbose_name_plural = 'products'
-
+    
     def __str__(self):
         return self.name
-
+    
     @property
     def imageURL(self):
         try:
@@ -73,7 +73,6 @@ class Product(models.Model):
         except:
             url = ''
         return url
-
 
 class Order(models.Model):
     STATUS_CHOICES = [

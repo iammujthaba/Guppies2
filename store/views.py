@@ -79,12 +79,15 @@ def updateItem(request):
     productId = data['productId']
     action = data['action']
     currentQuantity = data.get('currentQuantity', None)
+    
     customer = request.user.customer
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+    
     added = True
     message = ""
+    
     if action == 'add':
         if currentQuantity is not None:
             if (orderItem.quantity + currentQuantity) <= product.stock:
@@ -102,34 +105,48 @@ def updateItem(request):
         orderItem.quantity -= 1
     elif action == 'remove-all':
         orderItem.delete()
+    
     orderItem.save()
+    
     if orderItem.quantity <= 0:
         orderItem.delete()
+    
     return JsonResponse({'added': added, 'message': message}, safe=False)
 
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
+    
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         total = data['shipping']['total']
         order.transaction_id = transaction_id
+        
         if total == str(order.get_cart_total):
             order.complete = True
             order.save()
-            # Save purchase history for items in the order
+            
+            # Decrement stock for each product in the order
             for item in order.orderitem_set.all():
                 if item.price_at_purchase is None:
                     item.price_at_purchase = item.product.new_price
                 item.save()
+                
+                # Decrement product stock
+                product = item.product
+                product.stock -= item.quantity
+                product.save()
+                
+                # Record purchase history
                 PurchaseHistory.objects.create(
                     customer=customer,
-                    product=item.product,
+                    product=product,
                     price_at_purchase=item.price_at_purchase
                 )
-            # Save new shipping information
+                
+            # Save shipping address
             ShippingAddress.objects.create(
                 customer=customer,
                 order=order,
@@ -141,13 +158,13 @@ def processOrder(request):
                 zipcode=data['shipping']['zipcode'],
                 date_added=timezone.now()
             )
-
+            
             success = True
             message = "Transaction completed, \nYour order placed successfully..."
         else:
             success = False
             message = "Something went wrong! \nOrder not placed, For more contact us."
-
+        
         return JsonResponse({'success': success, 'message': message}, safe=False)
 
 # def proDetail(request, c_slug, product_slug):

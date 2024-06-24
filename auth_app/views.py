@@ -28,22 +28,22 @@ def merge_cookie_cart_with_user_cart(request, user):
                 try:
                     order_item = OrderItem.objects.get(order=order, product=product)
 
-                    if product.available and product.stock >= (quantity + order_item.quantity):
+                    if product.active and product.stock >= (quantity + order_item.quantity):
                         order_item.quantity += quantity
                         order_item.save()
                         success_messages.add("Your Cookies Cart items added into your Cart.")
                     else:
-                        if not product.available:
+                        if not product.active:
                             info_messages.add(f"The product {product.name} is no longer available.")
                         if product.stock < (quantity + order_item.quantity):
                             info_messages.add(f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity + order_item.quantity}")
 
                 except OrderItem.DoesNotExist:
-                    if product.available and product.stock >= quantity:
+                    if product.active and product.stock >= quantity:
                         OrderItem.objects.create(order=order, product=product, quantity=quantity)
                         success_messages.add("Your Cookies Cart items added into your Cart.")
                     else:
-                        if not product.available:
+                        if not product.active:
                             info_messages.add(f"The product {product.name} is no longer available.")
                         if product.stock < quantity:
                             info_messages.add(f"The product {product.name} does not have enough stock. Available stock: {product.stock}, Requested quantity: {quantity}")
