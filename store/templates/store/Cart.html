@@ -32,16 +32,12 @@
 			<div class="col-md-6">
 				<div class="card border rounded shadow-sm">
 					<div class="card-header m-3">
-						{#{{ cart_item.product.get_url }}#}
 						<a href="{{cart_item.product.get_url}}">
 							<div class="d-flex align-items-center">
-								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
-									class="img-fluid" style="width: 50px;">
+								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}" class="img-fluid" style="width: 50px;">
 								<div class="ms-3 ml-3">
 									<div>{{ cart_item.product.name }}</div>
-									<div
-										class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %}
-												{% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
+									<div class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %} {% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
 										{% if cart_item.product.active and cart_item.product.stock > 0 %}
 										In Stock
 										{% else %}
@@ -53,49 +49,20 @@
 						</a>
 					</div>
 					<div class="card-body">
-
-
 						<div class="d-flex flex-row justify-content-between">
-
-
 							<div class="details-filter-row details-row-size">
 								<label for="qty">Pair:</label>
 								<div class="product-details-quantity">
-									{#{% if cart_item.quantity < cart_item.product.stock %}#}
-
-										<div class="cart-item-counter">
-
-											<button data-product="{{cart_item.product.id}}" data-action="remove"
-												class="cart-decrement chg-quantity update-cart">-</button>
-
-											<input id="cart-quantity" class="cart-quantity"
-												value="{{ cart_item.quantity }}">
-
-											<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" data-action="add" 
-												class="cart-increment chg-quantity update-cart">+</button>
-										</div>
+									<div class="cart-item-counter">
+										<button data-product="{{cart_item.product.id}}" data-action="remove" class="cart-decrement chg-quantity update-cart">-</button>
+										<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
+										<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" data-action="add" class="cart-increment chg-quantity update-cart">+</button>
+									</div>
 								</div>
-
-								{#{% else %}#}
-								<!-- <div class="cart-item-counter">
-									{#{% url 'cart_app:cart_remove' cart_item.product.id %}#}
-									<a href="#">
-										<button class="cart-decrement" onclick="decrementQuantity()">-</button>
-									</a>
-									{#{{ cart_item.quantity }}#}
-									<input id="cart-quantity" class="cart-quantity" value="#">
-									{#{% url 'cart_app:add_cart' cart_item.product.id %}#}
-									<a href="#">
-										<button onclick="displayPopupMessage('There is no more stock available. If you want more, please contact us')" class="cart-increment">+</button>
-									</a>
-								</div> -->
-								{#{% endif %}#}
 							</div><!-- End .product-details-quantity -->
 						</div><!-- End .details-filter-row -->
-
-
-						<div class="details-filter-row details-row-size" id="femail-options"
-							style="margin-left: 40px; display: none;">
+				
+						<div class="details-filter-row details-row-size" id="femail-options" style="margin-left: 40px; display: none;">
 							<label for="size">Femail:</label>
 							<div class="select-custom">
 								<select name="size" id="size" class="form-control">
@@ -106,19 +73,24 @@
 								</select>
 							</div><!-- End .select-custom -->
 						</div><!-- End .details-filter-row -->
-					</div><!-- End .d-flex -->
-
-
-
-
-					<div class="d-flex flex-row justify-content-between">
-						<div>Price: {{ cart_item.product.new_price }} ({{ cart_item.product.price_difference }})
+				
+						<div class="d-flex flex-row justify-content-between">
+							<div>Price: {{ cart_item.product.new_price }} ({{ cart_item.product.price_difference }})</div>
+							<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
 						</div>
-						<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
+				
+						<div class="d-flex flex-row justify-content-start">
+							<button type="button" class="btn btn-danger mt-2 update-cart remove-button" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
+						</div>
 					</div>
-					{#{% url 'cart_app:full_remove' cart_item.product.id %}#}
-					<button type="button" class="btn btn-danger mt-2 update-cart" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
 				</div>
+				
+				<style>
+					.remove-button {
+						width: 50%;
+					}
+				</style>
+				
 			</div>
 		{% endfor %}
 	</div>

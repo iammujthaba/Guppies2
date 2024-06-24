@@ -96,7 +96,7 @@
                             }
                         }
                     }'> -->
-                <div class="intro-slide" style="background-image: url('/static/assets/images/demos/demo-4/slider/slide-6.jpg');">
+                <div class="intro-slide" style="background-image: url('/static/assets/images/demos/demo-4/slider/slide-7.jpg');">
                     <div class="container intro-content">
                         <div class="row justify-content-end">
                             <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -549,8 +549,8 @@
                                     <div class="card-header" id="faqHeading-1">
                                         <div class="mb-0">
                                             <h5 class="faq-title" data-toggle="collapse" data-target="#faqCollapse-1"
-                                                data-aria-expanded="true" data-aria-controls="faqCollapse-1">
-                                                <span class="badge">1</span>What is Lorem Ipsum?
+                                                aria-expanded="true" aria-controls="faqCollapse-1">
+                                                <span class="badge">1</span> What is Lorem Ipsum?
                                             </h5>
                                         </div>
                                     </div>
@@ -560,7 +560,7 @@
                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                                 Lorem Ipsum has been the industry's standard dummy text ever since the
                                                 1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book. </p>
+                                                make a type specimen book.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -568,7 +568,7 @@
                                     <div class="card-header" id="faqHeading-2">
                                         <div class="mb-0">
                                             <h5 class="faq-title" data-toggle="collapse" data-target="#faqCollapse-2"
-                                                data-aria-expanded="false" data-aria-controls="faqCollapse-2">
+                                                aria-expanded="false" aria-controls="faqCollapse-2">
                                                 <span class="badge">2</span> Where does it come from?
                                             </h5>
                                         </div>
@@ -586,8 +586,8 @@
                                     <div class="card-header" id="faqHeading-3">
                                         <div class="mb-0">
                                             <h5 class="faq-title" data-toggle="collapse" data-target="#faqCollapse-3"
-                                                data-aria-expanded="false" data-aria-controls="faqCollapse-3">
-                                                <span class="badge">3</span>Why do we use it?
+                                                aria-expanded="false" aria-controls="faqCollapse-3">
+                                                <span class="badge">3</span> Why do we use it?
                                             </h5>
                                         </div>
                                     </div>
@@ -597,7 +597,7 @@
                                             <p>It is a long established fact that a reader will be distracted by the
                                                 readable content of a page when looking at its layout. The point of using
                                                 Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-                                                opposed to using 'Content here, content here.</p>
+                                                opposed to using 'Content here, content here.'</p>
                                         </div>
                                     </div>
                                 </div>
@@ -605,7 +605,7 @@
                                     <div class="card-header" id="faqHeading-4">
                                         <div class="mb-0">
                                             <h5 class="faq-title" data-toggle="collapse" data-target="#faqCollapse-4"
-                                                data-aria-expanded="false" data-aria-controls="faqCollapse-4">
+                                                aria-expanded="false" aria-controls="faqCollapse-4">
                                                 <span class="badge">4</span> Where can I get some?
                                             </h5>
                                         </div>
@@ -619,8 +619,8 @@
                                         </div>
                                     </div>
                                 </div>
-    
                             </div>
+                            
                             <div class="col-md-12">
     
                                 <div class="text-center pt-3 pb-3">
@@ -727,6 +727,29 @@
     </div>
 
     {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle click on FAQ titles
+        $('.faq-title').on('click', function(event) {
+            var target = $(this).data('target');
+            $(target).collapse('toggle');
+            event.stopPropagation();
+        });
+
+        // Handle click on the document to collapse all FAQ items
+        $(document).on('click', function() {
+            $('.collapse.show').collapse('hide');
+        });
+
+        // Prevent event propagation for FAQ items
+        $('.card').on('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+</script>
+
 
 {% endblock %}
 
