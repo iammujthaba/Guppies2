@@ -147,9 +147,7 @@
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
-                        <button class="mobile-menu-toggler" style="
-    margin-left: 0px;
-    margin-right: 0px;">
+                        <button class="mobile-menu-toggler" style="margin-left: 0px;margin-right: 0px;">
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
@@ -178,10 +176,16 @@
                     </div>
 
                     <div class="header-right">
-
+                        <div class="wishlist">
+                            <a href="wishlist.html" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count badge">3</span>
+                                </div>
+                                <p>Wishlist</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
                         <div class="dropdown cart-dropdown">
-
-                            
                             <a href="{% url 'store_app:cart' %}" class="dropdown-toggle">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
@@ -190,15 +194,14 @@
                                     {#{% endif %}#}
                                 </div>
                                 <p>Cart</p>
-                            </a>
-        
-
-                            
+                            </a> 
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
-            </div><!-- End .header-middle -->
 
+                
+            </div><!-- End .header-middle -->
+                
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-center">
