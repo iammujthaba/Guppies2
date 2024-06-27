@@ -86,17 +86,29 @@
 	</script>
 
 <style>
-#account-menu {
-    display: none;
-    transition: max-height 0.3s ease-out;
-    overflow: hidden;
-    max-height: 0;
-}
+    #account-menu {
+        display: none;
+        transition: max-height 0.3s ease-out;
+        overflow: hidden;
+        max-height: 0;
+    }
 
-#account-menu.show {
-    display: block;
-    max-height: 200px; /* Adjust based on content height */
-}
+    #account-menu.show {
+        display: block;
+        max-height: 200px; /* Adjust based on content height */
+    }
+
+    /* Media queries for larger screens */
+    @media (min-width: 990px) {
+        #account-menu {
+            display:inline-flex;
+            max-height: none;
+        }
+
+        #account-toggle {
+            cursor: pointer;
+        }
+    }
 </style>
 
 </head>
@@ -113,7 +125,7 @@
                 <div class="header-right">
                     <ul class="top-menu" id="account-toggle">
                         <li>
-                            <p>Account</p>
+                            <p id="account-toggle">Account</p>
                             <ul id="account-menu">
                                 {% if user.is_authenticated %}
                                     <li><a href="{% url 'store_app:account_info' %}">{{user.username}}</a></li>
@@ -586,15 +598,16 @@
         });
     </script>
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-      var accountToggle = document.getElementById('account-toggle');
-      var accountMenu = document.getElementById('account-menu');
+        document.addEventListener('DOMContentLoaded', function () {
+            var accountToggle = document.getElementById('account-toggle');
+            var accountMenu = document.getElementById('account-menu');
 
-      accountToggle.addEventListener('click', function () {
-          accountMenu.classList.toggle('show');
-    });
-});
-
+            accountToggle.addEventListener('click', function () {
+                if (window.innerWidth < 768) {
+                    accountMenu.classList.toggle('show');
+                }
+            });
+        });
     </script>
 <!-- --------------------------------------------------------------------------------- -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
