@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <!-- for base.html body condent -->
-
+<link rel="stylesheet" href="{% static 'assets/css/style/catogory.css' %}">
 <style>
     .popup-message-container {
         position: fixed;
@@ -272,7 +272,7 @@
                                             <h5 class="card-title cart-heading">{{ product.name }}</h3>
 
                                                 <h6 class="pricing">
-                                                    {% if product.old_price == 0 %}
+                                                    {% if product.old_price <= 0 or product.old_price == None %}
                                                     <span style="color: rgb(199, 0, 85);">Only few left</span><br>
                                                     {% else %}
                                                     <s>Rs {{product.old_price}}</s></span><br>
@@ -642,7 +642,7 @@
     <!-- tis following "for" loop work all time, even its "if" or "else" condition trigerd in view.py function  -->
 
     {% if category %}
-    <div>
+    <div class="container">
         <div class="products">
             <div class="row justify-content-center">
                 {% if products.object_list %}
@@ -694,9 +694,14 @@
                                     <div class="m-3">
                                         <h5 class="card-title cart-heading">{{ product.name }}</h3>
 
+
                                             <h6 class="pricing">
+                                                {% if product.old_price <= 0 or product.old_price == None %}
+                                                <span style="color: rgb(199, 0, 85);">Only few left</span><br>
+                                                {% else %}
                                                 <s>Rs {{product.old_price}}</s></span><br>
-                                                <strong class="ms-2 text-danger">Rs {{ product.new_price }}</strong><i>/Pair</i>
+                                                {% endif %}
+                                                <strong class="ms-2 text-success">Rs {{ product.new_price }}</strong><i>/Pair</i>
                                             </h6>
 
                                     </div>

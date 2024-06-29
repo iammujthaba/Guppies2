@@ -11,6 +11,8 @@
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/style/search.css' %}">
+
 <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumb-nav border-0">
     <div class="container">
@@ -81,7 +83,7 @@
                                             <h5 class="card-title cart-heading">{{ product.name }}</h3>
 
                                                 <h6 class="pricing">
-                                                    {% if product.old_price == 0 %}
+                                                    {% if product.old_price <= 0 or product.old_price == None %}
                                                     <span style="color: rgb(199, 0, 85);">Only few left</span><br>
                                                     {% else %}
                                                     <s>Rs {{product.old_price}}</s></span><br>
