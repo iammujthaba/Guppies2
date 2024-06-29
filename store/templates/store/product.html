@@ -22,114 +22,232 @@
                     <div class="col-xl-10">
                         <div class="product-details-top">
                             <div class="row">
+                                
                                 <div class="col-md-6 col-lg-7">
                                     <div class="product-gallery">
                                         <figure class="product-main-image">
                                             {% if product.new == True %}
-                                            <span class="product-sale-label">NEW</span>
+                                                <span class="product-sale-label">NEW</span>
                                             {% endif %}
-                                    
                                             {% if product.get_discounted_price %}
-                                            <span class="product-discount-label">{{ product.get_discounted_price.percentage }}%</span>
+                                                <span class="product-discount-label">{{ product.get_discounted_price.percentage }}%</span>
                                             {% endif %}
                                             <div id="product-zoom-container">
                                                 <img id="product-zoom" src="{{ product.image_1.url }}" alt="product image">
                                             </div>
                                         </figure><!-- End .product-main-image -->
-                                    
+                                
                                         <div id="product-zoom-gallery" class="product-image-gallery max-col-6">
-                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_1.url }}">
+                                            <a class="product-gallery-item active" href="#" data-type="image" data-url="{{ product.image_1.url }}">
                                                 <img src="{{ product.image_1.url }}" alt="product side">
                                             </a>
-                                            
                                             {% if product.image_2 %}
-                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_2.url }}">
-                                                <img src="{{ product.image_2.url }}" alt="product cross">
-                                            </a>
+                                                <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_2.url }}">
+                                                    <img src="{{ product.image_2.url }}" alt="product cross">
+                                                </a>
                                             {% endif %}
+                                            <style>
+                                                /* ... (previous styles) ... */
                                             
+                                                .video-item .video-thumbnail {
+                                                    position: relative;
+                                                    overflow: hidden;
+                                                    border-radius: 4px;
+                                                }
+                                            
+                                                .video-item .video-thumbnail img {
+                                                    width: 100%;
+                                                    height: auto;
+                                                    transition: transform 0.3s ease;
+                                                }
+                                            
+                                                .video-item .video-play-overlay {
+                                                    position: absolute;
+                                                    top: 0;
+                                                    left: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background-color: rgba(0, 0, 0, 0.4);
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    opacity: 0;
+                                                    transition: opacity 0.3s ease;
+                                                }
+                                            
+                                                .video-item .video-play-overlay i {
+                                                    font-size: 48px;
+                                                    color: #fff;
+                                                }
+                                            
+                                                .video-item:hover .video-thumbnail img {
+                                                    transform: scale(1.05);
+                                                }
+                                            
+                                                .video-item:hover .video-play-overlay {
+                                                    opacity: 1;
+                                                }
+                                            
+                                                /* Styles for when video is active in main view */
+                                                .product-main-image .responsive-video {
+                                                    position: relative;
+                                                    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+                                                    height: 0;
+                                                    overflow: hidden;
+                                                }
+                                            
+                                                .product-main-image .responsive-video iframe {
+                                                    position: absolute;
+                                                    top: 0;
+                                                    left: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                }
+                                            </style>
                                             {% if product.video_url %}
-                                            <a class="product-gallery-item" href="#" data-type="video" data-url="https://www.youtube.com/embed/{{ product.video_url|youtube_id }}">
-                                                <img src="{% static 'assets/images/demos/demo-4/vid.jpg' %}" alt="product video">
+                                            <a class="product-gallery-item video-item" href="#" data-type="video" data-url="https://www.youtube.com/embed/{{ product.video_url|youtube_id }}">
+                                                <div class="video-thumbnail">
+                                                    <img src="https://img.youtube.com/vi/{{ product.video_url|youtube_id }}/mqdefault.jpg" alt="product video">
+                                                    <div class="video-play-overlay">
+                                                        <i class="icon-play-circle"></i>
+                                                    </div>
+                                                </div>
                                             </a>
-                                            {% endif %}
-                                            
+                                        {% endif %}
                                             {% if product.image_3 %}
-                                            <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_3.url }}">
-                                                <img src="{{ product.image_3.url }}" alt="product with model">
-                                            </a>
+                                                <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_3.url }}">
+                                                    <img src="{{ product.image_3.url }}" alt="product with model">
+                                                </a>
                                             {% endif %}
-                                        </div>
+                                        </div><!-- End .product-image-gallery -->
                                         
-                                        <!-- End .product-image-gallery -->
-                                    </div>
-                                    
-                                    <!-- End .product-gallery -->
+                                        <div class="carousel-indicators"></div>
+                                    </div><!-- End .product-gallery -->
+                                
                                     <style>
-/* Styles for the main image */
-.product-main-image {
-    width: 100%;
-}
-
-/* Styles for the video to make it responsive */
-.responsive-video {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-}
-
-.responsive-video iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Additional styles for the gallery layout */
-.product-image-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Add some space between items */
-}
-
-.product-gallery-item {
-    flex: 1 1 calc(33.33% - 20px); /* Adjust width and margins */
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+                                        /* Your existing styles here */
+                                
+                                        /* Modified styles for carousel indicators */
+                                        .product-gallery {
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        .carousel-indicators {
+                                            position: absolute;
+                                            bottom: 80px;
+                                            left: 50%;
+                                            transform: translateX(-50%);
+                                            display: flex !important;
+                                            justify-content: center;
+                                            padding: 0;
+                                            margin: 0;
+                                            z-index: 10;
+                                            list-style: none;
+                                        }
+                                        .carousel-indicators button {
+                                            width: 12px;
+                                            height: 12px;
+                                            border-radius: 50%;
+                                            border: none;
+                                            background-color: rgba(255, 255, 255, 0.5);
+                                            margin: 0 5px;
+                                            padding: 0;
+                                            cursor: pointer;
+                                        }
+                                        .carousel-indicators button.active {
+                                            background-color: rgb(255, 255, 255);
+                                        }
                                     </style>
+                                
                                     <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-    const galleryItems = document.querySelectorAll('.product-gallery-item');
-    const productZoomContainer = document.getElementById('product-zoom-container');
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const galleryItems = document.querySelectorAll('.product-gallery-item');
+                                        const productZoomContainer = document.getElementById('product-zoom-container');
+                                        const carouselIndicators = document.querySelector('.carousel-indicators');
+                                        let currentIndex = 0;
+                                
+                                        function createIndicators() {
+                                            carouselIndicators.innerHTML = '';
+                                            galleryItems.forEach((_, index) => {
+                                                const indicator = document.createElement('button');
+                                                indicator.setAttribute('type', 'button');
+                                                indicator.addEventListener('click', () => updateGallery(index));
+                                                carouselIndicators.appendChild(indicator);
+                                            });
+                                        }
+                                
+                                        function updateGallery(index) {
+    const item = galleryItems[index];
+    const type = item.getAttribute('data-type');
+    const url = item.getAttribute('data-url');
 
-    galleryItems.forEach(item => {
-        item.addEventListener('click', function(event) {
-            event.preventDefault();
+    if (type === 'image') {
+        productZoomContainer.innerHTML = `<img id="product-zoom" src="${url}" alt="product image">`;
+        productZoomContainer.classList.remove('responsive-video');
+    } else if (type === 'video') {
+        productZoomContainer.innerHTML = `
+            <div class="responsive-video">
+                <iframe src="${url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>`;
+        productZoomContainer.classList.add('responsive-video');
+    }
 
-            const type = this.getAttribute('data-type');
-            const url = this.getAttribute('data-url');
+    galleryItems.forEach(item => item.classList.remove('active'));
+    item.classList.add('active');
 
-            if (type === 'image') {
-                productZoomContainer.innerHTML = `<img id="product-zoom" src="${url}" alt="product image">`;
-                productZoomContainer.classList.remove('responsive-video');
-            } else if (type === 'video') {
-                productZoomContainer.innerHTML = `<iframe src="${url}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-                productZoomContainer.classList.add('responsive-video');
-            }
-        });
-    });
-});
-
+    updateIndicators(index);
+}
+                                
+                                        function updateIndicators(activeIndex) {
+                                            const indicators = carouselIndicators.querySelectorAll('button');
+                                            indicators.forEach((indicator, index) => {
+                                                indicator.classList.toggle('active', index === activeIndex);
+                                            });
+                                        }
+                                
+                                        function navigate(direction) {
+                                            currentIndex += direction;
+                                            if (currentIndex < 0) currentIndex = galleryItems.length - 1;
+                                            if (currentIndex >= galleryItems.length) currentIndex = 0;
+                                            updateGallery(currentIndex);
+                                        }
+                                
+                                        galleryItems.forEach((item, index) => {
+                                            item.addEventListener('click', function(event) {
+                                                event.preventDefault();
+                                                currentIndex = index;
+                                                updateGallery(currentIndex);
+                                            });
+                                        });
+                                
+                                        // Add touch swipe functionality
+                                        let touchStartX = 0;
+                                        let touchEndX = 0;
+                                
+                                        productZoomContainer.addEventListener('touchstart', e => {
+                                            touchStartX = e.changedTouches[0].screenX;
+                                        });
+                                
+                                        productZoomContainer.addEventListener('touchend', e => {
+                                            touchEndX = e.changedTouches[0].screenX;
+                                            handleSwipe();
+                                        });
+                                
+                                        function handleSwipe() {
+                                            if (touchEndX < touchStartX) navigate(1); // Swipe left
+                                            if (touchEndX > touchStartX) navigate(-1); // Swipe right
+                                        }
+                                
+                                        // Create indicators
+                                        createIndicators();
+                                
+                                        // Initialize the first image and indicators
+                                        updateGallery(0);
+                                    });
                                     </script>
-                                                                        
                                 </div><!-- End .col-lg-7 -->
-    
+                                
+                                
                                 <div class="col-md-6 col-lg-5">
                                     <div class="product-details">
                                         <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
