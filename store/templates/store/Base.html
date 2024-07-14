@@ -122,7 +122,7 @@
           <div class="header-top">
             <div class="container">
                 <div class="header-left">
-                    <a href="tel:#"><i class="icon-phone"></i>Call: +91 8667377338</a>
+                    <a href="tel:#"><i class="icon-phone"></i>Call: +91 7025962175</a>
                 </div><!-- End .header-left -->
         
                 <div class="header-right">
@@ -150,14 +150,14 @@
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
-                        <button class="mobile-menu-toggler" style="margin-left: 0px;margin-right: 0px;">
+                        <button class="mobile-menu-toggler" style="margin-left: 0px;margin-right: 0px; font-weight: bolder;">
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
 						{#{% url 'ecommerce_app:allProdCat' %}#}
                         <a href="{% url 'store_app:allProdCat' %}" class="logo">
                             <!-- logo -->
-                            <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" alt="Molla Logo" width="180" height="25">
+                            <img src="{% static 'assets/images/demos/demo-4/dd.png' %}" alt="Molla Logo" width="150" height="25">
                         </a>
 
                     </div><!-- End .header-left -->
@@ -187,7 +187,7 @@
                                 </div>
                                 <p>Wishlist</p>
                             </a>
-                        </div><!-- End .compare-dropdown -->
+                        </div>
                         <div class="dropdown cart-dropdown">
                             <a href="{% url 'store_app:cart' %}" class="dropdown-toggle">
                                 <div class="icon">
@@ -203,6 +203,80 @@
                 </div><!-- End .container -->
 
                 
+
+                <style>
+                    .mobile-search-container {
+  width: 100%;
+  padding: 10px;
+  padding-top: 0px;
+}
+
+.mobile-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper {
+  display: flex;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.mobile-search-input {
+  flex-grow: 1;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+}
+
+.mobile-search-button {
+  background: #3498db;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+
+    border: 0;
+
+    color: #fff;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+                </style>
+                <div class="mobile-search-container">
+                    <form class="mobile-search-form" action="{% url 'search_app:SearchResult' %}" method="get">
+                    {% csrf_token %}
+                      <div class="search-input-wrapper">
+                        <label for="mobile-search" class="sr-only">Search</label>
+                        <input 
+                          type="search" 
+                          name="q" 
+                          id="q"
+                          placeholder="Search..." 
+                          class="mobile-search-input" 
+                          autocomplete="off"
+                          required
+                        >
+                        <a href="{% url 'search_app:SearchResult' %}"></a>
+                            <button type="submit" class="mobile-search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </a>
+                      </div>
+                      <input type="hidden" name="post_type" value="product">
+                    </form>
+                  </div>
+
+
+
             </div><!-- End .header-middle -->
                 
             <div class="header-bottom sticky-header">
@@ -350,7 +424,7 @@
             <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
 			{#{% url 'search_app:SearchResult' %}#}
-            <form action="{% url 'search_app:SearchResult' %}" method="get" class="mobile-search">
+            <!-- <form action="{% url 'search_app:SearchResult' %}" method="get" class="mobile-search">
                 {% csrf_token %}
 
                 <label for="mobile-search" class="sr-only">Search</label>
@@ -359,7 +433,7 @@
                 <a href="{% url 'search_app:SearchResult' %}">
                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </a>
-            </form>
+            </form> -->
 
             <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
                 <li class="nav-item">
