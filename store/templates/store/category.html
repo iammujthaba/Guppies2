@@ -84,52 +84,11 @@
 
 
         <main class="main">
-            <div class="intro-slider-container mb-5">
-                <!--  <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
-                    data-owl-options='{
-                        "dots": true,
-                        "nav": false, 
-                        "responsive": {
-                            "1200": {
-                                "nav": true,
-                                "dots": false
-                            }
-                        }
-                    }'> -->
-                <div class="intro-slide" style="background-image: url('/static/assets/images/demos/demo-4/slider/slide-7.jpg');">
-                    <div class="container intro-content">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-
-                                <div class="intro-price">
-                                    <span class="text-third">
-                                        1200+
-                                    </span>
-                                </div><!-- End .intro-price -->
-                                <h3 class="text-third" style="font-family: Roboto, sans-serif; color:#e2e2e2;">Happy
-                                    Customer</h3>
-                                <!-- End .h3 intro-subtitle -->
-                                <div class="intro-price">
-                                    <span class="text-third">
-                                        5+ Year
-                                    </span>
-                                </div><!-- End .intro-price -->
-                                <h3 class="text-third" style="font-family: Roboto, sans-serif; color:#e2e2e2;">
-                                    Experience</h3>
-                                <!-- End .h3 intro-subtitle -->
-                                    {#{% url 'store_app:allProductListing' %}#}
-                                <a href="{% url 'store_app:allProductListing' %}" class="btn btn-primary btn-round">
-                                    <span>Shop Now</span>
-                                    <i class="icon-long-arrow-right"></i>
-                                </a>
-                            </div><!-- End .col-lg-11 offset-lg-1 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .intro-content -->
-                </div><!-- End .intro-slide -->
-
-                <!-- <span class="slider-loader"></span>End .slider-loader -->
-            </div><!-- End .intro-slider-container -->
-
+            <div class="intro-slider-container mb-2">
+                <div class="intro-slide">
+                    <img src="/static/assets/images/demos/demo-4/slider/admin1.png" alt="Intro Banner" class="intro-image">
+                </div> 
+            </div>
 
             <style>
                 .cat-block {
@@ -166,9 +125,28 @@
     margin: 0;
 }
 
+
+.intro-slider-container {
+    margin-bottom: 1rem;
+    padding: 0 15px;
+}
+
+.intro-slide {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+}
+
+.intro-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
             </style>
             <div class="container">
-                <h2 class="title text-center mb-4">Explore Categories</h2><!-- End .title text-center -->
+                <h2 class="title text-center mb-2">Explore Categories</h2><!-- End .title text-center -->
             
                 <div class="cat-blocks-container">
                     <div class="row justify-content-center">
@@ -197,10 +175,10 @@
                         </div><!-- End .col -->
                         {% endfor %}
 
-                        <a href="{% url 'store_app:category_list' %}" class="btn btn-primary btn-round mt-2 mb-1">
+                        <!-- <a href="{% url 'store_app:category_list' %}" class="btn btn-primary btn-round mt-2 mb-1">
                             <span>Explore More</span>
                             <i class="icon-long-arrow-right"></i>
-                        </a>
+                        </a> -->
             
                     </div><!-- End .row -->
                 </div><!-- End .cat-blocks-container -->

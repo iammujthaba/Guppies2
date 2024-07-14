@@ -20,7 +20,7 @@ def allProdCat(request, c_slug=None):
     else:
         products_list = Product.objects.all().filter(active=True, stock__gt=0)
 
-    offer_list = Product.objects.filter(old_price__gt=0)
+    offer_list = Product.objects.filter(active=True, old_price__gt=0)
 
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
