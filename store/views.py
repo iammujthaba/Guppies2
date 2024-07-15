@@ -98,19 +98,19 @@ def updateItem(request):
         else:
             if orderItem.quantity < product.stock:
                 orderItem.quantity += 1
+                orderItem.save()
             else:
                 added = False
                 message = "There is no more stock available. If you want more, please contact us."
     elif action == 'remove':
         orderItem.quantity -= 1
+        orderItem.save()
     elif action == 'remove-all':
         orderItem.delete()
     
-    orderItem.save()
-    
     if orderItem.quantity <= 0:
         orderItem.delete()
-    
+        
     return JsonResponse({'added': added, 'message': message}, safe=False)
 
 
