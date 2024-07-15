@@ -86,7 +86,8 @@ def merge_cookie_cart_with_user_cart(request, user):
         except Order.DoesNotExist:
             messages.info(request, "Your cart is empty.")
 
-        return redirect('/')
+        return None
+
 
 # Add the merge_cookie_cart_with_user_cart function call in your login view
 def login(request):
@@ -106,6 +107,11 @@ def login(request):
                     # Authenticate the user
                     user = customer.user
                     auth_login(request, user)
+                    
+                    # Merge cookies cart with user cart
+                    response = merge_cookie_cart_with_user_cart(request, user)
+                    if response:
+                        return response
                     return redirect('/')
                 except Customer.DoesNotExist:
                     form.add_error('contact_number', 'Contact number not found')
@@ -141,6 +147,15 @@ def register(request):
 
             user = User.objects.create_user(username=username)
             Customer.objects.create(user=user, name=username, contact_number=contact_number)
+            
+            # Log in the newly registered user
+            auth_login(request, user)
+            
+            # Merge cookies cart with user cart
+            response = merge_cookie_cart_with_user_cart(request, user)
+            if response:
+                return response
+
             return redirect('auth_app:login')
         else:
             for error in form.errors.values():
