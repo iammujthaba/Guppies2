@@ -1,9 +1,16 @@
+from django import forms
 from django.contrib import messages,auth
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 
 from store.models import Product, Order, OrderItem, Customer
+from .forms import RegistrationForm, LoginForm, SuperuserPasswordForm
+from django.contrib.auth import authenticate, login as auth_login
 import json
+
+
+SUPERUSER_CONTACT_NUMBER = '1234567890'
+PREDEFINED_SUPERUSER_PASSWORD = '1234'
 
 # Create your views here.
 def merge_cookie_cart_with_user_cart(request, user):
@@ -84,57 +91,68 @@ def merge_cookie_cart_with_user_cart(request, user):
 # Add the merge_cookie_cart_with_user_cart function call in your login view
 def login(request):
     if request.method == 'POST':
-        login_input = request.POST['login_input']
-        password = request.POST['password']
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            contact_number = form.cleaned_data['contact_number']
 
-        if User.objects.filter(email=login_input).exists():
-            user = User.objects.get(email=login_input)
-            username = user.username
-        else:
-            username = login_input
+            # Check if the contact number is the superuser's contact number
+            if contact_number == SUPERUSER_CONTACT_NUMBER:
+                # Redirect to the superuser password entry page
+                return redirect('auth_app:superuser_password')
+            else:
+                # Check if the contact number exists in the database
+                try:
+                    customer = Customer.objects.get(contact_number=contact_number)
+                    # Authenticate the user
+                    user = customer.user
+                    auth_login(request, user)
+                    return redirect('/')
+                except Customer.DoesNotExist:
+                    form.add_error('contact_number', 'Contact number not found')
+    else:
+        form = LoginForm()
 
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            if user and user.is_superuser:
-                auth.login(request, user)
-                return redirect('admin_app:dashboard')
-            auth.login(request, user)
-            response = merge_cookie_cart_with_user_cart(request, user)
-            return response
-        else:
-            messages.info(request, 'Invalid credentials')
-            return redirect('auth_app:login')
+    return render(request, 'login.html', {'form': form})
 
-    return render(request, 'login.html')
-    
+def superuser_password(request):
+    if request.method == 'POST':
+        form = SuperuserPasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password']
+
+            if password == PREDEFINED_SUPERUSER_PASSWORD:
+                # Authenticate superuser
+                superuser = Customer.objects.get(contact_number=SUPERUSER_CONTACT_NUMBER).user
+                auth_login(request, superuser)
+                return redirect('/')
+            else:
+                form.add_error('password', 'Incorrect superuser password')
+    else:
+        form = SuperuserPasswordForm()
+
+    return render(request, 'superuser_password.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password1']
-        c_password = request.POST['password2']
-        if password == c_password:
-            if User.objects.filter(username = username).exists():
-                messages.info(request,'Username is already taken')
-            elif User.objects.filter(email = email).exists():
-                messages.info(request,'E-mail is already taken')
-            else:
-                user = User.objects.create_user(username=username,email=email,password=password)
-                user.save()
-                Customer.objects.create(user=user,name=username,email=email)
-                print('user is created...')
-                return redirect('auth_app:login')
-                
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            contact_number = form.cleaned_data['contact_number']
+
+            user = User.objects.create_user(username=username)
+            Customer.objects.create(user=user, name=username, contact_number=contact_number)
+            return redirect('auth_app:login')
         else:
-            messages.info(request,'Pssword is no\'t match')
+            for error in form.errors.values():
+                messages.error(request, error)
         return redirect('auth_app:register')
-    return render(request,'register.html')
+
+    form = RegistrationForm()
+    return render(request, 'register.html', {'form': form})
 
 def logout(request):
     auth.logout(request)
     return redirect('/')
 
 def loginOrRegister(request):
-    return redirect(request,'loginOrRegister.html')
-
+    return render(request, 'loginOrRegister.html')

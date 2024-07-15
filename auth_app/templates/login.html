@@ -12,12 +12,7 @@
         <h2>Login</h2>
         <form action="" method="post">
             {% csrf_token %}
-            <label for="login_input">Username or E-mail</label>
-            <input type="text" id="login_input" name="login_input" placeholder="Enter your Username or E-mail"><br>
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password"><br>
-            
+            {{ form.as_p }}
             <input type="submit" value="Login"><br>
         </form>
         <p class="register-link">Don't have an account? <a href="{% url 'auth_app:register' %}">Register here</a></p>

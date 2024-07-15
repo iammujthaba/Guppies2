@@ -72,7 +72,7 @@ def checkout(request):
         }
         return render(request, 'store/checkout.html', context)
     else:
-        return render(request, 'loginOrRegister.html')
+        return render(request, 'auth_app/loginOrRegister.html')
 
 def updateItem(request):
     data = json.loads(request.body)
@@ -196,7 +196,7 @@ def proDetail(request, c_slug, product_slug):
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
-        return render(request, 'loginOrRegister.html')
+        return render(request, 'auth_app/loginOrRegister.html')
         # raise Http404("Product does not exist")
 
     if c_slug:
