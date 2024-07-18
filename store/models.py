@@ -157,3 +157,11 @@ class PurchaseHistory(models.Model):
 
     def __str__(self):
         return f"{self.customer.name} - {self.product.name}"
+
+
+class IntroImage(models.Model):
+    image = models.ImageField(upload_to='intro_images/')
+    caption = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.caption if self.caption else "Intro Image"

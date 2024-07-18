@@ -19,6 +19,7 @@ def allProdCat(request, c_slug=None):
         products_list = Product.objects.all().filter(category=c_page, active=True, stock__gt=0)
     else:
         products_list = Product.objects.all().filter(active=True, stock__gt=0)
+        intro_images = IntroImage.objects.all()
 
     offer_list = Product.objects.filter(active=True, old_price__gt=0)
 
@@ -41,7 +42,8 @@ def allProdCat(request, c_slug=None):
             'message': message.message,
             'tags': message.tags
         })
-    return render(request, 'store/category.html', {'category': c_page, 'products': products, 'offer': offer, 'messages': message_list})
+        
+    return render(request, 'store/category.html', {'category': c_page, 'products': products, 'offer': offer, 'intro_images': intro_images, 'messages': message_list})
 
 def cart(request):
     data = cartData(request)

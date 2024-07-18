@@ -84,12 +84,44 @@
 
 
         <main class="main">
-            <div class="intro-slider-container mb-2">
-                <div class="intro-slide">
-                    <img src="/static/assets/images/demos/demo-4/slider/admin1.png" alt="Intro Banner" class="intro-image">
-                </div> 
+            <div class="intro-slider-container mt-2">
+                <div id="introCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for image in intro_images %}
+                            <li data-target="#introCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for image in intro_images %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="intro-image">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+            
+            <style>
+            .intro-slider-container {
+                margin-bottom: 1rem;
+                padding: 0 15px;
+            }
+            .intro-image {
+                width: 100%;
+                height: 165px;
+                display: block;
+                object-fit: cover;
+            }
+            .carousel-indicators {
+                position: absolute;
+                bottom: 10px;
+                left: 35%;
+                transform: translateX(-50%);
+            }
+            </style>
+            
 
+            
             <style>
                 .cat-block {
     background-color: #39f; 
@@ -193,7 +225,7 @@
             <div class="container for-you">
                 <div class="heading heading-flex mb-3">
                     <div class="justify-content-center">
-                        <h2 class="title">Guppies</h2><!-- End .title -->
+                        <h2 class="title">Course Packs</h2><!-- End .title -->
                     </div><!-- End .heading-left -->
                 </div><!-- End .heading -->
 
