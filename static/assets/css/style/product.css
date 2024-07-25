@@ -437,7 +437,7 @@ a {
 }
 
 .product.product-sm .product-title {
-    font-size: 1.4rem
+    font-size: 1.8rem
 }
 
 .product.product-sm .product-price {
@@ -445,7 +445,7 @@ a {
 }
 
 .product.product-sm .product-title {
-    margin-bottom: .2rem
+    margin-bottom: .5rem
 }
 
 .product.product-sm .product-price {
@@ -751,7 +751,7 @@ button:focus {
 
 .product-title {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 10px
 }
 
@@ -885,4 +885,15 @@ button:focus {
 
 .discount {
     font-size: 1.2rem;
+}
+
+.related-product-price{
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.related-product-publisher{
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: black;
 }

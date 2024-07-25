@@ -274,14 +274,21 @@
                                     </figure>
 
                                     <div class="product-body">
-                                        <h5 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a>
-                                        </h5>
+                                        <h3 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a></h3>
+                                        <h6 class="text-muted mb-0">JEE Exam preprestion book</h6>
+
+                                        <div class="related-product-publisher">DC Books</div>
+                                        <!-- New arriwel / best seller /  -->
+                                        <!-- <div>New arriwel</div> -->
+                                        
                                         <div class="product-price">
-                                            <span class="new-price">Rs {{ product.new_price }}</span>
-                                            {% if product.old_price == 0 %}
-                                            {% else %}
-                                            <span class="old-price"><s>Rs {{ product.old_price }}</s></span>
+                                            <span class="related-product-price">Rs {{ product.new_price }}</span>
+
+                                            {% if product.get_discounted_price %}
+                                            <span class="text-success mb-0 ml-2">{{ product.get_discounted_price.percentage }}% off</span>
                                             {% endif %}
+
+                                            
                                         </div>
                                     </div>
 
