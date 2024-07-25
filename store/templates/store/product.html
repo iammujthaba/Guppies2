@@ -2,170 +2,89 @@
 {% load static %}
 {% load video_tags %}
 
-<!-- for base.html body condent -->
 {% block content %}
 <link rel="stylesheet" href="{% static 'assets/css/style/product.css' %}">
 
-    <main class="main">
-        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
-            <div class="container-fluid d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
-                    <li class="breadcrumb-item">{{product.name}}</li>
-                </ol>
-            </div><!-- End .container-fluid -->
-        </nav><!-- End .breadcrumb-nav -->
-    
-        <div class="page-content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-10">
-                        <div class="product-details-top">
-                            <div class="row">
-                                
-                                <div class="col-md-6 col-lg-7">
-                                    <div class="product-gallery">
-                                        <figure class="product-main-image">
-                                            {% if product.new == True %}
-                                                <span class="product-sale-label">NEW</span>
-                                            {% endif %}
-                                            {% if product.get_discounted_price %}
-                                                <span class="product-discount-label">{{ product.get_discounted_price.percentage }}%</span>
-                                            {% endif %}
-                                            <div id="product-zoom-container">
-                                                <img id="product-zoom" src="{{ product.image_1.url }}" alt="product image">
-                                            </div>
-                                        </figure><!-- End .product-main-image -->
-                                
-                                        <div id="product-zoom-gallery" class="product-image-gallery max-col-6">
-                                            <a class="product-gallery-item active" href="#" data-type="image" data-url="{{ product.image_1.url }}">
-                                                <img src="{{ product.image_1.url }}" alt="product side">
-                                            </a>
-                                            {% if product.image_2 %}
-                                                <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_2.url }}">
-                                                    <img src="{{ product.image_2.url }}" alt="product cross">
-                                                </a>
-                                            {% endif %}
-                                            <style>
-                                                /* ... (previous styles) ... */
-                                            
-                                                .video-item .video-thumbnail {
-                                                    position: relative;
-                                                    overflow: hidden;
-                                                    border-radius: 4px;
-                                                }
-                                            
-                                                .video-item .video-thumbnail img {
-                                                    width: 100%;
-                                                    height: auto;
-                                                    transition: transform 0.3s ease;
-                                                }
-                                            
-                                                .video-item .video-play-overlay {
-                                                    position: absolute;
-                                                    top: 0;
-                                                    left: 0;
-                                                    width: 100%;
-                                                    height: 100%;
-                                                    background-color: rgba(0, 0, 0, 0.4);
-                                                    display: flex;
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                    opacity: 0;
-                                                    transition: opacity 0.3s ease;
-                                                }
-                                            
-                                                .video-item .video-play-overlay i {
-                                                    font-size: 48px;
-                                                    color: #fff;
-                                                }
-                                            
-                                                .video-item:hover .video-thumbnail img {
-                                                    transform: scale(1.05);
-                                                }
-                                            
-                                                .video-item:hover .video-play-overlay {
-                                                    opacity: 1;
-                                                }
-                                            
-                                                /* Styles for when video is active in main view */
-                                                .product-main-image .responsive-video {
-                                                    position: relative;
-                                                    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-                                                    height: 0;
-                                                    overflow: hidden;
-                                                }
-                                            
-                                                .product-main-image .responsive-video iframe {
-                                                    position: absolute;
-                                                    top: 0;
-                                                    left: 0;
-                                                    width: 100%;
-                                                    height: 100%;
-                                                }
-                                            </style>
-                                            {% if product.video_url %}
-                                            <a class="product-gallery-item video-item" href="#" data-type="video" data-url="https://www.youtube.com/embed/{{ product.video_url|youtube_id }}">
-                                                <div class="video-thumbnail">
-                                                    <img src="https://img.youtube.com/vi/{{ product.video_url|youtube_id }}/mqdefault.jpg" alt="product video">
-                                                    <div class="video-play-overlay">
-                                                        <i class="icon-play-circle"></i>
-                                                    </div>
-                                                </div>
-                                            </a>
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container-fluid d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                <li class="breadcrumb-item">{{product.name}}</li>
+            </ol>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-10">
+                    <div class="product-details-top">
+                        <div class="row">
+
+                            <div class="col-md-6 col-lg-7">
+                                <div class="product-gallery">
+                                    <div class="icon-container">
+                                        <div class="left-icons">
+                                            <button class="icon-btn share-btn"><i class="fas fa-share-alt" style="font-size: 25px; font-weight: 800;"></i></button>
+                                        </div>
+                                        <div class="right-icons">
+                                            <button class="icon-btn heart-btn"><i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i></button>
+                                        </div>
+                                    </div>
+                                    <figure class="product-main-image">
+                                        <div class="product-gallery">
+                                            <figure class="product-main-image">
+                                                <img src="{{ product.image_1.url }}" alt="product image" class="product-image">
+                                            </figure>
+                                        </div>
+                                    </figure>
+                                    <div class="carousel-indicators"></div>
+                                </div>
+                            
+                                <script>
+                                    var productData = {
+                                        image1: "{{ product.image_1.url|escapejs }}",
+                                        {% if product.image_2 %}
+                                        image2: "{{ product.image_2.url|escapejs }}",
                                         {% endif %}
-                                            {% if product.image_3 %}
-                                                <a class="product-gallery-item" href="#" data-type="image" data-url="{{ product.image_3.url }}">
-                                                    <img src="{{ product.image_3.url }}" alt="product with model">
-                                                </a>
-                                            {% endif %}
-                                        </div><!-- End .product-image-gallery -->
-                                        
-                                        <div class="carousel-indicators"></div>
-                                    </div><!-- End .product-gallery -->
-                                
-                                    <style>
-                                        /* Your existing styles here */
-                                
-                                        /* Modified styles for carousel indicators */
-                                        .product-gallery {
-                                            position: relative;
-                                            overflow: hidden;
-                                        }
-                                        .carousel-indicators {
-                                            position: absolute;
-                                            bottom: 80px;
-                                            left: 50%;
-                                            transform: translateX(-50%);
-                                            display: flex !important;
-                                            justify-content: center;
-                                            padding: 0;
-                                            margin: 0;
-                                            z-index: 10;
-                                            list-style: none;
-                                        }
-                                        .carousel-indicators button {
-                                            width: 12px;
-                                            height: 12px;
-                                            border-radius: 50%;
-                                            border: none;
-                                            background-color: rgba(255, 255, 255, 0.5);
-                                            margin: 0 5px;
-                                            padding: 0;
-                                            cursor: pointer;
-                                        }
-                                        .carousel-indicators button.active {
-                                            background-color: rgb(255, 255, 255);
-                                        }
-                                    </style>
-                                
-                                    <script>
+                                        {% if product.video_url %}
+                                        videoUrl: "https://www.youtube.com/embed/{{ product.video_url|youtube_id|escapejs }}",
+                                        {% endif %}
+                                        {% if product.image_3 %}
+                                        image3: "{{ product.image_3.url|escapejs }}"
+                                        {% endif %}
+                                    };
+                                </script>
+                            
+                                <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                                        const galleryItems = document.querySelectorAll('.product-gallery-item');
-                                        const productZoomContainer = document.getElementById('product-zoom-container');
                                         const carouselIndicators = document.querySelector('.carousel-indicators');
+                                        const productMainImage = document.querySelector('.product-main-image img');
                                         let currentIndex = 0;
-                                
+                                        let galleryItems = [];
+                            
+                                        function initializeGallery() {
+                                            galleryItems = [
+                                                { type: 'image', url: productData.image1 }
+                                            ];
+                            
+                                            if (productData.image2) {
+                                                galleryItems.push({ type: 'image', url: productData.image2 });
+                                            }
+                            
+                                            if (productData.videoUrl) {
+                                                galleryItems.push({ type: 'video', url: productData.videoUrl });
+                                            }
+                            
+                                            if (productData.image3) {
+                                                galleryItems.push({ type: 'image', url: productData.image3 });
+                                            }
+                            
+                                            createIndicators();
+                                            updateGallery(0);
+                                        }
+                            
                                         function createIndicators() {
                                             carouselIndicators.innerHTML = '';
                                             galleryItems.forEach((_, index) => {
@@ -175,385 +94,268 @@
                                                 carouselIndicators.appendChild(indicator);
                                             });
                                         }
-                                
+                            
                                         function updateGallery(index) {
-    const item = galleryItems[index];
-    const type = item.getAttribute('data-type');
-    const url = item.getAttribute('data-url');
-
-    if (type === 'image') {
-        productZoomContainer.innerHTML = `<img id="product-zoom" src="${url}" alt="product image">`;
-        productZoomContainer.classList.remove('responsive-video');
-    } else if (type === 'video') {
-        productZoomContainer.innerHTML = `
-            <div class="responsive-video">
-                <iframe src="${url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>`;
-        productZoomContainer.classList.add('responsive-video');
-    }
-
-    galleryItems.forEach(item => item.classList.remove('active'));
-    item.classList.add('active');
-
-    updateIndicators(index);
-}
-                                
+                                            const item = galleryItems[index];
+                                            if (item.type === 'image') {
+                                                productMainImage.src = item.url;
+                                                productMainImage.style.display = 'block';
+                                                document.querySelector('.responsive-video')?.remove();
+                                            } else if (item.type === 'video') {
+                                                productMainImage.style.display = 'none';
+                                                const videoContainer = document.createElement('div');
+                                                videoContainer.className = 'responsive-video';
+                                                videoContainer.innerHTML = `<iframe src="${item.url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                                                productMainImage.parentNode.appendChild(videoContainer);
+                                            }
+                                            updateIndicators(index);
+                                        }
+                            
                                         function updateIndicators(activeIndex) {
                                             const indicators = carouselIndicators.querySelectorAll('button');
                                             indicators.forEach((indicator, index) => {
                                                 indicator.classList.toggle('active', index === activeIndex);
                                             });
                                         }
-                                
+                            
                                         function navigate(direction) {
                                             currentIndex += direction;
                                             if (currentIndex < 0) currentIndex = galleryItems.length - 1;
                                             if (currentIndex >= galleryItems.length) currentIndex = 0;
                                             updateGallery(currentIndex);
                                         }
-                                
-                                        galleryItems.forEach((item, index) => {
-                                            item.addEventListener('click', function(event) {
-                                                event.preventDefault();
-                                                currentIndex = index;
-                                                updateGallery(currentIndex);
-                                            });
-                                        });
-                                
-                                        // Add touch swipe functionality
+                            
                                         let touchStartX = 0;
                                         let touchEndX = 0;
-                                
-                                        productZoomContainer.addEventListener('touchstart', e => {
+                            
+                                        productMainImage.parentNode.addEventListener('touchstart', e => {
                                             touchStartX = e.changedTouches[0].screenX;
                                         });
-                                
-                                        productZoomContainer.addEventListener('touchend', e => {
+                            
+                                        productMainImage.parentNode.addEventListener('touchend', e => {
                                             touchEndX = e.changedTouches[0].screenX;
                                             handleSwipe();
                                         });
-                                
+                            
                                         function handleSwipe() {
-                                            if (touchEndX < touchStartX) navigate(1); // Swipe left
-                                            if (touchEndX > touchStartX) navigate(-1); // Swipe right
+                                            if (touchEndX < touchStartX) navigate(1);
+                                            if (touchEndX > touchStartX) navigate(-1);
                                         }
-                                
-                                        // Create indicators
-                                        createIndicators();
-                                
-                                        // Initialize the first image and indicators
-                                        updateGallery(0);
+                            
+                                        initializeGallery();
                                     });
-                                    </script>
-                                </div><!-- End .col-lg-7 -->
-                                
-                                
-                                <div class="col-md-6 col-lg-5">
-                                    <div class="product-details">
-                                        <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
-    
-                                        <div class="product-price">
-                                            <span class="new-price">Rs {{product.new_price}}</span>
+                                </script>
+                            </div>
+                            
+                            
 
+                            <div class="col-md-6 col-lg-5">
+                                <div class="product-details">
+
+                                    
+                                    <div class="col-md-8">
+                                    
+                                        <h3 class="mb-1">{{product.name}}</h3>
+                                        <h5 class="text-muted">JEE Exam preprestion book</h5>
+                                    
+                                        <div class="d-flex align-items-center">
+                                            <h3 class=" mb-0">₹{{product.new_price}}</h3>
+                                            <!-- <span class="text-muted ml-2"><s>₹599</s></span> -->
+                                            <h1 class="mb-0 ml-2">-</h1>
                                             {% if product.old_price == 0 %}
                                             {% else %}
-                                            <span class="old-price"><s>Rs {{product.old_price}}</s></span>
+                                            <h4 class="text-muted mb-0 ml-2"><s>₹{{product.old_price}}</s></h4>
                                             {% endif %}
-
-                                        </div><!-- End .product-price -->
-                                        <div class="product-content">
-                                            <h6>Product Discription</h6>
-                                            <p>{{product.description}}. </p>
-                                        </div><!-- End .product-content -->
-
-
-                                    <!-- ----------------------------------------------------------------- -->
-
-
-
-
-                                    <div class="details-filter-row details-row-size">
-                                        <label for="qty">Pair:</label>
-                                        <div class="product-details-quantity">
-                                            <div class="cart-item-counter">
-                                                <button class="cart-decrement" onclick="decrementQuantity()">-</button>
-                                                <input id="cart-quantity" class="cart-quantity" value="1"  min="1" max="{{product.stock}}" readonly>
-                                                <!-- eslint-disable-next-line -->
-                                                <button class="cart-increment" onclick="incrementQuantity({{ product.stock }})">+</button>
-                                            </div>
-                                        </div><!-- End .product-details-quantity -->
+                                            <!-- <span class="text-success ml-2 discount">48% off</span> -->
+                                            {% if product.get_discounted_price %}
+                                            <h4 class="text-success mb-0 ml-2">{{ product.get_discounted_price.percentage }}% off</h4>
+                                            {% endif %}
+                                        </div>
+                                    
+                                        <hr style="font-weight: 800px;" class="separator">
+                                        <h6 style="margin-top: 20px;">Book Details</h6>
+                                    
+                                        <table class="table ">
+                                            <tr>
+                                                <th>Publisher</th>
+                                                <td>DC Books</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Author</th>
+                                                <td>Bittu Kumar</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Language</th>
+                                                <td>Malayalam</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Edition</th>
+                                                <td>2023</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Pages</th>
+                                                <td>98</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Binding</th>
+                                                <td>Paperback</td>
+                                            </tr>
+                                            <tr>
+                                                <th>published</th>
+                                                <td>29/12/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <th>widget</th>
+                                                <td>400(gm)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>dimansion</th>
+                                                <td>26x12x42</td>
+                                            </tr>
+                                            <tr>
+                                                <th>ISBN</th>
+                                                <td>98754382875234</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2">Description :</th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="border-top: 0px; padding-top:0px;">{{product.description}}</td>
+                                            </tr>
+                                        </table>
                                     </div>
-                                    
-                                    <style>
-                                        .cart-item-counter {
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: space-between;
-                                            width: 150px;
-                                            border: 1px solid #ccc;
-                                            border-radius: 5px;
-                                            padding: 5px;
-                                        }
-                                    
-                                        .cart-quantity {
-                                            width: 50px;
-                                            text-align: center;
-                                            border: none;
-                                            outline: none;
-                                            background: none;
-                                        }
-                                    
-                                        .cart-decrement,
-                                        .cart-increment {
-                                            width: 30px;
-                                            height: 30px;
-                                            border: none;
-                                            background-color: #f0f0f0;
-                                            cursor: pointer;
-                                        }
-                                    </style>
-                                    
-                                    
-                                    
-                                    
-                                    <!-- ----------------------------------------------------------------- -->
-    
-                                        <div class="details-filter-row details-row-size" style="display: none;" id="femail-options">
-                                            <label for="size">Femail:</label>
-                                            <div class="select-custom">
-                                                <select name="size" id="size" class="form-control" style="width: 50%;">
-                                                    <option value="#" selected="selected">Additional</option>
-                                                    <option value="1f">1 Femail</option>
-                                                    <option value="2f">2 Femail</option>
-                                                    <option value="3f">3 Femail</option>
-                                                </select>
-                                            </div><!-- End .select-custom -->
-                                        </div><!-- End .details-filter-row -->
 
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                const qtyInput = document.getElementById('cart-quantity'); // Update the ID here
-                                                const femailOptions = document.getElementById('femail-options');
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const qtyInput = document.getElementById('cart-quantity');
+                                            const femailOptions = document.getElementById('femail-options');
 
-                                                qtyInput.addEventListener('input', function() {
-                                                    if (parseInt(qtyInput.value) > 3) {
-                                                        femailOptions.style.display = 'flex';
-                                                    } else {
-                                                        femailOptions.style.display = 'none';
-                                                    }
-                                                });
+                                            qtyInput.addEventListener('input', function () {
+                                                if (parseInt(qtyInput.value) > 3) {
+                                                    femailOptions.style.display = 'flex';
+                                                } else {
+                                                    femailOptions.style.display = 'none';
+                                                }
                                             });
-                                        </script>
-    
-                                        
-                                        <div class="product-details-action">
+                                        });
+                                    </script>
 
-                                            {#{% url 'cart_app:add_cart' product.id %}#}
-                                            <!-- <a data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a> -->
-                                            <a data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart"><span>add to cart</span></a>
-                                            <!-- <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button> -->
-                                    {#{% endif %}#}
+                                    <div class="product-details-action">
+                                        <a data-quantity="{{product.stock}}" data-product="{{product.id}}"
+                                            data-action="add" id="add-to-cart-btn"
+                                            class="btn-product btn-cart update-cart" style="
+                                            margin-left: 17px;
+                                            margin-right: 17px;
+                                        "><span>add to cart</span></a>
+                                    </div>
 
-
-                                        </div><!-- End .product-details-action -->
-    
-                                        <div class="product-details-footer" style="display: block;">
-    
-                                            <div class="social-icons social-icons-colored justify-content-around mb-3" style="margin-bottom: .5rem !important;">
-                                                <span class="social-label">Share:</span>
-                                                <a href="#" class="social-icon social-whatsapp" title="WhatsApp" target="_blank" style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
-                                                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                                                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                                                <a href="#" class="social-icon social-email" title="Email" target="_blank">
-                                                    <i class="fa fa-envelope"></i>
-                                                </a>
-                                                <style>
-                                                    .social-icon {
-                                                        display: inline-flex;
-                                                        align-items: center;
-                                                        justify-content: center;
-                                                        width: 40px;
-                                                        height: 40px;
-                                                        border-radius: 50%;
-                                                        color: white;
-                                                        margin: 0 5px;
-                                                        text-decoration: none;
-                                                        transition: transform 0.3s ease, background-color 0.3s ease;
-                                                    }
-                                                
-                                                    .social-icon:hover {
-                                                        transform: scale(1.1);
-                                                    }
-                                                
-                                                    .social-facebook {
-                                                        background-color: #3b5998;
-                                                    }
-                                                
-                                                    .social-email {
-                                                        background-color:#3498db; /* Background color for the email icon */
-                                                    }
-                                                
-                                                    .social-icon i {
-                                                        font-size: 20px;
-                                                    }
-                                                </style>
-
-                                            </div>
-                                        </div><!-- End .product-details-footer -->
-    
-                                        <div class="accordion accordion-plus product-details-accordion" id="product-accordion">
-    
-                                            <div class="card card-box card-sm">
-                                                <div class="card-header" id="product-info-heading">
-                                                    <h2 class="card-title">
-                                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-info" aria-expanded="false" aria-controls="product-accordion-info">
-                                                            Additional Information
-                                                        </a>
-                                                    </h2>
-                                                </div><!-- End .card-header -->
-                                                <div id="product-accordion-info" class="collapse" aria-labelledby="product-info-heading" data-parent="#product-accordion">
-                                                    <div class="card-body">
-                                                        <div class="product-desc-content">
-                                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
-    
-                                                            <h3>Fabric & care</h3>
-                                                            <ul>
-                                                                <li>100% Polyester</li>
-                                                                <li>Do not iron</li>
-                                                                <li>Do not wash</li>
-                                                                <li>Do not bleach</li>
-                                                                <li>Do not tumble dry</li>
-                                                                <li>Professional dry clean only</li>
-                                                            </ul>
-    
-                                                            <h3>Size</h3>
-                                                            <p>S, M, L, XL</p>
-                                                        </div><!-- End .product-desc-content -->
-                                                    </div><!-- End .card-body -->
-                                                </div><!-- End .collapse -->
-                                            </div><!-- End .card -->
-    
-                                            <div class="card card-box card-sm">
-                                                <div class="card-header" id="product-shipping-heading">
-                                                    <h2 class="card-title">
-                                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-shipping" aria-expanded="false" aria-controls="product-accordion-shipping">
-                                                            Shipping & Returns
-                                                        </a>
-                                                    </h2>
-                                                </div><!-- End .card-header -->
-                                                <div id="product-accordion-shipping" class="collapse" aria-labelledby="product-shipping-heading" data-parent="#product-accordion">
-                                                    <div class="card-body">
-                                                        <div class="product-desc-content">
-                                                            <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
-                                                            We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
-                                                        </div><!-- End .product-desc-content -->
-                                                    </div><!-- End .card-body -->
-                                                </div><!-- End .collapse -->
-                                            </div><!-- End .card -->
-    
-                                            
-                                        </div><!-- End .accordion -->
-                                    </div><!-- End .product-details -->
-                                </div><!-- End .col-lg-5 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .product-details-top -->
-                    </div><!-- End .col-xl-10 -->
-    
-                    <aside class="col-xl-2 d-md-none d-xl-block">
-                        <div class="sidebar sidebar-product">
-                            <div class="widget widget-products">
-                                <h4 class="widget-title">Related Product</h4><!-- End .widget-title -->
-    
-                                <div class="products">
-                                    {% for product in products.object_list %}
-                                    <div class="product product-sm">
-                                        
-                                            
-                                        <figure class="product-media">
-                                            <a href="{{product.get_url}}">
-                                                <img src="{{ product.image_1.url }}" alt="Product image" class="product-image">
-                                            </a>
-                                        </figure>
-                                            
-
-    
-                                        <div class="product-body">
-                                            <h5 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a></h5><!-- End .product-title -->
-                                            <div class="product-price">
-                                                <span class="new-price">Rs {{ product.new_price }}</span>
-                                                {% if product.old_price == 0 %}
-                                                {% else %}
-                                                <span class="old-price"><s>Rs {{ product.old_price }}</s></span>
-                                                {% endif %}
-                                            </div><!-- End .product-price -->
-                                        </div><!-- End .product-body -->
-                                        
-                                    </div><!-- End .product product-sm -->
-                                    {% endfor %}
-                            </div><!-- End .products -->     
-                                <a href="{% url 'store_app:allProductListing' %}" class="btn btn-outline-dark-3"><span>View More Products</span><i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .widget widget-products -->
-
-                        </div><!-- End .sidebar sidebar-product -->
-                    </aside><!-- End .col-xl-2 -->
-                </div><!-- End .row -->
+                                </div>
+                            </div>
 
 
-                <script>
-                    function showWarningAlert(message, callback) {
-                        Swal.fire({
-                            icon: "warning",
-                            title: "Warning...",
-                            text: message,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                callback();
-                            }
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="col-xl-2 d-md-none d-xl-block">
+                    <div class="sidebar sidebar-product">
+                        <div class="widget widget-products">
+                            <h4 class="widget-title">Related Product</h4>
+
+                            <div class="products">
+                                {% for product in products.object_list %}
+                                <div class="product product-sm">
+
+                                    <figure class="product-media">
+                                        <a href="{{product.get_url}}">
+                                            <img src="{{ product.image_1.url }}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+                                    </figure>
+
+                                    <div class="product-body">
+                                        <h5 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a>
+                                        </h5>
+                                        <div class="product-price">
+                                            <span class="new-price">Rs {{ product.new_price }}</span>
+                                            {% if product.old_price == 0 %}
+                                            {% else %}
+                                            <span class="old-price"><s>Rs {{ product.old_price }}</s></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <a href="{% url 'store_app:allProductListing' %}" class="btn btn-outline-dark-3"><span>View
+                                    More Products</span><i class="icon-long-arrow-right"></i></a>
+                        </div>
+
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</main>
+            <script>
+                function showWarningAlert(message, callback) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Warning...",
+                        text: message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            callback();
+                        }
+                    });
+                }
+
+                function incrementQuantity(stock) {
+                    const quantityInput = document.getElementById('cart-quantity');
+                    let currentQuantity = parseInt(quantityInput.value);
+
+                    if (currentQuantity < stock) {
+                        quantityInput.value = currentQuantity + 1;
+
+                    } else {
+                        showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
+
                         });
+                        return;
                     }
-                
-                    function incrementQuantity(stock) {
-                        const quantityInput = document.getElementById('cart-quantity');
-                        let currentQuantity = parseInt(quantityInput.value);
-                        
-                        // console.log('stock...',stock)
-                        // console.log('currentQuantity...',currentQuantity)
-                        if (currentQuantity < stock) {
-                            quantityInput.value = currentQuantity + 1;
-                            
-                            // updateAddToCartLink(currentQuantity + 1);
+                }
+
+                function decrementQuantity() {
+                    const quantityInput = document.getElementById('cart-quantity');
+                    let currentQuantity = parseInt(quantityInput.value);
+
+                    if (currentQuantity > 1) {
+                        quantityInput.value = currentQuantity - 1;
+
+                    }
+                }
+
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const addToCartBtn = document.getElementById('add-to-cart-btn');
+                    const originalPosition = addToCartBtn.getBoundingClientRect().top + window.scrollY;
+
+                    function checkSticky() {
+                        if (window.scrollY + window.innerHeight < originalPosition) {
+                            addToCartBtn.classList.add('sticky-btn');
                         } else {
-                            showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
-                                // Code to execute if the user confirms the alert
-                            });
-                            return;
+                            addToCartBtn.classList.remove('sticky-btn');
                         }
                     }
-                
-                    function decrementQuantity() {
-                        const quantityInput = document.getElementById('cart-quantity');
-                        let currentQuantity = parseInt(quantityInput.value);
-                
-                        if (currentQuantity > 1) {
-                            quantityInput.value = currentQuantity - 1;
-                            // updateAddToCartLink(currentQuantity - 1);
-                        }
-                    }
-                
-                    // function updateAddToCartLink(quantity) {
-                    //     const addToCartBtn = document.getElementById('add-to-cart-btn');
-                        
-                    //     // {#{% url 'cart_app:add_cart' product.id %}#}
-                    //     const baseUrl = "#";
-                    //     addToCartBtn.href = `${baseUrl}?quantity=${quantity}`;
-                    // }
-                </script>
-                  
-{% endblock %}
 
+                    window.addEventListener('scroll', checkSticky);
+                    checkSticky();
+                });
+            </script>
 
-<!-- ------------------------------------------------------------------------ -->
-<!-- ------------------------------------------------------------------------ -->
-<!-- ------------------------------------------------------------------------ -->
+            <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 
-
+            {% endblock %}
