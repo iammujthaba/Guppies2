@@ -26,12 +26,43 @@
                                 <div class="product-gallery">
                                     <div class="icon-container">
                                         <div class="left-icons">
-                                            <button class="icon-btn share-btn"><i class="fas fa-share-alt" style="font-size: 25px; font-weight: 800;"></i></button>
+                                            <button class="icon-btn share-btn">
+                                                <i class="fa-solid fa-share-nodes" style="font-size: 25px; font-weight: 800;"></i>
+                                            </button>
                                         </div>
                                         <div class="right-icons">
-                                            <button class="icon-btn heart-btn"><i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i></button>
+                                            <button class="icon-btn heart-btn" id="wishlist-icon-{{ product.id }}" onclick="toggleWishlist({{ product.id }})">
+                                                <i class="{% if in_wishlist %}fa-solid fa-heart{% else %}icon-heart-o{% endif %}" style="font-size: 30px; font-weight: 800; {% if in_wishlist %}color: red;{% endif %}"></i>
+                                            </button>
                                         </div>
                                     </div>
+                                    
+                                    <script>
+                                        function toggleWishlist(productId) {
+                                            const url = '{% url "store_app:add_to_wishlist" %}';
+                                            const iconElement = document.getElementById(`wishlist-icon-${productId}`);
+                                    
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': '{{ csrf_token }}',
+                                                },
+                                                body: JSON.stringify({ 'productId': productId }),
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.added) {
+                                                    // Change the heart icon to indicate it is in the wishlist
+                                                    iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
+                                                } else {
+                                                    // Change the heart icon to indicate it is not in the wishlist
+                                                    iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    
                                     <figure class="product-main-image">
                                         <div class="product-gallery">
                                             <figure class="product-main-image">

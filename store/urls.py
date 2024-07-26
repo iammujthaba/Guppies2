@@ -23,4 +23,8 @@ urlpatterns = [
     path('contact/',views.contact,name='contact'),
     path('Questions/',views.faq,name='faq'),
     path('devolopper/',views.devolopper,name='devolopper'),
+
+    path('add_to_wishlist/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('remove_from_wishlist/', views.remove_from_wishlist, name='remove_from_wishlist'),
+    path('wishlist/', views.wishlist, name='wishlist'),
 ]

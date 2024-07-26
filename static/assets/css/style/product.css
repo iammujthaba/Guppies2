@@ -854,7 +854,7 @@ button:focus {
 
 .icon-btn i {
     font-size: 18px;
-    color: #333
+    /* color: #333 */
 }
 
 .left-icons {
@@ -896,4 +896,11 @@ button:focus {
     font-weight: 500;
     font-size: 1.4rem;
     color: black;
+}
+
+.icon-btn .icon-heart {
+    color: red;
+}
+.icon-btn .icon-heart-o {
+    color: grey;
 }

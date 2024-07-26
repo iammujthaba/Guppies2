@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
+                'store.context_processors.wishlist_count',
                 'store.context_processors.menu_link',
                 'store.context_processors.cart_data',
             ],

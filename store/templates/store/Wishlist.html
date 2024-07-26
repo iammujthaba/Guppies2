@@ -1,0 +1,42 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="wishlist-container">
+    <h2>My Wishlist</h2>
+    {% if wishlist_items %}
+        <ul>
+            {% for item in wishlist_items %}
+                <li>
+                    <a href="{{ item.product.get_url }}">
+                        <img src="{{ item.product.imageURL }}" alt="{{ item.product.name }}">
+                        <h3>{{ item.product.name }}</h3>
+                        <p>{{ item.product.new_price }}</p>
+                    </a>
+                    <button onclick="removeFromWishlist({{ item.product.id }})">Remove</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Your wishlist is empty.</p>
+    {% endif %}
+</div>
+
+<script>
+    function removeFromWishlist(productId) {
+        const url = '{% url "store_app:remove_from_wishlist" %}';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({'productId': productId}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        });
+    }
+</script>
+{% endblock %}
