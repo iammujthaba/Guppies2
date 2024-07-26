@@ -289,16 +289,19 @@ def add_to_wishlist(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         product_id = data.get('productId')
-        product = get_object_or_404(Product, id=product_id)
-        wishlist, created = Wishlist.objects.get_or_create(user=request.user, product=product)
+        product = Product.objects.get(id=product_id)
+        wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
 
-        if created:
-            added = True
-        else:
-            wishlist.delete()
+        if not created:
+            wishlist_item.delete()
             added = False
+        else:
+            added = True
 
-        return JsonResponse({'added': added})
+        wishlist_count = Wishlist.objects.filter(user=request.user).count()
+        return JsonResponse({'added': added, 'wishlist_count': wishlist_count})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required
 def remove_from_wishlist(request):
@@ -306,10 +309,18 @@ def remove_from_wishlist(request):
         data = json.loads(request.body)
         product_id = data.get('productId')
         product = Product.objects.get(id=product_id)
-        Wishlist.objects.filter(user=request.user, product=product).delete()
-        return JsonResponse({'success': True})
+        wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
 
-    return JsonResponse({'success': False}, status=400)
+        if wishlist_item:
+            wishlist_item.delete()
+            removed = True
+        else:
+            removed = False
+
+        wishlist_count = Wishlist.objects.filter(user=request.user).count()
+        return JsonResponse({'removed': removed, 'wishlist_count': wishlist_count})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required
 def wishlist(request):

@@ -8,7 +8,7 @@
 
 <div class="products">
     {% for item in wishlist_items %}
-    <div class="product product-sm" id="product-{{ item.product.id }}">
+    <div class="product product-sm">
 
         <figure class="product-media">
             <a href="{{item.product.get_url}}">
@@ -32,7 +32,7 @@
                 <span class="text-success mb-0 ml-2">{{ item.product.get_discounted_price.percentage }}% off</span>
                 {% endif %}
 
-                <button onclick="removeFromWishlist({{ item.product.id }})">Remove</button>
+                <button onclick="removeFromWishlist({{ item.product.id }}, this)">Remove</button>
 
             </div>
         </div>
@@ -54,8 +54,10 @@
 </div>
 
 <script>
-    function removeFromWishlist(productId) {
+    function removeFromWishlist(productId, button) {
         const url = '{% url "store_app:remove_from_wishlist" %}';
+        const wishlistCountElement = document.getElementById('wishlist-count');
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -66,16 +68,16 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                // Remove the product from the DOM
-                const productElement = document.getElementById(`product-${productId}`);
-                if (productElement) {
-                    productElement.remove();
-                }
+            if (data.removed) {
+                // Remove the product element from the DOM
+                button.closest('.product').remove();
 
-                // If the wishlist is empty, show the empty message
-                if (document.querySelectorAll('.product').length === 0) {
-                    document.querySelector('.products').innerHTML = '<p>Your wishlist is empty.</p>';
+                // Update the wishlist count
+                wishlistCountElement.textContent = data.wishlist_count;
+
+                // If the wishlist is empty, show a message
+                if (data.wishlist_count == 0) {
+                    document.querySelector('.wishlist-container').innerHTML = '<p>Your wishlist is empty.</p>';
                 }
             }
         });
