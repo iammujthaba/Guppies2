@@ -182,12 +182,13 @@
                                     <a href="{{product.get_url}}">
                                         <div id="carouselExampleIndicators2{{product.slug}}" class="carousel slide">
 
-                                            <div class="carousel-inner" style="height: 150px;">
+                                            <div class="carousel-inner">
                                                 <div class="carousel-item active">
+                                                    <div class="image-wrapper">
                                                     <img src="{{ product.imageURL }}" class="d-block w-100"
                                                         alt="{{ product.name }}">
+                                                    </div>
                                                 </div>
-
                                             </div>
 
                                             {% if product.new == True %}
@@ -200,14 +201,29 @@
 
                                         </div>
                                         <div class="carousel-product-info">
-                                            <div class="m-3">
+                                            <div style="margin-left: 1rem; margin-top: 1rem; margin-bottom: .2rem;">
                                                 <h5 class="card-title cart-heading">{{ product.name }}</h3>
-
+                
                                                     <h6 class="pricing">
-                                                        <s>Rs {{product.old_price}}</s></span><br>
-                                                        <strong class="ms-2 text-success">Rs {{ product.new_price }}</strong><i>/Pair</i>
+                                                        
+                                                        <h6 class="text-muted mb-0 cart-heading">JEE Exam preparation book</h6>
+                                                        {% if product.stock <= 3 %}
+                                                        <strong style="color: rgb(199, 0, 85);">Only few left</strong><br>
+                                                        {% else %}
+                                                        <em class="related-product-publisher">DC Books</em>
+                                                        {% endif %}
+                                                        
+                                                        <div class="product-price">
+                                                            <strong class="related-product-price">Rs {{ product.new_price|strip_decimal }}</strong>
+                                                            {% if product.old_price == 0 %}
+                                                            {% else %}
+                                                            <strong class="text-muted related-product-price">-</strong>
+                                                            <strong class="text-muted related-product-price"><s>₹{{product.old_price|strip_decimal}}</s></strong>
+                                                            {% endif %}
+                                                        </div>
                                                     </h6>
-
+                                                    
+                
                                             </div>
                                         </div>
                                     </a>
