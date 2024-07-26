@@ -1,24 +1,56 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
+
 <div class="wishlist-container">
     <h2>My Wishlist</h2>
     {% if wishlist_items %}
-        <ul>
-            {% for item in wishlist_items %}
-                <li>
-                    <a href="{{ item.product.get_url }}">
-                        <img src="{{ item.product.imageURL }}" alt="{{ item.product.name }}">
-                        <h3>{{ item.product.name }}</h3>
-                        <p>{{ item.product.new_price }}</p>
-                    </a>
-                    <button onclick="removeFromWishlist({{ item.product.id }})">Remove</button>
-                </li>
-            {% endfor %}
-        </ul>
+
+<div class="products">
+    {% for item in wishlist_items %}
+    <div class="product product-sm" id="product-{{ item.product.id }}">
+
+        <figure class="product-media">
+            <a href="{{item.product.get_url}}">
+                <img src="{{ item.product.imageURL }}" alt="Product image"
+                    class="product-image">
+            </a>
+        </figure>
+
+        <div class="product-body">
+            <h3 class="product-title"><a href="{{item.product.get_url}}">{{ item.product.name }}</a></h3>
+            <h6 class="text-muted mb-0">JEE Exam preprestion book</h6>
+
+            <div class="related-product-publisher">DC Books</div>
+            <!-- New arriwel / best seller /  -->
+            <!-- <div>New arriwel</div> -->
+
+            <div class="product-price">
+                <span class="related-product-price">Rs {{ item.product.new_price }}</span>
+
+                {% if item.product.get_discounted_price %}
+                <span class="text-success mb-0 ml-2">{{ item.product.get_discounted_price.percentage }}% off</span>
+                {% endif %}
+
+                <button onclick="removeFromWishlist({{ item.product.id }})">Remove</button>
+
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+
     {% else %}
-        <p>Your wishlist is empty.</p>
+    <div>
+		<div class="text-center mb-3">
+			<br>
+			<h1>Your wishlist is empty.</h1>
+			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
+				continue shopping.</p>
+		</div>
+	</div>
     {% endif %}
+
 </div>
 
 <script>
@@ -34,9 +66,20 @@
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            location.reload();
+            if (data.success) {
+                // Remove the product from the DOM
+                const productElement = document.getElementById(`product-${productId}`);
+                if (productElement) {
+                    productElement.remove();
+                }
+
+                // If the wishlist is empty, show the empty message
+                if (document.querySelectorAll('.product').length === 0) {
+                    document.querySelector('.products').innerHTML = '<p>Your wishlist is empty.</p>';
+                }
+            }
         });
     }
 </script>
+
 {% endblock %}

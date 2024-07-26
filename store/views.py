@@ -305,10 +305,11 @@ def remove_from_wishlist(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         product_id = data.get('productId')
-        product = get_object_or_404(Product, id=product_id)
-        wishlist_item = get_object_or_404(Wishlist, user=request.user, product=product)
-        wishlist_item.delete()
-        return JsonResponse({'message': 'Product removed from wishlist'}, status=200)
+        product = Product.objects.get(id=product_id)
+        Wishlist.objects.filter(user=request.user, product=product).delete()
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False}, status=400)
 
 @login_required
 def wishlist(request):
