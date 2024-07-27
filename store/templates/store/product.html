@@ -277,7 +277,18 @@
                                         });
                                     </script>
 
-<input type="number" id="cart-quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control">
+                                    <!-- <div class="product-details-action">
+                                        <div class="quantity">
+                                            <button onclick="decrementQuantity()" class="minus">-</button>
+                                            <input type="number" id="cart-quantity" value="1" min="1" max="{{ product.stock }}">
+                                            <button onclick="incrementQuantity({{ product.stock }})" class="plus">+</button>
+                                        </div>
+                                        <a data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart" style="margin-left: 17px; margin-right: 17px;">
+                                            <span>Add to Cart</span>
+                                        </a>
+                                    </div> -->
+
+                                    <input type="number" id="cart-quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control">
 
 
                                     <div class="product-details-action">
