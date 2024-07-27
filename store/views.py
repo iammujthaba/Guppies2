@@ -7,6 +7,9 @@ import datetime
 from .models import *
 from .utils import cartData
 from django.contrib.auth.decorators import login_required
+import logging
+
+logger = logging.getLogger(__name__)
 
 def allProdCat(request, c_slug=None):
     c_page = None
@@ -170,15 +173,17 @@ def processOrder(request):
         return JsonResponse({'success': success, 'message': message}, safe=False)
 
 
-from django.http import Http404
-import logging
 
-logger = logging.getLogger(__name__)
 
 def proDetail(request, c_slug, product_slug):
     try:
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
-        in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+        
+        if request.user.is_authenticated:
+            in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+        else:
+            in_wishlist = False
+
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
         return render(request, 'auth_app/loginOrRegister.html')
@@ -197,6 +202,8 @@ def proDetail(request, c_slug, product_slug):
         except (InvalidPage, EmptyPage):
             products = paginator.page(paginator.num_pages)
         return render(request, 'store/product.html', {'product': product, 'products': products, 'in_wishlist': in_wishlist})
+    else:
+        return render(request, 'store/product.html', {'product': product, 'in_wishlist': in_wishlist})
 
 
 def allProductListing(request):
