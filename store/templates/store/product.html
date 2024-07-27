@@ -277,6 +277,9 @@
                                         });
                                     </script>
 
+<input type="number" id="cart-quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control">
+
+
                                     <div class="product-details-action">
                                         <a data-quantity="{{product.stock}}" data-product="{{product.id}}"
                                             data-action="add" id="add-to-cart-btn"

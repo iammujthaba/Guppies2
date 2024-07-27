@@ -6,10 +6,12 @@ for (i = 0; i < updateBtns.length; i++) {
         var action = this.dataset.action;
         var stock = parseInt(this.dataset.quntity);
 
-        if (isNaN(stock)) {
-            const quantityInput = document.getElementById('cart-quantity');
-            var currentQuantity = parseInt(quantityInput.value);
-            var stock = parseInt(quantityInput.getAttribute('max'));
+        var quantityInput = document.getElementById('cart-quantity');
+        var currentQuantity = 1; // Default to 1 if quantity input is not present
+
+        if (quantityInput) {
+            currentQuantity = parseInt(quantityInput.value);
+            stock = parseInt(quantityInput.getAttribute('max'));
         }
 
         console.log('productId:', productId, 'Action:', action, 'stock:', stock, 'currentQuantity:', currentQuantity);
@@ -25,7 +27,6 @@ for (i = 0; i < updateBtns.length; i++) {
 
 function updateUserOrder(productId, action, currentQuantity = NaN) {
     console.log('User is authenticated, sending data...');
-
     var url = '/update_item/';
 
     fetch(url, {
@@ -34,7 +35,11 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({ 'productId': productId, 'action': action, 'currentQuantity': currentQuantity })
+        body: JSON.stringify({
+            'productId': productId,
+            'action': action,
+            'currentQuantity': currentQuantity
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -57,7 +62,7 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
     if (action == 'add') {
         if (currentQuantity > 1) {
             if (cart[productId] == undefined) {
-                cart[productId] = { 'quantity': currentQuantity };
+                cart[productId] = {'quantity': currentQuantity};
             } else {
                 if ((cart[productId]['quantity'] + currentQuantity) < stock) {
                     cart[productId]['quantity'] += currentQuantity;
@@ -70,7 +75,7 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
             }
         } else {
             if (cart[productId] == undefined) {
-                cart[productId] = { 'quantity': 1 };
+                cart[productId] = {'quantity': 1};
             } else {
                 if (cart[productId]['quantity'] < stock) {
                     cart[productId]['quantity'] += 1;
@@ -86,6 +91,7 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
 
     if (action == 'remove') {
         cart[productId]['quantity'] -= 1;
+
         if (cart[productId]['quantity'] <= 0) {
             console.log('Item should be deleted');
             delete cart[productId];
@@ -98,6 +104,7 @@ function addCookieItem(productId, action, stock, currentQuantity = NaN) {
 
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
+
     location.reload();
 }
 
