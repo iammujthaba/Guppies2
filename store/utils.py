@@ -67,6 +67,30 @@ def cartData(request):
 
 	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
 
+def cookieWishlist(request):
+    try:
+        wishlist = json.loads(request.COOKIES['wishlist'])
+    except:
+        wishlist = {}
+    
+    items = []
+    wishlist_count = len(wishlist)
+
+    for product_id in wishlist:
+        try:
+            product = Product.objects.get(id=product_id)
+            item = {
+                'id': product.id,
+                'name': product.name,
+                'image_url': product.imageURL,
+                'price': product.new_price,
+            }
+            items.append(item)
+        except Product.DoesNotExist:
+            pass
+
+    return {'wishlist_items': items, 'wishlist_count': wishlist_count}
+
 # from django.core.exceptions import ObjectDoesNotExist
 
 # def cartData(request):

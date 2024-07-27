@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import json
 import datetime
 from .models import *
-from .utils import cartData
+from .utils import cartData, cookieWishlist
 from django.contrib.auth.decorators import login_required
 import logging
 
@@ -291,24 +291,40 @@ def account_info(request):
     }
     return render(request, 'store/account_info.html', context)
 
-@login_required
 def add_to_wishlist(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         product_id = data.get('productId')
-        product = Product.objects.get(id=product_id)
-        wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
-
-        if not created:
-            wishlist_item.delete()
-            added = False
+        
+        if request.user.is_authenticated:
+            product = Product.objects.get(id=product_id)
+            wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
+            if not created:
+                wishlist_item.delete()
+                added = False
+            else:
+                added = True
+            wishlist_count = Wishlist.objects.filter(user=request.user).count()
         else:
-            added = True
-
-        wishlist_count = Wishlist.objects.filter(user=request.user).count()
-        return JsonResponse({'added': added, 'wishlist_count': wishlist_count})
+            wishlist = json.loads(request.COOKIES.get('wishlist', '{}'))
+            if str(product_id) in wishlist:
+                del wishlist[str(product_id)]
+                added = False
+            else:
+                wishlist[str(product_id)] = True
+                added = True
+            wishlist_count = len(wishlist)
+            
+        response = JsonResponse({'added': added, 'wishlist_count': wishlist_count})
+        
+        if not request.user.is_authenticated:
+            response.set_cookie('wishlist', json.dumps(wishlist))
+        
+        return response
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
 
 @login_required
 def remove_from_wishlist(request):
@@ -329,7 +345,11 @@ def remove_from_wishlist(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-@login_required
 def wishlist(request):
-    wishlist_items = Wishlist.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        wishlist_items = Wishlist.objects.filter(user=request.user)
+    else:
+        cookie_data = cookieWishlist(request)
+        wishlist_items = cookie_data['wishlist_items']
+
     return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items})

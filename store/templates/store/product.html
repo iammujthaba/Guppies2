@@ -39,32 +39,28 @@
                                     
                                     <script>
                                         function toggleWishlist(productId) {
-                                            const url = '{% url "store_app:add_to_wishlist" %}';
-                                            const iconElement = document.getElementById(`wishlist-icon-${productId}`);
-                                            const wishlistCountElement = document.getElementById('wishlist-count');
-                                    
-                                            fetch(url, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-CSRFToken': '{{ csrf_token }}',
-                                                },
-                                                body: JSON.stringify({ 'productId': productId }),
-                                            })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.added) {
-                                                    // Change the heart icon to indicate it is in the wishlist
-                                                    iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
-                                                } else {
-                                                    // Change the heart icon to indicate it is not in the wishlist
-                                                    iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
-                                                }
-                                                
-                                                // Update the wishlist count
-                                                wishlistCountElement.textContent = data.wishlist_count;
-                                            });
-                                        }
+                                        const url = '{% url "store_app:add_to_wishlist" %}';
+                                        const iconElement = document.getElementById(`wishlist-icon-${productId}`);
+                                        const wishlistCountElement = document.getElementById('wishlist-count');
+
+                                        fetch(url, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{ csrf_token }}',
+                                            },
+                                            body: JSON.stringify({ 'productId': productId }),
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.added) {
+                                                iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
+                                            } else {
+                                                iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                            }
+                                            wishlistCountElement.textContent = data.wishlist_count;
+                                        });
+                                    }
                                     </script>
                                     
                                     <figure class="product-main-image">
