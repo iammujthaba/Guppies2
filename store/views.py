@@ -181,8 +181,11 @@ def proDetail(request, c_slug, product_slug):
         
         if request.user.is_authenticated:
             in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+            wishlist_count = Wishlist.objects.filter(user=request.user).count()
         else:
-            in_wishlist = False
+            cookie_data = cookieWishlist(request)
+            in_wishlist = str(product.id) in cookie_data['wishlist_items']
+            wishlist_count = cookie_data['wishlist_count']
 
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
@@ -201,9 +204,9 @@ def proDetail(request, c_slug, product_slug):
             products = paginator.page(page)
         except (InvalidPage, EmptyPage):
             products = paginator.page(paginator.num_pages)
-        return render(request, 'store/product.html', {'product': product, 'products': products, 'in_wishlist': in_wishlist})
+        return render(request, 'store/product.html', {'product': product, 'products': products, 'in_wishlist': in_wishlist, 'wishlist_count': wishlist_count})
     else:
-        return render(request, 'store/product.html', {'product': product, 'in_wishlist': in_wishlist})
+        return render(request, 'store/product.html', {'product': product, 'in_wishlist': in_wishlist, 'wishlist_count': wishlist_count})
 
 
 def allProductListing(request):
@@ -348,8 +351,10 @@ def remove_from_wishlist(request):
 def wishlist(request):
     if request.user.is_authenticated:
         wishlist_items = Wishlist.objects.filter(user=request.user)
+        wishlist_count = wishlist_items.count()
     else:
         cookie_data = cookieWishlist(request)
         wishlist_items = cookie_data['wishlist_items']
+        wishlist_count = cookie_data['wishlist_count']
 
-    return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items})
+    return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items, 'wishlist_count': wishlist_count})

@@ -69,8 +69,8 @@ def cartData(request):
 
 def cookieWishlist(request):
     try:
-        wishlist = json.loads(request.COOKIES['wishlist'])
-    except:
+        wishlist = json.loads(request.COOKIES.get('wishlist', '{}'))
+    except json.JSONDecodeError:
         wishlist = {}
     
     items = []
@@ -84,6 +84,7 @@ def cookieWishlist(request):
                 'name': product.name,
                 'image_url': product.imageURL,
                 'price': product.new_price,
+                'get_url': product.get_url,
             }
             items.append(item)
         except Product.DoesNotExist:

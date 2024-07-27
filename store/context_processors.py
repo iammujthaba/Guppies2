@@ -1,5 +1,5 @@
 from .models import Category
-from .utils import cartData
+from .utils import cartData, cookieWishlist
 from django.db.models import Count, Q
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
@@ -35,5 +35,6 @@ def wishlist_count(request):
     if request.user.is_authenticated:
         wishlist_count = Wishlist.objects.filter(user=request.user).count()
     else:
-        wishlist_count = 0
+        cookie_data = cookieWishlist(request)
+        wishlist_count = cookie_data['wishlist_count']
     return {'wishlist_count': wishlist_count}

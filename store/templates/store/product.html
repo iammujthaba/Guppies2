@@ -59,6 +59,12 @@
                                                 iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
                                             }
                                             wishlistCountElement.textContent = data.wishlist_count;
+
+                                            // Update the wishlist count in the header
+                                            const headerWishlistCount = document.querySelector('.wishlist .wishlist-count');
+                                            if (headerWishlistCount) {
+                                                headerWishlistCount.textContent = data.wishlist_count;
+                                            }
                                         });
                                     }
                                     </script>
