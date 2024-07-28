@@ -51,21 +51,21 @@ def cookieCart(request):
 	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
 
 def cartData(request):
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer, complete=False)
-		items = order.orderitem_set.all()
-		cartItems = order.get_cart_items
-		total_price_difference = 0
-	else:
-		cookieData = cookieCart(request)
-		cartItems = cookieData['cartItems']
-		order = cookieData['order']
-		items = cookieData['items']
-		total_price_difference = cookieData['total_price_difference']
-		print("............cartData.............")
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+        total_price_difference = 0
+    else:
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        order = cookieData['order']
+        items = cookieData['items']
+        total_price_difference = cookieData['total_price_difference']
 
-	return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
+    print("............cartData.............")
+    return {'cartItems': cartItems, 'order': order, 'items': items, 'total_price_difference': total_price_difference}
 
 def cookieWishlist(request):
     try:

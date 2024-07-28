@@ -84,15 +84,14 @@ def updateItem(request):
     productId = data['productId']
     action = data['action']
     currentQuantity = data.get('currentQuantity', None)
-    
     customer = request.user.customer
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-    
+
     added = True
     message = ""
-    
+
     if action == 'add':
         if currentQuantity is not None:
             if (orderItem.quantity + currentQuantity) <= product.stock:
@@ -107,17 +106,19 @@ def updateItem(request):
             else:
                 added = False
                 message = "There is no more stock available. If you want more, please contact us."
+
     elif action == 'remove':
         orderItem.quantity -= 1
         orderItem.save()
     elif action == 'remove-all':
         orderItem.delete()
-    
+
     if orderItem.quantity <= 0:
         orderItem.delete()
-        
-    return JsonResponse({'added': added, 'message': message}, safe=False)
 
+    cartItems = order.get_cart_items
+
+    return JsonResponse({'added': added, 'message': message, 'cartItems': cartItems}, safe=False)
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()

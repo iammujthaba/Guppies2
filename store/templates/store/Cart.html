@@ -30,69 +30,76 @@
 
 	<div class="row g-3">
 		{% for cart_item in items %}
-			<div class="col-md-6">
-				<div class="card border rounded shadow-sm">
-					<div class="card-header m-3">
-						<a href="{{cart_item.product.get_url}}">
-							<div class="d-flex align-items-center">
-								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}" class="img-fluid" style="width: 50px;">
-								<div class="ms-3 ml-3">
-									<div>{{ cart_item.product.name }}</div>
-									<div class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %} {% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
-										{% if cart_item.product.active and cart_item.product.stock > 0 %}
-										In Stock
-										{% else %}
-										Out of Stock
-										{% endif %}
-									</div>
+		<div class="col-md-6">
+			<div class="card border rounded shadow-sm">
+				<div class="card-header m-3">
+					<a href="{{cart_item.product.get_url}}">
+						<div class="d-flex align-items-center">
+							<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
+								class="img-fluid" style="width: 50px;">
+							<div class="ms-3 ml-3">
+								<div>{{ cart_item.product.name }}</div>
+								<div
+									class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %} {% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
+									{% if cart_item.product.active and cart_item.product.stock > 0 %}
+									In Stock
+									{% else %}
+									Out of Stock
+									{% endif %}
 								</div>
 							</div>
-						</a>
-					</div>
-					<div class="card-body">
-						<div class="d-flex flex-row justify-content-between">
-							<div class="details-filter-row details-row-size">
-								<label for="qty">Pair:</label>
-								<div class="product-details-quantity">
-									<div class="cart-item-counter">
-										<button data-product="{{cart_item.product.id}}" data-action="remove" class="cart-decrement chg-quantity update-cart">-</button>
-										<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
-										<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" data-action="add" class="cart-increment chg-quantity update-cart">+</button>
-									</div>
+						</div>
+					</a>
+				</div>
+				<div class="card-body">
+					<div class="d-flex flex-row justify-content-between">
+						<div class="details-filter-row details-row-size">
+							<label for="qty">Pair:</label>
+							<div class="product-details-quantity">
+								<div class="cart-item-counter">
+									<button data-product="{{cart_item.product.id}}" data-action="remove"
+										class="cart-decrement chg-quantity update-cart">-</button>
+									<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
+									<button data-quntity="{{cart_item.product.stock}}"
+										data-product="{{cart_item.product.id}}" data-action="add"
+										class="cart-increment chg-quantity update-cart">+</button>
 								</div>
-							</div><!-- End .product-details-quantity -->
-						</div><!-- End .details-filter-row -->
-				
-						<div class="details-filter-row details-row-size" id="femail-options" style="margin-left: 40px; display: none;">
-							<label for="size">Femail:</label>
-							<div class="select-custom">
-								<select name="size" id="size" class="form-control">
-									<option value="#" selected="selected">Additional</option>
-									<option value="1f">1 Femail</option>
-									<option value="2f">2 Femail</option>
-									<option value="3f">3 Femail</option>
-								</select>
-							</div><!-- End .select-custom -->
-						</div><!-- End .details-filter-row -->
-				
-						<div class="d-flex flex-row justify-content-between">
-							<div>Price: {{ cart_item.product.new_price }} ({{ cart_item.product.price_difference }})</div>
-							<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
-						</div>
-				
-						<div class="d-flex flex-row justify-content-start">
-							<button type="button" class="btn btn-danger mt-2 update-cart remove-button" data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
-						</div>
+							</div>
+						</div><!-- End .product-details-quantity -->
+					</div><!-- End .details-filter-row -->
+
+					<div class="details-filter-row details-row-size" id="femail-options"
+						style="margin-left: 40px; display: none;">
+						<label for="size">Femail:</label>
+						<div class="select-custom">
+							<select name="size" id="size" class="form-control">
+								<option value="#" selected="selected">Additional</option>
+								<option value="1f">1 Femail</option>
+								<option value="2f">2 Femail</option>
+								<option value="3f">3 Femail</option>
+							</select>
+						</div><!-- End .select-custom -->
+					</div><!-- End .details-filter-row -->
+
+					<div class="d-flex flex-row justify-content-between">
+						<div>Price: {{ cart_item.product.new_price }} ({{ cart_item.product.price_difference }})</div>
+						<div>Total: ₹ {{order.get_cart_total|floatformat:2}}</div>
+					</div>
+
+					<div class="d-flex flex-row justify-content-start">
+						<button type="button" class="btn btn-danger mt-2 update-cart remove-button"
+							data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
 					</div>
 				</div>
-				
-				<style>
-					.remove-button {
-						width: 50%;
-					}
-				</style>
-				
 			</div>
+
+			<style>
+				.remove-button {
+					width: 50%;
+				}
+			</style>
+
+		</div>
 		{% endfor %}
 	</div>
 </div>
@@ -154,18 +161,14 @@
 			</dl>
 
 			<div class="d-grid gap-2 my-3">
-				<a href="{% url 'store_app:checkout' %}" class="btn btn-success w-100 mb-2"> Add Address and Make Peyment </a>
+				<a href="{% url 'store_app:checkout' %}" class="btn btn-success w-100 mb-2"> Add Address and Make
+					Peyment </a>
 				<a href="/" class="btn btn-light w-100"> Back to shop </a>
 			</div>
 		</div> <!-- card-body.// -->
 	</div> <!-- card.// -->
 
 </aside> <!-- col.// -->
-
-
-
-
-
 
 
 {% endif %}
@@ -175,6 +178,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 	crossorigin="anonymous"></script>
+
+</script>
+
+
+{% endblock %}
+
 
 <!-- <script>
       function displayPopupMessage(message) {
@@ -245,7 +254,4 @@
 }); -->
 
 
-</script>
 
-
-{% endblock %}

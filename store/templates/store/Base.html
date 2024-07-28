@@ -192,13 +192,11 @@
                             <a href="{% url 'store_app:cart' %}" class="dropdown-toggle">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    {#{% if item_count > 0 %}#}
-                                    <span class="cart-count">{{cartItems}}</span>
-                                    {#{% endif %}#}
+                                    <span class="cart-count" data-cart-items="{{cartItems}}">{{cartItems}}</span>
                                 </div>
                                 <p>Cart</p>
-                            </a> 
-                        </div><!-- End .cart-dropdown -->
+                            </a>
+                        </div>
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
 
