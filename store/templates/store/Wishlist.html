@@ -1,51 +1,78 @@
-{% extends 'store/base.html' %}
-
+{% extends 'store/Base.html' %}
+{% load static %}
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'assets/css/style/wishlist.css' %}">
 
 <div class="wishlist-container">
     <h2>My Wishlist</h2>
     {% if wishlist_items %}
 
-<div class="products">
-    {% for item in wishlist_items %}
-    <div class="product product-sm">
-        <figure class="product-media">
-            <a href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
-                <img src="{% if user.is_authenticated %}{{ item.product.imageURL }}{% else %}{{ item.image_url }}{% endif %}" alt="Product image" class="product-image">
-            </a>
-        </figure>
-        <div class="product-body">
-            <h3 class="product-title">
-                <a href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
-                    {% if user.is_authenticated %}{{ item.product.name }}{% else %}{{ item.name }}{% endif %}
-                </a>
-            </h3>
-            <div class="product-price">
-                <span class="related-product-price">Rs {% if user.is_authenticated %}{{ item.product.new_price }}{% else %}{{ item.price }}{% endif %}</span>
-            </div>
-            <button class="remove-wishlist-btn" data-product-id="{% if user.is_authenticated %}{{ item.product.id }}{% else %}{{ item.id }}{% endif %}">Remove</button>
-        </div>
-    </div>
-    {% endfor %}
+    <aside class="col-xl-2 d-md-none d-xl-block">
+        <div class="sidebar sidebar-product">
+            <div class="widget widget-products">
+                <h4 class="widget-title">Related Product</h4>
 
-    {% else %}
-    <div>
-		<div class="text-center mb-3">
-			<br>
-			<h1>Your wishlist is empty.</h1>
-			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
-				continue shopping.</p>
-		</div>
-	</div>
-    {% endif %}
+                <div class="products">
+                    {% for item in wishlist_items %}
+                    <div class="product product-sm">
+                        <figure class="product-media">
+                            <a
+                                href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
+                                <img src="{% if user.is_authenticated %}{{ item.product.imageURL }}{% else %}{{ item.image_url }}{% endif %}"
+                                    alt="Product image" class="product-image">
+                            </a>
+                        </figure>
+
+                        <div class="product-body">
+                            <h3 class="product-title">
+                                <a
+                                    href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
+                                    {% if user.is_authenticated %}{{ item.product.name }}{% else %}{{ item.name }}{%endif %}
+                                </a>
+                            </h3>
+                            <h6 class="text-muted mb-0">JEE Exam preprestion book</h6>
+                            <div class="related-product-publisher">DC Books</div>
+                            <div class="product-price">
+                                <span class="related-product-price">Rs {% if user.is_authenticated %}{{ item.product.new_price }}{% else %}{{ item.new_price }}{% endif %}</span>
+                                {% if user.is_authenticated and item.product.discount_percentage %}
+                                    <span class="text-success mb-0 ml-2">{{ item.product.discount_percentage.percentage }}% off</span>
+                                {% elif not user.is_authenticated and item.discount_percentage %}
+                                    <span class="text-success mb-0 ml-2">{{ item.discount_percentage }}% off</span>
+                                {% endif %}
+                            </div>
+                            <button class="remove-wishlist-btn"
+                                data-product-id="{% if user.is_authenticated %}{{ item.product.id }}{% else %}{{ item.id }}{% endif %}">Remove</button>
+
+                            <button data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="">Add to Cart</button>
+
+                            </div>
+                    </div>
+                {% endfor %}
+
+                    {% else %}
+                    <div>
+                        <div class="text-center mb-3">
+                            <br>
+                            <h1>Your wishlist is empty.</h1>
+                            <p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
+                                continue shopping.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+    </aside>
 
 </div>
 
 <script>
     document.querySelectorAll('.remove-wishlist-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const productId = this.dataset.productId;
-        removeFromWishlist(productId, this);
+        button.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+            removeFromWishlist(productId, this);
         });
     });
 
@@ -59,23 +86,23 @@
                 'Content-Type': 'application/json',
                 'X-CSRFToken': '{{ csrf_token }}',
             },
-            body: JSON.stringify({'productId': productId}),
+            body: JSON.stringify({ 'productId': productId }),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.removed) {
-                // Remove the product element from the DOM
-                button.closest('.product').remove();
+            .then(response => response.json())
+            .then(data => {
+                if (data.removed) {
+                    // Remove the product element from the DOM
+                    button.closest('.product').remove();
 
-                // Update the wishlist count
-                wishlistCountElement.textContent = data.wishlist_count;
+                    // Update the wishlist count
+                    wishlistCountElement.textContent = data.wishlist_count;
 
-                // If the wishlist is empty, show a message
-                if (data.wishlist_count == 0) {
-                    document.querySelector('.wishlist-container').innerHTML = '<p>Your wishlist is empty.</p>';
+                    // If the wishlist is empty, show a message
+                    if (data.wishlist_count == 0) {
+                        document.querySelector('.wishlist-container').innerHTML = '<p>Your wishlist is empty.</p>';
+                    }
                 }
-            }
-        });
+            });
     }
 </script>
 

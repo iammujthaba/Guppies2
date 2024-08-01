@@ -83,7 +83,8 @@ def cookieWishlist(request):
                 'id': product.id,
                 'name': product.name,
                 'image_url': product.imageURL,
-                'price': product.new_price,
+                'new_price': product.new_price,
+                'old_price': product.old_price,
                 'get_url': product.get_url,
             }
             items.append(item)

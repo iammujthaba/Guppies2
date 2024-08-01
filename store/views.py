@@ -372,6 +372,19 @@ def wishlist(request):
         wishlist_items = cookie_data['wishlist_items']
         wishlist_count = cookie_data['wishlist_count']
 
+
+    # Calculate discount for each wishlist item
+    for item in wishlist_items:
+        if request.user.is_authenticated:
+            item.product.discount_percentage = item.product.get_discounted_price
+        else:
+            item['discount_percentage'] = (
+                int(round(((item['old_price'] - item['new_price']) / item['old_price']) * 100))
+                if item['old_price'] and item['new_price'] < item['old_price']
+                else None
+)
+
+
     return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items, 'wishlist_count': wishlist_count})
 
 
