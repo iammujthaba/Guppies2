@@ -173,19 +173,18 @@ def proDetail(request, c_slug, product_slug):
     try:
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
         
+        in_wishlist = is_product_in_wishlist(request, product)
+        
         if request.user.is_authenticated:
-            in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
             wishlist_count = Wishlist.objects.filter(user=request.user).count()
         else:
             cookie_data = cookieWishlist(request)
-            in_wishlist = str(product.id) in cookie_data['wishlist_items']
             wishlist_count = cookie_data['wishlist_count']
-
+    
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
         return render(request, 'auth_app/loginOrRegister.html')
-        # raise Http404("Product does not exist")
-
+    
     if c_slug:
         c_page = get_object_or_404(Category, slug=c_slug)
         products_list = Product.objects.filter(category=c_page, active=True)
@@ -198,10 +197,20 @@ def proDetail(request, c_slug, product_slug):
             products = paginator.page(page)
         except (InvalidPage, EmptyPage):
             products = paginator.page(paginator.num_pages)
-        return render(request, 'store/product.html', {'product': product, 'products': products, 'in_wishlist': in_wishlist, 'wishlist_count': wishlist_count})
+        
+        return render(request, 'store/product.html', {
+            'product': product,
+            'products': products,
+            'in_wishlist': in_wishlist,
+            'wishlist_count': wishlist_count
+        })
     else:
-        return render(request, 'store/product.html', {'product': product, 'in_wishlist': in_wishlist, 'wishlist_count': wishlist_count})
-
+        return render(request, 'store/product.html', {
+            'product': product,
+            'in_wishlist': in_wishlist,
+            'wishlist_count': wishlist_count
+        })
+    
 
 def allProductListing(request):
     products_list = Product.objects.all().filter(active=True)
@@ -364,3 +373,11 @@ def wishlist(request):
         wishlist_count = cookie_data['wishlist_count']
 
     return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items, 'wishlist_count': wishlist_count})
+
+
+def is_product_in_wishlist(request, product):
+    if request.user.is_authenticated:
+        return Wishlist.objects.filter(user=request.user, product=product).exists()
+    else:
+        cookie_data = cookieWishlist(request)
+        return str(product.id) in cookie_data['wishlist_items']
