@@ -321,26 +321,38 @@ def add_to_wishlist(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-
-
-@login_required
 def remove_from_wishlist(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         product_id = data.get('productId')
-        product = Product.objects.get(id=product_id)
-        wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
-
-        if wishlist_item:
-            wishlist_item.delete()
-            removed = True
+        
+        if request.user.is_authenticated:
+            product = Product.objects.get(id=product_id)
+            wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
+            if wishlist_item:
+                wishlist_item.delete()
+                removed = True
+            else:
+                removed = False
+            wishlist_count = Wishlist.objects.filter(user=request.user).count()
         else:
-            removed = False
-
-        wishlist_count = Wishlist.objects.filter(user=request.user).count()
-        return JsonResponse({'removed': removed, 'wishlist_count': wishlist_count})
-
+            wishlist = json.loads(request.COOKIES.get('wishlist', '{}'))
+            if str(product_id) in wishlist:
+                del wishlist[str(product_id)]
+                removed = True
+            else:
+                removed = False
+            wishlist_count = len(wishlist)
+        
+        response = JsonResponse({'removed': removed, 'wishlist_count': wishlist_count})
+        
+        if not request.user.is_authenticated:
+            response.set_cookie('wishlist', json.dumps(wishlist))
+        
+        return response
+    
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 def wishlist(request):
     if request.user.is_authenticated:

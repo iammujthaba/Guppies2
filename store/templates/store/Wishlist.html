@@ -9,34 +9,22 @@
 <div class="products">
     {% for item in wishlist_items %}
     <div class="product product-sm">
-
         <figure class="product-media">
-            <a href="{{item.product.get_url}}">
-                <img src="{{ item.product.imageURL }}" alt="Product image"
-                    class="product-image">
+            <a href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
+                <img src="{% if user.is_authenticated %}{{ item.product.imageURL }}{% else %}{{ item.image_url }}{% endif %}" alt="Product image" class="product-image">
             </a>
         </figure>
-
         <div class="product-body">
-            <h3 class="product-title"><a href="{{item.product.get_url}}">{{ item.product.name }}</a></h3>
-            <h6 class="text-muted mb-0">JEE Exam preprestion book</h6>
-
-            <div class="related-product-publisher">DC Books</div>
-            <!-- New arriwel / best seller /  -->
-            <!-- <div>New arriwel</div> -->
-
+            <h3 class="product-title">
+                <a href="{% if user.is_authenticated %}{{ item.product.get_url }}{% else %}{{ item.get_url }}{% endif %}">
+                    {% if user.is_authenticated %}{{ item.product.name }}{% else %}{{ item.name }}{% endif %}
+                </a>
+            </h3>
             <div class="product-price">
-                <span class="related-product-price">Rs {{ item.product.new_price }}</span>
-
-                {% if item.product.get_discounted_price %}
-                <span class="text-success mb-0 ml-2">{{ item.product.get_discounted_price.percentage }}% off</span>
-                {% endif %}
-
-                <button onclick="removeFromWishlist({{ item.product.id }}, this)">Remove</button>
-
+                <span class="related-product-price">Rs {% if user.is_authenticated %}{{ item.product.new_price }}{% else %}{{ item.price }}{% endif %}</span>
             </div>
+            <button class="remove-wishlist-btn" data-product-id="{% if user.is_authenticated %}{{ item.product.id }}{% else %}{{ item.id }}{% endif %}">Remove</button>
         </div>
-
     </div>
     {% endfor %}
 
@@ -54,6 +42,13 @@
 </div>
 
 <script>
+    document.querySelectorAll('.remove-wishlist-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const productId = this.dataset.productId;
+        removeFromWishlist(productId, this);
+        });
+    });
+
     function removeFromWishlist(productId, button) {
         const url = '{% url "store_app:remove_from_wishlist" %}';
         const wishlistCountElement = document.getElementById('wishlist-count');
