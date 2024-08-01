@@ -26,7 +26,7 @@
                                 <div class="product-gallery">
                                     <div class="icon-container">
                                         <div class="left-icons">
-                                            <button class="icon-btn share-btn">
+                                            <button class="icon-btn share-btn" onclick="showShareOptions()">
                                                 <i class="fa-solid fa-share-nodes" style="font-size: 25px; font-weight: 800;"></i>
                                             </button>
                                         </div>
@@ -378,6 +378,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <h2>Share this Book</h2>
+            <div class="social-icons social-icons-colored justify-content-around mb-2 mt-3">
+                <a href="#" onclick="shareViaWhatsApp()" class="social-icon" target="_blank" title="WhatsApp" style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
+                <a href="#" onclick="shareViaInstagram()" class="social-icon social-instagram" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" onclick="shareViaFacebook()" class="social-icon social-facebook" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" onclick="shareViaTelegram()" class="social-icon" target="_blank" title="Telegram" style="font-size: 4rem;"><i class="icon-telegram"></i></a>
+                <!-- <button onclick="copyProductUrl()"><i class="icon-link"></i> Copy Link</button> -->
+            </div>
+            <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+
 </main>
             <script>
                 function showWarningAlert(message, callback) {
@@ -436,6 +452,56 @@
                     checkSticky();
                 });
             </script>
+
+
+<script>
+var modal = document.getElementById("shareModal");
+
+function showShareOptions() {
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+    // Get the current page URL
+    var productUrl = window.location.href;
+    var productName = "{{ product.name }}";
+    var productDescription = "{{ product.description|truncatechars:100 }}";
+    var shareText = "Check out this product: " + productName + "\n\n" + productDescription + "\n\n";
+
+    function shareViaWhatsApp() {
+        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(shareText + productUrl));
+    }
+
+    function shareViaInstagram() {
+        alert("To share on Instagram, copy the link and paste it in your Instagram post or story.");
+        copyProductUrl();
+    }
+
+    function shareViaFacebook() {
+        window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(productUrl));
+    }
+
+    function shareViaTelegram() {
+        window.open("https://t.me/share/url?url=" + encodeURIComponent(productUrl) + "&text=" + encodeURIComponent(shareText));
+    }
+
+    function copyProductUrl() {
+        navigator.clipboard.writeText(productUrl).then(function() {
+            alert("Product link copied to clipboard!");
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+        });
+    }
+</script>
 
             <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 
