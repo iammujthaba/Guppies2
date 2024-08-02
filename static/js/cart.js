@@ -1,24 +1,23 @@
-var updateBtns = document.getElementsByClassName('update-cart');
-for (var i = 0; i < updateBtns.length; i++) {
-    updateBtns[i].addEventListener('click', function() {
-        var productId = this.dataset.product;
-        var action = this.dataset.action;
-        var stock = parseInt(this.dataset.quntity);
-        var quantityInput = document.getElementById('cart-quantity');
-        var currentQuantity = 1; // Default to 1 if quantity input is not present
-        if (quantityInput) {
-            currentQuantity = parseInt(quantityInput.value);
-            stock = parseInt(quantityInput.getAttribute('max'));
-        }
-        console.log('productId:', productId, 'Action:', action, 'stock:', stock, 'currentQuantity:', currentQuantity);
-        console.log('USER:', user);
-        if (user === 'AnonymousUser') {
-            addCookieItem(productId, action, stock, currentQuantity);
-        } else {
-            updateUserOrder(productId, action, currentQuantity);
-        }
-    });
-}
+document.addEventListener('DOMContentLoaded', function() {
+    var updateBtns = document.getElementsByClassName('update-cart');
+    for (var i = 0; i < updateBtns.length; i++) {
+        updateBtns[i].addEventListener('click', function() {
+            var productId = this.dataset.product;
+            var action = this.dataset.action;
+            var stock = parseInt(this.dataset.quantity);
+            var currentQuantity = 1; // Default to 1 for wishlist items
+
+            console.log('productId:', productId, 'Action:', action, 'stock:', stock, 'currentQuantity:', currentQuantity);
+            console.log('USER:', user);
+
+            if (user === 'AnonymousUser') {
+                addCookieItem(productId, action, stock, currentQuantity);
+            } else {
+                updateUserOrder(productId, action, currentQuantity);
+            }
+        });
+    }
+});
 
 function updateUserOrder(productId, action, currentQuantity = NaN) {
     console.log('User is authenticated, sending data...');

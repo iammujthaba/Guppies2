@@ -33,8 +33,7 @@
                                 {% endif %}
                             </div>
                             <button class="remove-wishlist-btn" data-product-id="{{ item.id }}">Remove</button>
-
-                            <button data-quntity="{{item.stock}}" data-product="{{item.id}}" data-action="add" class="">Add to Cart</button>
+                            <button data-quantity="{{ item.stock }}" data-product="{{ item.id }}" data-action="add" class="add-to-cart update-cart">Add to Cart</button>
                         </div>
                     </div>
                     {% endfor %}
