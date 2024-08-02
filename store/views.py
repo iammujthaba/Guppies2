@@ -364,29 +364,38 @@ def remove_from_wishlist(request):
 
 
 def wishlist(request):
+    wishlist_items = []
+    
     if request.user.is_authenticated:
-        wishlist_items = Wishlist.objects.filter(user=request.user)
-        wishlist_count = wishlist_items.count()
+        # Fetch wishlist items for authenticated users
+        wishlist_objects = Wishlist.objects.filter(user=request.user)
+        for item in wishlist_objects:
+            wishlist_items.append({
+                'id': item.product.id,
+                'name': item.product.name,
+                'image_url': item.product.imageURL,
+                'new_price': item.product.new_price,
+                'old_price': item.product.old_price,
+                'get_url': item.product.get_url(),
+                'discount_percentage': item.product.get_discounted_price if item.product.old_price > 0 else None,
+            })
     else:
+        # Use cookie data for unauthenticated users
         cookie_data = cookieWishlist(request)
         wishlist_items = cookie_data['wishlist_items']
-        wishlist_count = cookie_data['wishlist_count']
-
-
-    # Calculate discount for each wishlist item
-    for item in wishlist_items:
-        if request.user.is_authenticated:
-            item.product.discount_percentage = item.product.get_discounted_price
-        else:
+        for item in wishlist_items:
             item['discount_percentage'] = (
                 int(round(((item['old_price'] - item['new_price']) / item['old_price']) * 100))
                 if item['old_price'] and item['new_price'] < item['old_price']
                 else None
-)
+            )
 
+    wishlist_count = len(wishlist_items)
 
-    return render(request, 'store/wishlist.html', {'wishlist_items': wishlist_items, 'wishlist_count': wishlist_count})
-
+    return render(request, 'store/wishlist.html', {
+        'wishlist_items': wishlist_items,
+        'wishlist_count': wishlist_count,
+    })
 
 def is_product_in_wishlist(request, product):
     if request.user.is_authenticated:
