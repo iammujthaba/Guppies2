@@ -83,7 +83,7 @@ def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-    customer = request.user.customer
+    customer = request.user.customer if request.user.is_authenticated else None
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
@@ -107,9 +107,19 @@ def updateItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
 
-    cartItems = order.get_cart_items
+    cart_total = order.get_cart_total
+    cart_items = order.get_cart_items
+    total_price_difference = sum((item.product.old_price - item.product.new_price) * item.quantity for item in order.orderitem_set.all())
 
-    return JsonResponse({'added': added, 'message': message, 'cartItems': cartItems}, safe=False)
+    return JsonResponse({
+        'added': added,
+        'message': message,
+        'cartItems': cart_items,
+        'cartTotal': cart_total,
+        'totalPriceDifference': total_price_difference,
+        'itemQuantity': orderItem.quantity if orderItem.id else 0,
+        'itemTotal': orderItem.get_total if orderItem.id else 0,
+    }, safe=False)
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()

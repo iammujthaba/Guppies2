@@ -39,7 +39,11 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({ 'productId': productId, 'action': action, 'currentQuantity': currentQuantity })
+        body: JSON.stringify({
+            'productId': productId,
+            'action': action,
+            'currentQuantity': currentQuantity
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -51,13 +55,90 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
             return;
         } else {
             updateCartCount(data.cartItems);
+            updateCartTotal(data.cartTotal);
+            updateTotalPriceDifference(data.totalPriceDifference);
+            updateCartTotalWithShipping(data.cartTotal);
             if (action === 'remove-all') {
                 removeCartItem(productId);
             } else {
-                updateCartItemQuantity(productId, data.cartItems);
+                updateCartItemQuantity(productId, data.itemQuantity);
+                updateCartItemTotal(productId, data.itemTotal);
             }
         }
     });
+}
+
+function updateCartTotal(total) {
+    const cartTotalElements = document.querySelectorAll('.cart-total');
+    cartTotalElements.forEach(el => {
+        el.textContent = '₹ ' + parseFloat(total).toFixed(2);
+    });
+}
+
+function updateTotalPriceDifference(difference) {
+    const savingsElement = document.querySelector('.total-price-difference');
+    if (savingsElement) {
+        savingsElement.textContent = '₹ ' + parseFloat(difference).toFixed(2);
+    }
+}
+
+function updateCartItemTotal(productId, total) {
+    const totalElement = document.querySelector(`[data-product-id="${productId}"] .item-total`);
+    if (totalElement) {
+        totalElement.textContent = '₹ ' + parseFloat(total).toFixed(2);
+    }
+}
+
+function updateCartTotalWithShipping(total) {
+    const shippingCost = 60; // Assuming shipping cost is always 60
+    const totalWithShipping = parseFloat(total) + shippingCost;
+    const totalWithShippingElement = document.querySelector('.cart-total-with-shipping');
+    if (totalWithShippingElement) {
+        totalWithShippingElement.textContent = '₹ ' + totalWithShipping.toFixed(2);
+    }
+}
+
+function updateCartDataForUnauthorizedUser() {
+    let cartTotal = 0;
+    let totalPriceDifference = 0;
+    let cartItems = 0;
+    
+    for (let productId in cart) {
+        let item = cart[productId];
+        let product = getProductDetails(productId);
+        if (product) {
+            cartTotal += item.quantity * product.new_price;
+            totalPriceDifference += item.quantity * (product.old_price - product.new_price);
+            cartItems += item.quantity;
+        }
+    }
+
+    if (document.querySelector('.cart-count')) {
+        updateCartCount(cartItems);
+    }
+    if (document.querySelector('.cart-total')) {
+        updateCartTotal(cartTotal);
+    }
+    if (document.querySelector('.total-price-difference')) {
+        updateTotalPriceDifference(totalPriceDifference);
+    }
+    if (document.querySelector('.cart-total-with-shipping')) {
+        updateCartTotalWithShipping(cartTotal);
+    }
+}
+
+function getProductDetails(productId) {
+    const productCard = document.querySelector(`.card[data-product-id="${productId}"]`);
+    if (productCard) {
+        return {
+            id: productId,
+            name: productCard.dataset.productName,
+            new_price: parseFloat(productCard.dataset.productNewPrice),
+            old_price: parseFloat(productCard.dataset.productOldPrice),
+            stock: parseInt(productCard.dataset.productStock)
+        };
+    }
+    return null;
 }
 
 function addCookieItem(productId, action, stock, currentQuantity = 1) {
@@ -68,8 +149,7 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
         if (cart[productId] == undefined) {
             cart[productId] = {'quantity': 0};
         }
-        // Change this line
-        if (cart[productId]['quantity'] + 1 <= stock) {  // Always add 1, not currentQuantity
+        if (cart[productId]['quantity'] + 1 <= stock) {
             cart[productId]['quantity'] += 1;
         } else {
             showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
@@ -97,13 +177,37 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
 
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
-    updateCartCount(getCartItemCount());
+    
+    updateCartDataForUnauthorizedUser();
     updateCartItemQuantity(productId, cart[productId] ? cart[productId]['quantity'] : 0);
+
+    // Update individual item total
+    const product = getProductDetails(productId);
+    if (product) {
+        const itemTotal = (cart[productId] ? cart[productId]['quantity'] : 0) * product.new_price;
+        updateCartItemTotal(productId, itemTotal);
+    }
 }
 
+// Make sure to call updateCartDataForUnauthorizedUser on page load for unauthorized users
+document.addEventListener('DOMContentLoaded', function() {
+    if (user === 'AnonymousUser' && (
+        document.querySelector('.cart-count') ||
+        document.querySelector('.cart-total') ||
+        document.querySelector('.total-price-difference') ||
+        document.querySelector('.cart-total-with-shipping')
+    )) {
+        updateCartDataForUnauthorizedUser();
+    }
+});
+
+
 function updateCartCount(cartItems) {
-    document.querySelector('.cart-count').textContent = cartItems;
-    document.querySelector('.cart-count').dataset.cartItems = cartItems;
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(el => {
+        el.textContent = cartItems;
+        el.dataset.cartItems = cartItems;
+    });
 }
 
 function getCartItemCount() {
@@ -124,9 +228,16 @@ function removeCartItem(productId) {
 }
 
 function updateCartItemQuantity(productId, quantity) {
-    var quantityInput = document.querySelector(`[data-product="${productId}"] .cart-quantity`);
+    var quantityInput = document.querySelector(`[data-product-id="${productId}"] .cart-quantity`);
     if (quantityInput) {
         quantityInput.value = quantity;
+    }
+
+    // Update item total
+    const product = getProductDetails(productId);
+    if (product) {
+        const itemTotal = quantity * product.new_price;
+        updateCartItemTotal(productId, itemTotal);
     }
 }
 
