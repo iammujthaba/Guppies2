@@ -83,19 +83,17 @@ def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-    currentQuantity = data.get('currentQuantity', 1)  # Default to 1 if not provided
-    
     customer = request.user.customer
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-    
+
     added = True
     message = ""
 
     if action == 'add':
-        if orderItem.quantity + currentQuantity <= product.stock:
-            orderItem.quantity += currentQuantity
+        if orderItem.quantity + 1 <= product.stock:
+            orderItem.quantity += 1
             orderItem.save()
         else:
             added = False

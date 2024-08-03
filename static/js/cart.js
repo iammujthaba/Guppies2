@@ -4,8 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
         updateBtns[i].addEventListener('click', function() {
             var productId = this.dataset.product;
             var action = this.dataset.action;
-            var stock = parseInt(this.dataset.quantity);
-            var currentQuantity = 1; // Default to 1 for wishlist items
+            var stock = parseInt(this.dataset.quntity);
+            var currentQuantity = 1;  // Always set to 1 for 'add' and 'remove' actions
+
+            // Only get the actual quantity for 'remove-all' action
+            if (action === 'remove-all') {
+                var quantityInput = this.closest('.card-body') ? 
+                    this.closest('.card-body').querySelector('.cart-quantity') : 
+                    document.getElementById('cart-quantity');
+                
+                if (quantityInput) {
+                    currentQuantity = parseInt(quantityInput.value) || 1;
+                }
+            }
 
             console.log('productId:', productId, 'Action:', action, 'stock:', stock, 'currentQuantity:', currentQuantity);
             console.log('USER:', user);
@@ -49,53 +60,45 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
     });
 }
 
-function addCookieItem(productId, action, stock, currentQuantity = NaN) {
+function addCookieItem(productId, action, stock, currentQuantity = 1) {
     console.log('User is not authenticated');
     console.log('productId:', productId, 'Action:', action, 'stock:', stock, 'currentQuantity:', currentQuantity);
+
     if (action == 'add') {
-        if (currentQuantity > 1) {
-            if (cart[productId] == undefined) {
-                cart[productId] = {'quantity': currentQuantity};
-            } else {
-                if ((cart[productId]['quantity'] + currentQuantity) < stock) {
-                    cart[productId]['quantity'] += currentQuantity;
-                } else {
-                    showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
-                        // Code to execute if the user confirms the alert
-                    });
-                    return;
-                }
-            }
+        if (cart[productId] == undefined) {
+            cart[productId] = {'quantity': 0};
+        }
+        // Change this line
+        if (cart[productId]['quantity'] + 1 <= stock) {  // Always add 1, not currentQuantity
+            cart[productId]['quantity'] += 1;
         } else {
-            if (cart[productId] == undefined) {
-                cart[productId] = {'quantity': 1};
-            } else {
-                if (cart[productId]['quantity'] < stock) {
-                    cart[productId]['quantity'] += 1;
-                } else {
-                    showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
-                        // Code to execute if the user confirms the alert
-                    });
-                    return;
-                }
+            showWarningAlert('There is no more stock available. If you want more, please contact us.', () => {
+                // Code to execute if the user confirms the alert
+            });
+            return;
+        }
+    }
+
+    if (action == 'remove') {
+        if (cart[productId] && cart[productId]['quantity'] > 0) {
+            cart[productId]['quantity'] -= 1;
+            if (cart[productId]['quantity'] <= 0) {
+                console.log('Item should be deleted');
+                delete cart[productId];
+                removeCartItem(productId);
             }
         }
     }
-    if (action == 'remove') {
-        cart[productId]['quantity'] -= 1;
-        if (cart[productId]['quantity'] <= 0) {
-            console.log('Item should be deleted');
-            delete cart[productId];
-            removeCartItem(productId);
-        }
-    }
+
     if (action == 'remove-all') {
         delete cart[productId];
         removeCartItem(productId);
     }
+
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
     updateCartCount(getCartItemCount());
+    updateCartItemQuantity(productId, cart[productId] ? cart[productId]['quantity'] : 0);
 }
 
 function updateCartCount(cartItems) {
@@ -120,13 +123,10 @@ function removeCartItem(productId) {
     }
 }
 
-function updateCartItemQuantity(productId, cartItems) {
-    var cartItem = document.querySelector(`[data-product="${productId}"]`).closest('.card');
-    if (cartItem) {
-        var quantityInput = cartItem.querySelector('.cart-quantity');
-        if (quantityInput) {
-            quantityInput.value = cartItems;
-        }
+function updateCartItemQuantity(productId, quantity) {
+    var quantityInput = document.querySelector(`[data-product="${productId}"] .cart-quantity`);
+    if (quantityInput) {
+        quantityInput.value = quantity;
     }
 }
 
