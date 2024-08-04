@@ -99,32 +99,8 @@ function updateCartTotalWithShipping(total) {
 }
 
 function updateCartDataForUnauthorizedUser() {
-    let cartTotal = 0;
-    let totalPriceDifference = 0;
-    let cartItems = 0;
-    
-    for (let productId in cart) {
-        let item = cart[productId];
-        let product = getProductDetails(productId);
-        if (product) {
-            cartTotal += item.quantity * product.new_price;
-            totalPriceDifference += item.quantity * (product.old_price - product.new_price);
-            cartItems += item.quantity;
-        }
-    }
-
-    if (document.querySelector('.cart-count')) {
-        updateCartCount(cartItems);
-    }
-    if (document.querySelector('.cart-total')) {
-        updateCartTotal(cartTotal);
-    }
-    if (document.querySelector('.total-price-difference')) {
-        updateTotalPriceDifference(totalPriceDifference);
-    }
-    if (document.querySelector('.cart-total-with-shipping')) {
-        updateCartTotalWithShipping(cartTotal);
-    }
+    let cartItems = getCartItemCount();
+    updateCartCount(cartItems);
 }
 
 function getProductDetails(productId) {

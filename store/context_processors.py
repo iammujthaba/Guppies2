@@ -26,7 +26,7 @@ def menu_link(request): # this function don't wanna call to work, it's defined i
 def cart_data(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    return dict(cartItems=cartItems)
+    return {'cartItems': cartItems}
 
 
 from .models import Wishlist
