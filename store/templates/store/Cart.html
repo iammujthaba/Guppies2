@@ -87,7 +87,11 @@
 					</div><!-- End .details-filter-row -->
 
 					<div class="d-flex flex-row justify-content-between">
-						<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
+						{% if user.is_authenticated %}
+							<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
+						{% else %}
+							<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
+						{% endif %}
 						<div>Total: ₹ <span class="item-total">{{cart_item.get_total|floatformat:2}}</span></div>
 					</div>
 
@@ -151,7 +155,7 @@
 			{% if total_price_difference %}
 			<dl class="dlist-align">
 				<dt>You Save:</dt>
-				<dd class="text-end text-success total-price-difference">{{total_price_difference}}</dd>
+				<dd class="text-end text-success total-price-difference">₹ {{ total_price_difference|floatformat:2 }}</dd>
 			</dl>
 			{% endif %}
 			<dl class="dlist-align">

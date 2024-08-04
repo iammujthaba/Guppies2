@@ -32,12 +32,18 @@ def cookieCart(request):
 
             # get and uppend into items, all information about product
 			item = {
-				'id':product.id,
-				'product':{'id':product.id,'name':product.name, 
-			   	'new_price':product.new_price, 'old_price':product.old_price,
-				'imageURL':product.imageURL, 'get_url':product.get_url, 
-				'active':product.active, 'stock':product.stock, 
-				'price_difference':price_difference}, 
+                'id': product.id,
+                'product': {
+                    'id': product.id,
+                    'name': product.name,
+                    'new_price': product.new_price,
+                    'old_price': product.old_price,
+                    'imageURL': product.imageURL,
+                    'get_url': product.get_url,
+                    'active': product.active,
+                    'stock': product.stock,
+                    'price_difference': price_difference
+                }, 
 
 				'quantity':cart[i]['quantity'],
 				'get_total':total,}
@@ -56,7 +62,7 @@ def cartData(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
-        total_price_difference = 0
+        total_price_difference = sum((item.product.old_price - item.product.new_price) * item.quantity for item in items)
     else:
         cookieData = cookieCart(request)
         cartItems = cookieData['cartItems']

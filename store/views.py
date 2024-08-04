@@ -54,9 +54,22 @@ def cart(request):
     order = data['order']
     items = data['items']
     total_price_difference = data['total_price_difference']
-    context = {'items': items, 'order': order, 'cartItems': cartItems, 'total_price_difference': total_price_difference}
-    return render(request, 'store/cart.html', context)
 
+    # Calculate price_difference for each item
+    if request.user.is_authenticated:
+        for item in items:
+            item.product.price_difference = item.product.old_price - item.product.new_price
+    else:
+        for item in items:
+            item['product']['price_difference'] = item['product']['old_price'] - item['product']['new_price']
+
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        'total_price_difference': total_price_difference
+    }
+    return render(request, 'store/cart.html', context)
 
 def checkout(request):
     if request.user.is_authenticated:
