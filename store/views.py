@@ -100,11 +100,11 @@ def updateItem(request):
             message = "There is no more stock available. If you want more, please contact us."
     elif action == 'remove':
         orderItem.quantity -= 1
-        orderItem.save()
+        if orderItem.quantity <= 0:
+            orderItem.delete()
+        else:
+            orderItem.save()
     elif action == 'remove-all':
-        orderItem.delete()
-
-    if orderItem.quantity <= 0:
         orderItem.delete()
 
     cart_total = order.get_cart_total

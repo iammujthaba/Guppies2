@@ -58,7 +58,7 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
             updateCartTotal(data.cartTotal);
             updateTotalPriceDifference(data.totalPriceDifference);
             updateCartTotalWithShipping(data.cartTotal);
-            if (action === 'remove-all') {
+            if (data.itemQuantity <= 0) {
                 removeCartItem(productId);
             } else {
                 updateCartItemQuantity(productId, data.itemQuantity);
