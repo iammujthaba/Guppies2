@@ -17,11 +17,11 @@
 
 
 	{% if not items %}
-	<div>
-		<div class="text-center mb-3">
+    <div>
+		<div class="text-center mb-7 mt-3">
 			<br>
 			<h1>Your shopping cart is empty.</h1>
-			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
+			<p class="mt-2">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
 				continue shopping.</p>
 		</div>
 	</div>
@@ -70,7 +70,7 @@
 										<button data-product="{{cart_item.product.id}}" data-action="remove"
 											class="cart-decrement chg-quantity update-cart">-</button>
 										<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
-										<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" 
+										<button data-quantity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" 
 										data-action="add" class="cart-increment chg-quantity update-cart">+</button>
 									</div>
 								</div>
