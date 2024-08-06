@@ -101,6 +101,7 @@ function updateCartTotalWithShipping(total) {
 function updateCartDataForUnauthorizedUser() {
     let cartItems = getCartItemCount();
     updateCartCount(cartItems);
+    updateCartTotals();
 }
 
 function getProductDetails(productId) {
@@ -153,16 +154,29 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
 
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
-    
     updateCartDataForUnauthorizedUser();
     updateCartItemQuantity(productId, cart[productId] ? cart[productId]['quantity'] : 0);
 
-    // Update individual item total
-    const product = getProductDetails(productId);
-    if (product) {
-        const itemTotal = (cart[productId] ? cart[productId]['quantity'] : 0) * product.new_price;
-        updateCartItemTotal(productId, itemTotal);
+    // Update cart totals
+    updateCartTotals();
+}
+
+function updateCartTotals() {
+    let cartTotal = 0;
+    let totalPriceDifference = 0;
+
+    for (let productId in cart) {
+        const product = getProductDetails(productId);
+        if (product) {
+            const quantity = cart[productId]['quantity'];
+            cartTotal += quantity * product.new_price;
+            totalPriceDifference += quantity * (product.old_price - product.new_price);
+        }
     }
+
+    updateCartTotal(cartTotal);
+    updateTotalPriceDifference(totalPriceDifference);
+    updateCartTotalWithShipping(cartTotal);
 }
 
 // Make sure to call updateCartDataForUnauthorizedUser on page load for unauthorized users
