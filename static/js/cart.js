@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateBtns[i].addEventListener('click', function() {
             var productId = this.dataset.product;
             var action = this.dataset.action;
-            var stock = parseInt(this.dataset.quntity);
+            var stock = parseInt(this.dataset.quantity);
             var currentQuantity = 1;  // Always set to 1 for 'add' and 'remove' actions
 
             // Only get the actual quantity for 'remove-all' action
