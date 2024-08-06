@@ -6,10 +6,9 @@
 <div class="wishlist-container">
     {% if wishlist_items %}
     <aside class="col-xl-2 d-md-none d-xl-block">
-        <h2>My Wishlist</h2>
         <div class="sidebar sidebar-product">
-            <div class="widget widget-products">
-                <h4 class="widget-title">Related Product</h4>
+            <div class="widget widget-products"  style="margin-top:1.5rem;">
+                <h4 class="widget-title mt-3" style="margin-left: 5px; margin-bottom: 1.3rem;">My Wishlist</h4>
                 <div class="products">
                     {% for item in wishlist_items %}
                     <div class="product product-sm">
@@ -43,10 +42,10 @@
     </aside>
     {% else %}
     <div>
-        <div class="text-center mb-3">
+        <div class="text-center mb-5 mt-4">
             <br>
             <h1>Your wishlist is empty.</h1>
-            <p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to continue shopping.</p>
+            <p class="mt-4">Click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to continue shopping.</p>
         </div>
     </div>
     {% endif %}
