@@ -64,6 +64,10 @@ function updateUserOrder(productId, action, currentQuantity = NaN) {
                 updateCartItemQuantity(productId, data.itemQuantity);
                 updateCartItemTotal(productId, data.itemTotal);
             }
+
+            if (data.cartItems === 0) {
+                showEmptyCartMessage();
+            }
         }
     });
 }
@@ -159,6 +163,10 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
 
     // Update cart totals
     updateCartTotals();
+
+    if (Object.keys(cart).length === 0) {
+        showEmptyCartMessage();
+    }
 }
 
 function updateCartTotals() {
@@ -215,6 +223,26 @@ function removeCartItem(productId) {
     if (cartItem) {
         cartItem.remove();
     }
+
+    // Check if cart is empty after removing the item
+    const remainingItems = document.querySelectorAll('.card[data-product-id]');
+    if (remainingItems.length === 0) {
+        showEmptyCartMessage();
+    }
+}
+
+function showEmptyCartMessage() {
+    const cartContainer = document.querySelector('.empty-cart-message');
+    cartContainer.innerHTML = `
+	<div>
+		<div class="text-center mb-3">
+			<br>
+			<h1>Your shopping cart is empty.</h1>
+			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
+				continue shopping.</p>
+		</div>
+	</div>
+    `;
 }
 
 function updateCartItemQuantity(productId, quantity) {

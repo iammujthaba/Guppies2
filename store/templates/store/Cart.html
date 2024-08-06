@@ -14,6 +14,8 @@
 			</ol>
 		</div><!-- End .container-fluid -->
 	</nav><!-- End .breadcrumb-nav -->
+
+
 	{% if not items %}
 	<div>
 		<div class="text-center mb-3">
@@ -24,161 +26,160 @@
 		</div>
 	</div>
 	{% else %}
-	<div class="text-center mb-2">
-		<h1>Shopping Cart</h1>
-	</div>
+	<div id="empty-cart-message" class="empty-cart-message">
 
-	<div class="row g-3">
-		{% for cart_item in items %}
-		<div class="col-md-6">
-			<div class="card border rounded shadow-sm" 
-			data-product-id="{{ cart_item.product.id }}"
-			data-product-name="{{ cart_item.product.name }}"
-			data-product-new-price="{{ cart_item.product.new_price }}"
-			data-product-old-price="{{ cart_item.product.old_price }}"
-			data-product-stock="{{ cart_item.product.stock }}">
+		<div class="text-center mb-2">
+			<h1>Shopping Cart</h1>
+		</div>
 
-				<div class="card-header m-3">
-					<a href="{{cart_item.product.get_url}}">
-						<div class="d-flex align-items-center">
-							<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
-								class="img-fluid" style="width: 50px;">
-							<div class="ms-3 ml-3">
-								<div>{{ cart_item.product.name }}</div>
-								<div
-									class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %} {% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
-									{% if cart_item.product.active and cart_item.product.stock > 0 %}
-									In Stock
-									{% else %}
-									Out of Stock
-									{% endif %}
+		<div class="row g-3">
+			{% for cart_item in items %}
+			<div class="col-md-6">
+				<div class="card border rounded shadow-sm" 
+				data-product-id="{{ cart_item.product.id }}"
+				data-product-name="{{ cart_item.product.name }}"
+				data-product-new-price="{{ cart_item.product.new_price }}"
+				data-product-old-price="{{ cart_item.product.old_price }}"
+				data-product-stock="{{ cart_item.product.stock }}">
+
+					<div class="card-header m-3">
+						<a href="{{cart_item.product.get_url}}">
+							<div class="d-flex align-items-center">
+								<img src="{{ cart_item.product.imageURL }}" alt="{{ cart_item.product.name }}"
+									class="img-fluid" style="width: 50px;">
+								<div class="ms-3 ml-3">
+									<div>{{ cart_item.product.name }}</div>
+									<div
+										class="{% if cart_item.product.active and cart_item.product.stock > 0 %} text-success {% endif %} {% if not cart_item.product.active or cart_item.product.stock == 0 %} text-muted {% endif %}">
+										{% if cart_item.product.active and cart_item.product.stock > 0 %}
+										In Stock
+										{% else %}
+										Out of Stock
+										{% endif %}
+									</div>
 								</div>
 							</div>
+						</a>
+					</div>
+					<div class="card-body">
+						<div class="d-flex flex-row justify-content-between">
+							<div class="details-filter-row details-row-size">
+								<label for="qty">Pair:</label>
+								<div class="product-details-quantity">
+									<div class="cart-item-counter">
+										<button data-product="{{cart_item.product.id}}" data-action="remove"
+											class="cart-decrement chg-quantity update-cart">-</button>
+										<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
+										<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" 
+										data-action="add" class="cart-increment chg-quantity update-cart">+</button>
+									</div>
+								</div>
+							</div><!-- End .product-details-quantity -->
+						</div><!-- End .details-filter-row -->
+
+						<div class="details-filter-row details-row-size" id="femail-options"
+							style="margin-left: 40px; display: none;">
+							<label for="size">Femail:</label>
+							<div class="select-custom">
+								<select name="size" id="size" class="form-control">
+									<option value="#" selected="selected">Additional</option>
+									<option value="1f">1 Femail</option>
+									<option value="2f">2 Femail</option>
+									<option value="3f">3 Femail</option>
+								</select>
+							</div><!-- End .select-custom -->
+						</div><!-- End .details-filter-row -->
+
+						<div class="d-flex flex-row justify-content-between">
+							{% if user.is_authenticated %}
+								<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
+							{% else %}
+								<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
+							{% endif %}
+							<div>Total: ₹ <span class="item-total">{{cart_item.get_total|floatformat:2}}</span></div>
 						</div>
-					</a>
-				</div>
-				<div class="card-body">
-					<div class="d-flex flex-row justify-content-between">
-						<div class="details-filter-row details-row-size">
-							<label for="qty">Pair:</label>
-							<div class="product-details-quantity">
-								<div class="cart-item-counter">
-									<button data-product="{{cart_item.product.id}}" data-action="remove"
-										class="cart-decrement chg-quantity update-cart">-</button>
-									<input id="cart-quantity" class="cart-quantity" value="{{ cart_item.quantity }}">
-									<button data-quntity="{{cart_item.product.stock}}" data-product="{{cart_item.product.id}}" 
-									data-action="add" class="cart-increment chg-quantity update-cart">+</button>
-								</div>
-							</div>
-						</div><!-- End .product-details-quantity -->
-					</div><!-- End .details-filter-row -->
 
-					<div class="details-filter-row details-row-size" id="femail-options"
-						style="margin-left: 40px; display: none;">
-						<label for="size">Femail:</label>
-						<div class="select-custom">
-							<select name="size" id="size" class="form-control">
-								<option value="#" selected="selected">Additional</option>
-								<option value="1f">1 Femail</option>
-								<option value="2f">2 Femail</option>
-								<option value="3f">3 Femail</option>
-							</select>
-						</div><!-- End .select-custom -->
-					</div><!-- End .details-filter-row -->
-
-					<div class="d-flex flex-row justify-content-between">
-						{% if user.is_authenticated %}
-							<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
-						{% else %}
-							<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
-						{% endif %}
-						<div>Total: ₹ <span class="item-total">{{cart_item.get_total|floatformat:2}}</span></div>
+						<div class="d-flex flex-row justify-content-start">
+							<button type="button" class="btn btn-danger mt-2 update-cart remove-button"
+								data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
+						</div>
 					</div>
+				</div>
 
-					<div class="d-flex flex-row justify-content-start">
-						<button type="button" class="btn btn-danger mt-2 update-cart remove-button"
-							data-product="{{ cart_item.product.id }}" data-action="remove-all">Remove</button>
+				<style>
+					.remove-button {
+						width: 50%;
+					}
+				</style>
+
+			</div>
+			{% endfor %}
+		</div>
+	
+
+
+	<!-- Second Product (Repeat structure for other products) -->
+
+
+	<aside class="col-lg-3 mb-3">
+
+		<div class="card">
+
+			<div class="card-body">
+				<form id="couponForm">
+					<div class="form-group">
+						<label class="form-label">Have coupon?</label>
+						<div class="input-group">
+							<input type="text" class="form-control pr-2" name="couponCode" placeholder="Coupon code">
+							<button type="submit" class="btn btn-light"
+								style="max-width: 150px; min-width: 100px;">Apply</button>
+						</div>
+					</div>
+				</form>
+				<div id="couponModal" class="modal">
+					<div class="modal-content">
+						<p>Wrong coupon code, try with correct coupon code</p>
+						<button id="okButton">OK</button>
 					</div>
 				</div>
 			</div>
 
-			<style>
-				.remove-button {
-					width: 50%;
-				}
-			</style>
 
-		</div>
-		{% endfor %}
+		</div> <!-- card.// -->
+
+		<div class="card">
+			<div class="card-body">
+				<dl class="dlist-align">
+					<dt>Total price:</dt>
+					<dd class="text-end cart-total">₹ {{order.get_cart_total|floatformat:2}}</dd>
+				</dl>
+				{% if total_price_difference %}
+				<dl class="dlist-align">
+					<dt>You Save:</dt>
+					<dd class="text-end text-success total-price-difference">₹ {{ total_price_difference|floatformat:2 }}</dd>
+				</dl>
+				{% endif %}
+				<dl class="dlist-align">
+					<dt>Shipping:</dt>
+					<dd class="text-end"> ₹ 60.00 </dd>
+				</dl>
+				<hr>
+				<dl class="dlist-align">
+					<dt>Total:</dt>
+					<dd class="text-end text-dark h5 cart-total-with-shipping">₹ {{ order.get_cart_total|add:60}}</dd>
+				</dl>
+
+				<div class="d-grid gap-2 my-3">
+					<a href="{% url 'store_app:checkout' %}" class="btn btn-success w-100 mb-2"> Add Address and Make
+						Peyment </a>
+					<a href="/" class="btn btn-light w-100"> Back to shop </a>
+				</div>
+			</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+
+	</aside> <!-- col.// -->
+
 	</div>
-</div>
-
-
-<!-- Second Product (Repeat structure for other products) -->
-
-
-
-
-
-<aside class="col-lg-3 mb-3">
-
-	<div class="card">
-
-		<div class="card-body">
-			<form id="couponForm">
-				<div class="form-group">
-					<label class="form-label">Have coupon?</label>
-					<div class="input-group">
-						<input type="text" class="form-control pr-2" name="couponCode" placeholder="Coupon code">
-						<button type="submit" class="btn btn-light"
-							style="max-width: 150px; min-width: 100px;">Apply</button>
-					</div>
-				</div>
-			</form>
-			<div id="couponModal" class="modal">
-				<div class="modal-content">
-					<p>Wrong coupon code, try with correct coupon code</p>
-					<button id="okButton">OK</button>
-				</div>
-			</div>
-		</div>
-
-
-	</div> <!-- card.// -->
-
-	<div class="card">
-		<div class="card-body">
-			<dl class="dlist-align">
-				<dt>Total price:</dt>
-				<dd class="text-end cart-total">₹ {{order.get_cart_total|floatformat:2}}</dd>
-			</dl>
-			{% if total_price_difference %}
-			<dl class="dlist-align">
-				<dt>You Save:</dt>
-				<dd class="text-end text-success total-price-difference">₹ {{ total_price_difference|floatformat:2 }}</dd>
-			</dl>
-			{% endif %}
-			<dl class="dlist-align">
-				<dt>Shipping:</dt>
-				<dd class="text-end"> ₹ 60.00 </dd>
-			</dl>
-			<hr>
-			<dl class="dlist-align">
-				<dt>Total:</dt>
-				<dd class="text-end text-dark h5 cart-total-with-shipping">₹ {{ order.get_cart_total|add:60}}</dd>
-			</dl>
-
-			<div class="d-grid gap-2 my-3">
-				<a href="{% url 'store_app:checkout' %}" class="btn btn-success w-100 mb-2"> Add Address and Make
-					Peyment </a>
-				<a href="/" class="btn btn-light w-100"> Back to shop </a>
-			</div>
-		</div> <!-- card-body.// -->
-	</div> <!-- card.// -->
-
-</aside> <!-- col.// -->
-
-
 {% endif %}
 </div>
 
