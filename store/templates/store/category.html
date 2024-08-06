@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <button data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-to-cart add-btn update-cart">Add to Cart</button>
+                                <button data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-to-cart add-btn update-cart">Add to Cart</button>
 
                             </div>
                         </div>
@@ -228,7 +228,7 @@
                                         </div>
                                     </a>
                                     {#{% url 'cart_app:add_cart' product.id %}#}
-                                        <button data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-btn add-to-cart update-cart">Add to Cart</button>
+                                        <button data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-btn add-to-cart update-cart">Add to Cart</button>
 
                                 </div>
                             </div>
@@ -496,7 +496,7 @@
                                 </div>
                             </a>
                             {#{% url 'cart_app:add_cart' product.id %}#}
-                                <button data-quntity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button>
+                                <button data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn btn-lg btn-block add-to-cart update-cart">Add to Cart</button>
                         </div>
                     </div>
                     {% endfor %}
