@@ -88,6 +88,7 @@ def cookieWishlist(request):
             item = {
                 'id': product.id,
                 'name': product.name,
+                'stock': product.stock,
                 'image_url': product.imageURL,
                 'new_price': product.new_price,
                 'old_price': product.old_price,

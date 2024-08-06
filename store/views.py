@@ -394,6 +394,7 @@ def wishlist(request):
             wishlist_items.append({
                 'id': item.product.id,
                 'name': item.product.name,
+                'stock': item.product.stock,
                 'image_url': item.product.imageURL,
                 'new_price': item.product.new_price,
                 'old_price': item.product.old_price,
