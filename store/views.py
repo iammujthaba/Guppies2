@@ -15,7 +15,8 @@ def allProdCat(request, c_slug=None):
     c_page = None
     offer = None
     products_list = None
-    if c_slug != None:
+
+    if c_slug is not None:
         print('c_slug...........',c_slug)
         c_page = get_object_or_404(Category, slug=c_slug)
         print('c_page...........',c_page)
@@ -39,6 +40,7 @@ def allProdCat(request, c_slug=None):
     except (InvalidPage, EmptyPage):
         products = paginator1.page(paginator1.num_pages)
         offer = paginator2.page(paginator2.num_pages)
+        
     message_list = []
     for message in messages.get_messages(request):
         message_list.append({

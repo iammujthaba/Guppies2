@@ -55,7 +55,7 @@
                 <div class="cat-blocks-container">
                     <div class="row justify-content-center">
 
-                        <div class="col-4 col-sm-3 col-md-2">
+                        <!-- <div class="col-4 col-sm-3 col-md-2">
                             <a href="{% url 'store_app:allProductListing' %}" class="cat-block text-center">
                                 <figure>
                                     <span>
@@ -64,9 +64,9 @@
                                 </figure>
                                 <h3 class="cat-block-title">Guppies</h3>
                             </a>
-                        </div>
+                        </div> -->
 
-                        {% for i in links %}
+                        {% for i in links|slice:":6" %}
                         <div class="col-4 col-sm-3 col-md-2">
                             <a href="{{i.get_url}}" class="cat-block text-center">
                                 <figure>
@@ -78,6 +78,13 @@
                             </a>
                         </div>
                         {% endfor %}
+
+                        {% if links|length > 6 %}
+                        <a href="{% url 'store_app:category_list' %}" class="btn btn-primary btn-round mb-3">
+                            <span>Explore More</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    {% endif %}
 
                     </div>
                 </div>
