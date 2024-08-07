@@ -79,7 +79,13 @@ function removeFromWishlist(productId, button) {
             wishlistCountElement.textContent = data.wishlist_count;
             // If the wishlist is empty, show a message
             if (data.wishlist_count == 0) {
-                document.querySelector('.wishlist-container').innerHTML = '<p>Your wishlist is empty.</p>';
+                document.querySelector('.wishlist-container').innerHTML = `    <div>
+        <div class="text-center mb-5 mt-4">
+            <br>
+            <h1>Your wishlist is empty.</h1>
+            <p class="mt-4">Click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to continue shopping.</p>
+        </div>
+    </div>`;
             }
         }
     });
