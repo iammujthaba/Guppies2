@@ -87,6 +87,10 @@ function removeFromWishlist(productId, button) {
         </div>
     </div>`;
             }
+            // Update localStorage for unauthenticated users
+            if (!{% if request.user.is_authenticated %}true{% else %}false{% endif %}) {
+                localStorage.setItem('wishlist', JSON.stringify(data.wishlist_items));
+            }
         }
     });
 }

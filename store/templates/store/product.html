@@ -69,7 +69,18 @@
                                         
                                                 // Store wishlist state in localStorage for unauthenticated users
                                                 if (!{% if request.user.is_authenticated %}true{% else %}false{% endif %}) {
-                                                    localStorage.setItem(`wishlist_${productId}`, data.added);
+                                                    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                                                    if (data.added) {
+                                                        if (!wishlist.includes(productId.toString())) {
+                                                            wishlist.push(productId.toString());
+                                                        }
+                                                    } else {
+                                                        const index = wishlist.indexOf(productId.toString());
+                                                        if (index > -1) {
+                                                            wishlist.splice(index, 1);
+                                                        }
+                                                    }
+                                                    localStorage.setItem('wishlist', JSON.stringify(wishlist));
                                                 }
                                             });
                                         }
@@ -78,7 +89,8 @@
                                         if (!{% if request.user.is_authenticated %}true{% else %}false{% endif %}) {
                                             const productId = {% if product.id %}{{ product.id }}{% else %}null{% endif %};
                                             if (productId !== null) {
-                                                const inWishlist = localStorage.getItem(`wishlist_${productId}`) === 'true';
+                                                const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                                                const inWishlist = wishlist.includes(productId.toString());
                                                 const iconElement = document.getElementById(`wishlist-icon-${productId}`);
                                                 
                                                 if (iconElement) {
