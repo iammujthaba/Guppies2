@@ -31,8 +31,16 @@
 
         {% else %}
 
+        <style>
+            @media screen and (max-width: 767px) {
+              .intro-slider-container {
+                margin-top: 1.4rem;
+              }
+            }
+          </style>
+          
         <main class="main">
-            <div class="intro-slider-container mt-2">
+            <div class="intro-slider-container">
                 <div id="introCarousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {% for image in intro_images %}
