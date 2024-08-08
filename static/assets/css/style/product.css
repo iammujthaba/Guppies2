@@ -946,3 +946,7 @@ button:focus {
 .cancel-btn:hover {
     background-color: #d32f2f;
 }
+
+.add-to-cart{
+    border-radius: 3px;
+}

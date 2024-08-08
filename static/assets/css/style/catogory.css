@@ -505,8 +505,8 @@ p {
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active {
     color: #fff;
-    background-color: #a6c76c;
-    border-color: #a6c76c;
+    background-color: #28a745;
+    border-color: #28a745;
     box-shadow: none
 }
 
@@ -1028,4 +1028,8 @@ button:focus {
 .breadcrumb-nav .container {
     padding-top: 1.4rem;
     padding-bottom: 1.4rem
+}
+
+.add-to-cart{
+    border-radius: 3px;
 }
