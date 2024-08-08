@@ -250,6 +250,19 @@
 }
 
                 </style>
+
+<style>
+    .mobile-search-container {
+      display: block;
+    }
+  
+    @media screen and (min-width: 992px) {
+      .mobile-search-container {
+        display: none;
+      }
+    }
+  </style>
+  
                 <div class="mobile-search-container">
                     <form class="mobile-search-form" action="{% url 'search_app:SearchResult' %}" method="get">
                     {% csrf_token %}
