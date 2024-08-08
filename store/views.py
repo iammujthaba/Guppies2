@@ -15,6 +15,7 @@ def allProdCat(request, c_slug=None):
     c_page = None
     offer = None
     products_list = None
+    intro_images = IntroImage.objects.all()  # Move this line outside the if-else block
 
     if c_slug is not None:
         print('c_slug...........',c_slug)
@@ -23,32 +24,38 @@ def allProdCat(request, c_slug=None):
         products_list = Product.objects.all().filter(category=c_page, active=True, stock__gt=0)
     else:
         products_list = Product.objects.all().filter(active=True, stock__gt=0)
-        intro_images = IntroImage.objects.all()
 
     offer_list = Product.objects.filter(active=True, old_price__gt=0)
 
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
+
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
-        
+
     try:
         products = paginator1.page(page)
         offer = paginator2.page(page)
     except (InvalidPage, EmptyPage):
         products = paginator1.page(paginator1.num_pages)
         offer = paginator2.page(paginator2.num_pages)
-        
+
     message_list = []
     for message in messages.get_messages(request):
         message_list.append({
             'message': message.message,
             'tags': message.tags
         })
-        
-    return render(request, 'store/category.html', {'category': c_page, 'products': products, 'offer': offer, 'intro_images': intro_images, 'messages': message_list})
+
+    return render(request, 'store/category.html', {
+        'category': c_page,
+        'products': products,
+        'offer': offer,
+        'intro_images': intro_images,
+        'messages': message_list
+    })
 
 def cart(request):
     data = cartData(request)
