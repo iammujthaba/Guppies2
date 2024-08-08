@@ -237,7 +237,7 @@ function showEmptyCartMessage() {
 	<div>
 		<div class="text-center mb-3">
 			<br>
-			<h1>Your shopping cart is empty.</h1>
+			<h2>Your shopping cart is empty.</h2>
 			<p class="mt-4">Please click <a href="{% url 'store_app:allProdCat' %}"><b>here</b></a> to
 				continue shopping.</p>
 		</div>

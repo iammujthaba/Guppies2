@@ -958,7 +958,7 @@ button:focus {
     object-fit: cover
 }
 
-.home-product{
+.home-product {
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
@@ -1004,13 +1004,13 @@ button:focus {
     flex-shrink: 0;
 }
 
-.related-product-publisher{
+.related-product-publisher {
     font-weight: 500;
     font-size: 1.4rem;
     color: black;
 }
 
-.related-product-price{
+.related-product-price {
     font-weight: 600;
     font-size: 1.6rem;
     color: black;
@@ -1019,4 +1019,13 @@ button:focus {
 .product-discount {
     font-weight: 600;
     font-size: 1.6rem;
+}
+
+.breadcrumb-nav {
+    border-bottom: .1rem solid rgba(235, 235, 235, .55)
+}
+
+.breadcrumb-nav .container {
+    padding-top: 1.4rem;
+    padding-bottom: 1.4rem
 }
