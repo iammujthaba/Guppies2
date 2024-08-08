@@ -78,11 +78,7 @@ def merge_cookie_cart_with_user_cart(request, user):
             if order_items.exists():
                 total_quantity = sum(item.quantity for item in order_items)
                 if total_quantity > 0:
-                    messages.info(request, f"Your cart has {total_quantity} quantities waiting to complete the order 😊")
-                else:
-                    messages.info(request, "Your cart is empty.")
-            else:
-                messages.info(request, "Your cart is empty.")
+                    messages.info(request, f"Your cart has {total_quantity} quantities waiting to complete the order.")
         except Order.DoesNotExist:
             messages.info(request, "Your cart is empty.")
 
@@ -101,7 +97,7 @@ def merge_cookie_wishlist_with_user_wishlist(request, user):
         except Product.DoesNotExist:
             pass
 
-    response = redirect('store_app:wishlist')
+    response = redirect('store_app:allProdCat')
     response.delete_cookie('wishlist')
     return response
 
