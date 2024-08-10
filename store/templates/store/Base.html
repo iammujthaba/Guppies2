@@ -22,154 +22,160 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
     <meta name="theme-color" content="#ffffff">
-    
+
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 
     <!-- Main CSS File -->
     <!-- <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"> -->
     <link rel="stylesheet" href="{% static 'assets/css/style/Base.css' %}">
-    
+
 
     <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-4.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/demos/demo-4.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style2.css' %}">
 
 
-	<script type="text/javascript">
-		var user = '{{request.user}}'
+    <script type="text/javascript">
+        var user = '{{request.user}}'
 
-		function getToken(name) {
-		    var cookieValue = null;
-		    if (document.cookie && document.cookie !== '') {
-		        var cookies = document.cookie.split(';');
-		        for (var i = 0; i < cookies.length; i++) {
-		            var cookie = cookies[i].trim();
-		            // Does this cookie string begin with the name we want?
-		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-		                break;
-		            }
-		        }
-		    }
-		    return cookieValue;
-		}
-		var csrftoken = getToken('csrftoken')
+        function getToken(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken')
 
-		// get cookies if user is unauthenticated
-		function getCookie(name) {
-		    // Split cookie string and get all individual name=value pairs in an array
-		    var cookieArr = document.cookie.split(";");
+        // get cookies if user is unauthenticated
+        function getCookie(name) {
+            // Split cookie string and get all individual name=value pairs in an array
+            var cookieArr = document.cookie.split(";");
 
-		    // Loop through the array elements
-		    for(var i = 0; i < cookieArr.length; i++) {
-		        var cookiePair = cookieArr[i].split("=");
+            // Loop through the array elements
+            for (var i = 0; i < cookieArr.length; i++) {
+                var cookiePair = cookieArr[i].split("=");
 
-		        /* Removing whitespace at the beginning of the cookie name
-		        and compare it with the given string */
-		        if(name == cookiePair[0].trim()) {
-		            // Decode the cookie value and return
-		            return decodeURIComponent(cookiePair[1]);
-		        }
-		    }
+                /* Removing whitespace at the beginning of the cookie name
+                and compare it with the given string */
+                if (name == cookiePair[0].trim()) {
+                    // Decode the cookie value and return
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
 
-		    // Return null if not found
-		    return null;
-		}
-		var cart = JSON.parse(getCookie('cart'))
+            // Return null if not found
+            return null;
+        }
+        var cart = JSON.parse(getCookie('cart'))
 
-		// create cookies if it's not exist
-		if (cart == undefined){
-			cart = {}
-			console.log('Cart Created!', cart)
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-		}
-		console.log('Cart:', cart)
-	
-	</script>
+        // create cookies if it's not exist
+        if (cart == undefined) {
+            cart = {}
+            console.log('Cart Created!', cart)
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+        console.log('Cart:', cart)
 
-<style>
-    #account-menu {
-        display: none;
-        transition: max-height 0.3s ease-out;
-        overflow: hidden;
-        max-height: 0;
-    }
+    </script>
 
-    #account-menu.show {
-        display: block;
-        max-height: 200px; /* Adjust based on content height */
-    }
-
-    /* Media queries for larger screens */
-    @media (min-width: 990px) {
+    <style>
         #account-menu {
-            display:inline-flex;
-            max-height: none;
+            display: none;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+            max-height: 0;
         }
 
-        #account-toggle {
-            cursor: pointer;
+        #account-menu.show {
+            display: block;
+            max-height: 200px;
+            /* Adjust based on content height */
         }
-    }
-</style>
+
+        /* Media queries for larger screens */
+        @media (min-width: 990px) {
+            #account-menu {
+                display: inline-flex;
+                max-height: none;
+            }
+
+            #account-toggle {
+                cursor: pointer;
+            }
+        }
+    </style>
 
 </head>
 
 <body>
     <div class="page-wrapper">
         <header class="header header-intro-clearance header-4">
-          <div class="header-top">
-            <div class="container">
-                <div class="header-left">
-                    <a href="tel:#"><i class="icon-phone"></i>Call: +91 7025962175</a>
-                </div><!-- End .header-left -->
-        
-                <div class="header-right">
-                    <ul class="top-menu" id="account-toggle">
-                        <li>
-                            <p id="account-toggle">Account</p>
-                            <ul id="account-menu">
-                                {% if user.is_authenticated %}
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <a href="tel:#"><i class="icon-phone"></i>Call: +91 7025962175</a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <ul class="top-menu" id="account-toggle">
+                            <li>
+                                <p id="account-toggle">Account</p>
+                                <ul id="account-menu">
+                                    {% if user.is_authenticated %}
                                     <li><a href="{% url 'store_app:account_info' %}">{{user.username}}</a></li>
                                     {% if user.is_superuser %}
-                                        <li><a href="{% url 'admin_app:dashboard' %}" id="signin-button">Admin panel</a></li>
+                                    <li><a href="{% url 'admin_app:dashboard' %}" id="signin-button">Admin panel</a>
+                                    </li>
                                     {% endif %}
-                                    <li><a href="{% url 'auth_app:logout' %}" id="signin-button">Logout</a></li> 
-                                {% else %}
+                                    <li><a href="{% url 'auth_app:logout' %}" id="signin-button">Logout</a></li>
+                                    {% else %}
                                     <li><a href="{% url 'auth_app:register' %}" id="signup-button">Sign up</a></li>
-                                    <li><a href="{% url 'auth_app:login' %}" id="signin-button">Sign in</a></li>  
-                                {% endif %}
-                            </ul>
-                        </li>
-                    </ul><!-- End .top-menu -->
-                </div><!-- End .header-right -->
-            </div><!-- End .container -->
-        </div><!-- End .header-top -->
-        
+                                    <li><a href="{% url 'auth_app:login' %}" id="signin-button">Sign in</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
-                        <button class="mobile-menu-toggler" style="margin-left: 0px;margin-right: 0px; font-weight: bolder;">
+                        <button class="mobile-menu-toggler"
+                            style="margin-left: 0px;margin-right: 0px; font-weight: bolder;">
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
                         <a href="{% url 'store_app:allProdCat' %}" class="logo">
                             <!-- logo -->
-                            <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" alt="Molla Logo" width="150" height="25">
+                            <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" alt="Molla Logo"
+                                width="150" height="25">
                         </a>
 
                     </div><!-- End .header-left -->
 
                     <div class="header-center">
                         <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-							<a href="{% url 'search_app:SearchResult' %}" class="search-toggle" role="button"><i class="icon-search"></i></a>
-							<form action="{% url 'search_app:SearchResult' %}" method="get">
+                            <a href="{% url 'search_app:SearchResult' %}" class="search-toggle" role="button"><i
+                                    class="icon-search"></i></a>
+                            <form action="{% url 'search_app:SearchResult' %}" method="get">
                                 {% csrf_token %}
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="q" id="q"
+                                        placeholder="Search product ..." required>
                                 </div>
                             </form>
                         </div>
@@ -197,97 +203,89 @@
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
 
-                
+
 
                 <style>
                     .mobile-search-container {
-  width: 100%;
-  padding: 10px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
+                        width: 100%;
+                        padding: 10px;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                    }
 
-.mobile-search-form {
-  display: flex;
-  align-items: center;
-}
+                    .mobile-search-form {
+                        display: flex;
+                        align-items: center;
+                    }
 
-.search-input-wrapper {
-  display: flex;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: white;
-}
+                    .search-input-wrapper {
+                        display: flex;
+                        width: 100%;
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        background-color: white;
+                    }
 
-.mobile-search-input {
-  flex-grow: 1;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-}
+                    .mobile-search-input {
+                        flex-grow: 1;
+                        border: none;
+                        padding: 10px 15px;
+                        font-size: 16px;
+                    }
 
-.mobile-search-button {
-  background: #3498db;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
+                    .mobile-search-button {
+                        background: #3498db;
+                        width: 50px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 4px;
 
-    border: 0;
+                        border: 0;
 
-    color: #fff;
-}
+                        color: #fff;
+                    }
 
-.search-icon {
-  width: 20px;
-  height: 20px;
-}
-
+                    .search-icon {
+                        width: 20px;
+                        height: 20px;
+                    }
                 </style>
 
-<style>
-    .mobile-search-container {
-      display: block;
-    }
-  
-    @media screen and (min-width: 992px) {
-      .mobile-search-container {
-        display: none;
-      }
-    }
-  </style>
-  
+                <style>
+                    .mobile-search-container {
+                        display: block;
+                    }
+
+                    @media screen and (min-width: 992px) {
+                        .mobile-search-container {
+                            display: none;
+                        }
+                    }
+                </style>
+
                 <div class="mobile-search-container">
                     <form class="mobile-search-form" action="{% url 'search_app:SearchResult' %}" method="get">
-                    {% csrf_token %}
-                      <div class="search-input-wrapper">
-                        <label for="mobile-search" class="sr-only">Search</label>
-                        <input 
-                          type="search" 
-                          name="q" 
-                          id="q"
-                          placeholder="Search..." 
-                          class="mobile-search-input" 
-                          autocomplete="off"
-                          required
-                        >
-                        <a href="{% url 'search_app:SearchResult' %}"></a>
+                        {% csrf_token %}
+                        <div class="search-input-wrapper">
+                            <label for="mobile-search" class="sr-only">Search</label>
+                            <input type="search" name="q" id="q" placeholder="Search..." class="mobile-search-input"
+                                autocomplete="off" required>
+                            <a href="{% url 'search_app:SearchResult' %}"></a>
                             <button type="submit" class="mobile-search-button">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </a>
-                      </div>
-                      <input type="hidden" name="post_type" value="product">
+                            </a>
+                        </div>
+                        <input type="hidden" name="post_type" value="product">
                     </form>
-                  </div>
+                </div>
 
 
 
             </div><!-- End .header-middle -->
-                
+
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-center">
@@ -303,7 +301,7 @@
                                     <a href="{% url 'store_app:cart' %}">Cart</a>
                                 </li>
                                 <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
-                                
+
                                 {% if user.is_authenticated %}
                                 <li class="{% if request.path == '/orders/' %}active{% endif %}">
                                     <a href="{% url 'store_app:orders' %}">Orders</a>
@@ -334,96 +332,197 @@
 
         <!-- -------------------------------------------------------------------------- -->
         {% endblock %}
+        <style>
+            .footer-desktop {
+                display: none;
+            }
+
+            @media screen and (min-width: 768px) {
+                .footer-mobile {
+                    display: none !important;
+                }
+
+                .footer-desktop {
+                    display: block !important;
+                }
+            }
+        </style>
         <footer class="footer">
 
-            <div class="footer-middle">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget widget-about">
-                                <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}" class="footer-logo" alt="Footer Logo" width="105" height="25">
-                                <p>Welcome to our online store, where we offer a wide variety of guppies and bettas for your aquarium. Enjoy your shopping experience!</p>
-                                
+            <!-- Mobile Footer Design -->
+            <div class="footer-mobile">
+                <div class="footer-middle">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="widget widget-about">
+                                    <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}"
+                                        class="footer-logo" alt="Footer Logo" width="105" height="25">
+                                    <p>Welcome to our online store, where we offer a wide variety of guppies and bettas
+                                        for your aquarium. Enjoy your shopping experience!</p>
 
-                            </div><!-- End .widget about-widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
 
-                        <div class="col-md-12">
-                            <div class="social-icons social-icons-colored justify-content-around mb-3">
-                                <a href="#" class="social-icon social-whatsapp" title="WhatsApp" target="_blank" style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
-                                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                                <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                                </div><!-- End .widget about-widget -->
+                            </div><!-- End .col-sm-6 col-lg-3 -->
+
+                            <div class="col-md-12">
+                                <div class="social-icons social-icons-colored justify-content-around mb-3">
+                                    <a href="#" class="social-icon social-whatsapp" title="WhatsApp" target="_blank"
+                                        style="background-color: #25d366;"><i class="icon-whatsapp"></i></a>
+                                    <a href="#" class="social-icon social-instagram" title="Instagram"
+                                        target="_blank"><i class="icon-instagram"></i></a>
+                                    <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                            class="icon-facebook-f"></i></a>
+                                    <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                                            class="icon-youtube"></i></a>
+                                </div>
+
                             </div>
 
-                        </div> 
+                            <div class="container text-center">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="widget">
+                                                <h4 class="widget-title">Additional Links</h4>
+                                                <ul class="widget-list">
+                                                    <li><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                                                    <li><a href="{% url 'store_app:allProductListing' %}">shopping</a>
+                                                    </li>
+                                                    <li><a href="{% url 'store_app:gallery' %}">Gallery</a></li>
+                                                    <li><a href="{% url 'store_app:about' %}">About us</a></li>
+                                                    <li><a href="{% url 'store_app:contact' %}">Contact</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="widget">
+                                                <h4 class="widget-title">Terms & Policys</h4>
+                                                <ul class="widget-list">
+                                                    <li><a href="#">T&C</a></li>
+                                                    <!-- <li><a href="#">Shipping</a></li> -->
+                                                    <li><a href="#">Refunds</a></li>
+                                                    <li><a href="#">privacy brpolicy</a></li>
+                                                    <li><a href="{% url 'store_app:faq' %}">Questions</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="widget">
+                                                <h4 class="widget-title">My Account</h4>
+                                                <ul class="widget-list">
+                                                    <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
+                                                    <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
+                                                    <li><a href="{% url 'store_app:cart' %}">My Cart</a></li>
+                                                    <li><a href="{% url 'store_app:orders' %}">My Orders</a></li>
+                                                    <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
 
-                        <div class="container text-center">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="col-sm-12 col-lg-12">
-                                        <div class="widget">
-                                            <h4 class="widget-title">Additional Links</h4>
-                                            <ul class="widget-list">
-                                                <li><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
-                                                <li><a href="{% url 'store_app:allProductListing' %}">shopping</a></li>
-                                                <li><a href="{% url 'store_app:gallery' %}">Gallery</a></li>
-                                                <li><a href="{% url 'store_app:about' %}">About us</a></li>
-                                                <li><a href="{% url 'store_app:contact' %}">Contact</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="col-sm-12 col-lg-12">
-                                        <div class="widget">
-                                            <h4 class="widget-title">Terms & Policys</h4>
-                                            <ul class="widget-list">
-                                                <li><a href="#">T&C</a></li>
-                                                <!-- <li><a href="#">Shipping</a></li> -->
-                                                <li><a href="#">Refunds</a></li>
-                                                <li><a href="#">privacy brpolicy</a></li>                                                
-                                                <li><a href="{% url 'store_app:faq' %}">Questions</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="col-sm-12 col-lg-12">
-                                        <div class="widget">
-                                            <h4 class="widget-title">My Account</h4>
-                                            <ul class="widget-list">
-                                                <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
-                                                <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
-                                                <li><a href="{% url 'store_app:cart' %}">My Cart</a></li>
-                                                <li><a href="{% url 'store_app:orders' %}">My Orders</a></li>
-                                                <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                            <div>
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                    </div>
+                    <div>
+                        <a href="{% url 'store_app:devolopper' %}">
+                            <p class="footer-copyright text-center">About Devolopper</p>
+                        </a>
+                    </div>
+                    <div class="footer-bottom">
+                        <div class="container">
+                            <p class="footer-copyright text-center">Copyright © 2023 CK Guppies & Bettas.</p>
                         </div>
-                        
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-middle -->
-            <div>
-                <a href="{% url 'store_app:devolopper' %}">    
-                    <p class="footer-copyright text-center">About Devolopper</p>
-                </a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <p class="footer-copyright text-center">Copyright © 2023 CK Guppies & Bettas.</p>
-                    <!-- End .footer-copyright -->
-                    <!-- <figure class="footer-payments">
-                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-                    </figure> -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-bottom -->
-        </footer><!-- End .footer -->
+                <!-- Desktop Footer Design -->
+                <div class="footer-desktop">
+                    <div class="footer-middle">
+                        <div class="container">
+                            <div class="row footer-row">
+                                <div class="col-12 col-lg-3">
+                                    <div class="widget widget-about">
+                                        <img src="{% static 'assets/images/demos/demo-4/logo 19a.png' %}"
+                                            class="footer-logo" alt="Footer Logo" width="105" height="25">
+                                        <p>Welcome to our online store, where we offer a wide variety of guppies and
+                                            bettas for your aquarium. Enjoy your shopping experience!</p>
+                                        <div class="social-icons social-icons-colored">
+                                            <a href="#" class="social-icon social-whatsapp" title="WhatsApp"
+                                                target="_blank" style="background-color: #25d366;"><i
+                                                    class="icon-whatsapp"></i></a>
+                                            <a href="#" class="social-icon social-instagram" title="Instagram"
+                                                target="_blank"><i class="icon-instagram"></i></a>
+                                            <a href="#" class="social-icon social-facebook" title="Facebook"
+                                                target="_blank"><i class="icon-facebook-f"></i></a>
+                                            <a href="#" class="social-icon social-youtube" title="Youtube"
+                                                target="_blank"><i class="icon-youtube"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-3">
+                                    <div class="widget text-center">
+                                        <h4 class="widget-title">Additional Links</h4>
+                                        <ul class="widget-list">
+                                            <li><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
+                                            <li><a href="{% url 'store_app:allProductListing' %}">Shopping</a></li>
+                                            <li><a href="{% url 'store_app:gallery' %}">Gallery</a></li>
+                                            <li><a href="{% url 'store_app:about' %}">About us</a></li>
+                                            <li><a href="{% url 'store_app:contact' %}">Contact</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-3">
+                                    <div class="widget text-center">
+                                        <h4 class="widget-title">Terms & Policys</h4>
+                                        <ul class="widget-list">
+                                            <li><a href="#">T&C</a></li>
+                                            <li><a href="#">Refunds</a></li>
+                                            <li><a href="#">Shipping</a></li>
+                                            <li><a href="#">Privacy Policy</a></li>
+                                            <li><a href="{% url 'store_app:faq' %}">Questions</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-3">
+                                    <div class="widget text-center">
+                                        <h4 class="widget-title">My Account</h4>
+                                        <ul class="widget-list">
+                                            <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
+                                            <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
+                                            <li><a href="{% url 'store_app:cart' %}">My Cart</a></li>
+                                            <li><a href="{% url 'store_app:orders' %}">My Orders</a></li>
+                                            <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{% url 'store_app:devolopper' %}">
+                            <p class="footer-copyright text-center">About Devolopper</p>
+                        </a>
+                    </div>
+                    <div class="footer-bottom">
+                        <div class="container">
+                            <p class="footer-copyright text-center">Copyright © 2023 CK Guppies & Bettas.</p>
+                        </div>
+                    </div>
+                </div>
+
+        </footer>
+
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -501,11 +600,11 @@
                     <nav class="mobile-cats-nav">
                         <ul class="mobile-cats-menu">
                             <li><a href="{% url 'store_app:allProductListing' %}">Guppies</a></li>
-                            
+
 
                             {% for i in links %}
                             <!-- # 1 - when user "click" eny catogory name, it call "get_url" function under Catogory method (go to model.py) -->
-                                <li><a href="{{i.get_url}}">{{i.name}}</a></li>
+                            <li><a href="{{i.get_url}}">{{i.name}}</a></li>
                             {% endfor %}
 
 
@@ -522,7 +621,7 @@
             </div><!-- End .social-icons -->
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
-<!-- ------------------------------------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------------------------------------- -->
     <!-- Sign in / Register Modal -->
 
     <!-- <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -654,7 +753,7 @@
 
     <!-- Plugins JS File -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %}"></script>
@@ -674,10 +773,10 @@
     <!-- nave baar link active -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var currentUrl = window.location.href;
 
-            $('.menu a').each(function() {
+            $('.menu a').each(function () {
                 if ($(this).attr('href') === currentUrl) {
                     $(this).closest('li').addClass('active');
                 }
@@ -697,19 +796,23 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if ('{{request.user.is_authenticated}}' === 'False') {
-            updateCartDataForUnauthorizedUser();
-        }
-    });
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if ('{{request.user.is_authenticated}}' === 'False') {
+                updateCartDataForUnauthorizedUser();
+            }
+        });
+    </script>
 
-<!-- --------------------------------------------------------------------------------- -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <!-- --------------------------------------------------------------------------------- -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 
 </body>
 
