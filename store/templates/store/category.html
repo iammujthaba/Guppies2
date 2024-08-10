@@ -40,23 +40,52 @@
           </style>
           
         <main class="main">
-            <div class="intro-slider-container">
-                <div id="introCarousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        {% for image in intro_images %}
-                            <li data-target="#introCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
-                        {% endfor %}
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for image in intro_images %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="intro-image">
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
+            <div class="intro-slider-container mb-5">
+                <!--  <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'> -->
+                <div class="intro-slide" style="background-image: url('/static/assets/images/demos/demo-4/slider/slide-7.jpg');">
+                    <div class="container intro-content">
+                        <div class="row justify-content-end">
+                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
 
+                                <div class="intro-price">
+                                    <span class="text-third">
+                                        1200+
+                                    </span>
+                                </div><!-- End .intro-price -->
+                                <h3 class="text-third" style="font-family: Roboto, sans-serif; color:#e2e2e2;">Happy
+                                    Customer</h3>
+                                <!-- End .h3 intro-subtitle -->
+                                <div class="intro-price">
+                                    <span class="text-third">
+                                        5+ Year
+                                    </span>
+                                </div><!-- End .intro-price -->
+                                <h3 class="text-third" style="font-family: Roboto, sans-serif; color:#e2e2e2;">
+                                    Experience</h3>
+                                <!-- End .h3 intro-subtitle -->
+                                    {#{% url 'store_app:allProductListing' %}#}
+                                <a href="{% url 'store_app:allProductListing' %}" class="btn btn-primary btn-round">
+                                    <span>Shop Now</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </a>
+                            </div><!-- End .col-lg-11 offset-lg-1 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide -->
+
+                <!-- <span class="slider-loader"></span>End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+            
             <div class="container">
                 <h2 class="title text-center mb-2">Explore Categories</h2>
 

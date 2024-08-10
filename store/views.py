@@ -316,7 +316,7 @@ def updateOrderStatus(request, order_id):
 
 def account_info(request):
     if not request.user.is_authenticated:
-        return redirect('auth_app:login')
+        return redirect('auth_app:loginOrRegister')
     
     customer = request.user.customer
     last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()

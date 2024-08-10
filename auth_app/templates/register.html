@@ -16,7 +16,7 @@
             <input type="submit" value="Register"><br>
         </form>
         <p class="login-link">Already have an account? <a href="{% url 'auth_app:login' %}">Login here</a></p>
-        <p class="login-link">Explore Products <a href="{% url 'store_app:allProdCat' %}">Explore here</a></p>
+        <p class="login-link">Explore Website <a href="{% url 'store_app:allProdCat' %}">Explore here</a></p>
         {% for mes in messages %}
         <h2 class="message">{{mes}}</h2>
         {% endfor %}
