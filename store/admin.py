@@ -17,8 +17,6 @@ class OrderAdmin(admin.ModelAdmin):
 #     list_per_page = 20
 # admin.site.register(Product,ProductAdmin)
 
-
-admin.site.register(IntroImage)
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Order, OrderAdmin)

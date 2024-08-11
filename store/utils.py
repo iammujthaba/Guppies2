@@ -4,7 +4,7 @@ from .models import *
 def cookieCart(request):
 	# if user is not authenticated, load user data from cookies
 	try:
-		cart = json.loads(request.COOKIES['cart'])
+		cart = json.loads(request.COOKIES.get('cart', '{}'))
 	except:
 		cart = {}
 		print('CART:', cart)

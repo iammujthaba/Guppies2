@@ -15,7 +15,6 @@ def allProdCat(request, c_slug=None):
     c_page = None
     offer = None
     products_list = None
-    intro_images = IntroImage.objects.all()  # Move this line outside the if-else block
 
     if c_slug is not None:
         print('c_slug...........',c_slug)
@@ -53,7 +52,6 @@ def allProdCat(request, c_slug=None):
         'category': c_page,
         'products': products,
         'offer': offer,
-        'intro_images': intro_images,
         'messages': message_list
     })
 
