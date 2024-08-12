@@ -15,6 +15,36 @@
         </div>
     </nav>
 
+    <style>
+    .responsive-video {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        /*  padding-bottom: 75%;  Increased from 56.25% to 75% for a larger player */
+    }
+
+    .responsive-video iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .responsive-video {
+            padding-bottom: 66.67%; /* 3:2 aspect ratio for larger screens */
+        }
+    }
+
+    @media (min-width: 992px) {
+        .responsive-video {
+            padding-bottom: 56.25%; /* 16:9 aspect ratio for even larger screens */
+        }
+    }
+    </style>
+
     <div class="page-content">
         <div class="container-fluid">
             <div class="row">
@@ -169,18 +199,41 @@
                             
                                         function updateGallery(index) {
                                             const item = galleryItems[index];
+                                            const productMainImageContainer = productMainImage.parentNode;
+                                            
+                                            // Remove existing video if present
+                                            const existingVideo = productMainImageContainer.querySelector('.responsive-video');
+                                            if (existingVideo) {
+                                                existingVideo.remove();
+                                            }
+                                            
                                             if (item.type === 'image') {
                                                 productMainImage.src = item.url;
                                                 productMainImage.style.display = 'block';
-                                                document.querySelector('.responsive-video')?.remove();
                                             } else if (item.type === 'video') {
                                                 productMainImage.style.display = 'none';
                                                 const videoContainer = document.createElement('div');
                                                 videoContainer.className = 'responsive-video';
-                                                videoContainer.innerHTML = `<iframe src="${item.url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-                                                productMainImage.parentNode.appendChild(videoContainer);
+                                                videoContainer.innerHTML = `<iframe src="${item.url}?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                                                productMainImageContainer.appendChild(videoContainer);
+                                                
+                                                // Automatically play the video
+                                                const iframe = videoContainer.querySelector('iframe');
+                                                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+
+                                                // Apply inline CSS to the product-gallery when video is loaded on mobile
+                                                if (isMobileDevice()) {
+                                                    const nowVideo = document.querySelector('.product-gallery');
+                                                    nowVideo.style.paddingLeft = '0px';
+                                                    nowVideo.style.paddingRight = '0px';
+                                                    nowVideo.style.paddingTop = '23px';
+                                                }
                                             }
                                             updateIndicators(index);
+                                        }
+
+                                        function isMobileDevice() {
+                                            return window.innerWidth <= 767; // Adjust this value based on your mobile breakpoint
                                         }
                             
                                         function updateIndicators(activeIndex) {
@@ -195,6 +248,14 @@
                                             if (currentIndex < 0) currentIndex = galleryItems.length - 1;
                                             if (currentIndex >= galleryItems.length) currentIndex = 0;
                                             updateGallery(currentIndex);
+                                            
+                                            // If the current item is a video, play it
+                                            if (galleryItems[currentIndex].type === 'video') {
+                                                const iframe = document.querySelector('.responsive-video iframe');
+                                                if (iframe) {
+                                                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                                                }
+                                            }
                                         }
                             
                                         let touchStartX = 0;
@@ -360,10 +421,10 @@
                                     </figure>
 
                                     <div class="product-body">
-                                        <h3 class="product-title"><a href="{{product.get_url}}">{{ product.name }}</a></h3>
-                                        <h6 class="text-muted mb-0">JEE Exam preprestion book</h6>
+                                        <h3 class="product-title cart-heading"><a href="{{product.get_url}}">{{ product.name }}</a></h3>
+                                        <h6 class="text-muted mb-0 cart-heading">JEE Exam preprestion book</h6>
 
-                                        <div class="related-product-publisher">DC Books</div>
+                                        <div class="related-product-publisher cart-heading">DC Books</div>
                                         <!-- New arriwel / best seller /  -->
                                         <!-- <div>New arriwel</div> -->
                                         
