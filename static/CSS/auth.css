@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 93vh;
     background-color: #f0f2f5;
 }
 
@@ -50,6 +50,8 @@ form input[type="password"] {
     border-radius: 5px;
     font-size: 16px;
     width: 100%;
+    min-width: 250px; /* Adjust based on your preference */
+    max-width: 100%;
 }
 
 form input[type="submit"] {
@@ -69,9 +71,13 @@ form input[type="submit"]:hover {
 }
 
 p.register-link,
-p.login-link {
+p.explore-link {
     margin-top: 15px;
     color: #333;
+}
+
+p{
+    margin-bottom: 10px;
 }
 
 p.register-link a,
