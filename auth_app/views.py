@@ -87,7 +87,7 @@ def merge_cookie_cart_with_user_cart(request, user):
 def merge_cookie_wishlist_with_user_wishlist(request, user):
     try:
         cookie_wishlist = json.loads(request.COOKIES.get('wishlist', '{}'))
-    except json.JSONDecoder:
+    except json.JSONDecodeError:
         cookie_wishlist = {}
 
     for product_id in cookie_wishlist:
@@ -162,21 +162,25 @@ def register(request):
 
             user = User.objects.create_user(username=username)
             Customer.objects.create(user=user, name=username, contact_number=contact_number)
-            
+
             # Log in the newly registered user
             auth_login(request, user)
-            
-            # Merge cookies cart with user cart
-            response = merge_cookie_cart_with_user_cart(request, user)
-            if response:
-                return response
 
+            # Merge cookies cart with user cart
+            cart_response = merge_cookie_cart_with_user_cart(request, user)
+
+            # Merge cookies wishlist with user wishlist
+            wishlist_response = merge_cookie_wishlist_with_user_wishlist(request, user)
+
+            if cart_response:
+                return cart_response
+            elif wishlist_response:
+                return wishlist_response
             return redirect('auth_app:login')
         else:
             for error in form.errors.values():
                 messages.error(request, error)
-        return redirect('auth_app:register')
-
+            return redirect('auth_app:register')
     form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
