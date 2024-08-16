@@ -73,7 +73,25 @@
                                             const url = '{% url "store_app:add_to_wishlist" %}';
                                             const iconElement = document.getElementById(`wishlist-icon-${productId}`);
                                             const wishlistCountElement = document.getElementById('wishlist-count');
-                                        
+                                            const headerWishlistCount = document.querySelector('.wishlist .wishlist-count');
+
+                                            // Immediately toggle the heart icon
+                                            const isCurrentlyInWishlist = iconElement.querySelector('i').classList.contains('fa-solid');
+                                            if (isCurrentlyInWishlist) {
+                                                iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                            } else {
+                                                iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
+                                            }
+
+                                            // Update wishlist count immediately (we'll correct it if the server responds differently)
+                                            const currentCount = parseInt(wishlistCountElement.textContent);
+                                            const newCount = isCurrentlyInWishlist ? currentCount - 1 : currentCount + 1;
+                                            wishlistCountElement.textContent = newCount;
+                                            if (headerWishlistCount) {
+                                                headerWishlistCount.textContent = newCount;
+                                            }
+
+                                            // Send request to server
                                             fetch(url, {
                                                 method: 'POST',
                                                 headers: {
@@ -84,20 +102,20 @@
                                             })
                                             .then(response => response.json())
                                             .then(data => {
-                                                if (data.added) {
-                                                    iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
-                                                } else {
-                                                    iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                                // If server response doesn't match our prediction, revert the changes
+                                                if (data.added !== !isCurrentlyInWishlist) {
+                                                    if (data.added) {
+                                                        iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
+                                                    } else {
+                                                        iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                                    }
+                                                    wishlistCountElement.textContent = data.wishlist_count;
+                                                    if (headerWishlistCount) {
+                                                        headerWishlistCount.textContent = data.wishlist_count;
+                                                    }
                                                 }
-                                                wishlistCountElement.textContent = data.wishlist_count;
-                                        
-                                                // Update the wishlist count in the header
-                                                const headerWishlistCount = document.querySelector('.wishlist .wishlist-count');
-                                                if (headerWishlistCount) {
-                                                    headerWishlistCount.textContent = data.wishlist_count;
-                                                }
-                                        
-                                                // Store wishlist state in localStorage for unauthenticated users
+
+                                                // Update local storage for unauthenticated users
                                                 if (!{% if request.user.is_authenticated %}true{% else %}false{% endif %}) {
                                                     const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
                                                     if (data.added) {
@@ -112,9 +130,21 @@
                                                     }
                                                     localStorage.setItem('wishlist', JSON.stringify(wishlist));
                                                 }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                // Revert changes if there's an error
+                                                if (isCurrentlyInWishlist) {
+                                                    iconElement.innerHTML = '<i class="fa-solid fa-heart" style="font-size: 30px; font-weight: 800; color: red;"></i>';
+                                                } else {
+                                                    iconElement.innerHTML = '<i class="icon-heart-o" style="font-size: 30px; font-weight: 800;"></i>';
+                                                }
+                                                wishlistCountElement.textContent = currentCount;
+                                                if (headerWishlistCount) {
+                                                    headerWishlistCount.textContent = currentCount;
+                                                }
                                             });
                                         }
-                                        
                                         // Check localStorage on page load for unauthenticated users
                                         if (!{% if request.user.is_authenticated %}true{% else %}false{% endif %}) {
                                             const productId = {% if product.id %}{{ product.id }}{% else %}null{% endif %};

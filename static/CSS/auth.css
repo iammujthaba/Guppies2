@@ -66,6 +66,13 @@ form input[type="submit"] {
     width: 100%;
 }
 
+/* Ensure consistent button styles across devices */
+form input[type="submit"] {
+    -webkit-appearance: none;  /* Override default styles in iOS */
+    -moz-appearance: none;     /* Override default styles in Firefox */
+    appearance: none;          /* Override default styles in other browsers */
+}
+
 form input[type="submit"]:hover {
     background-color: #45a049;
 }
