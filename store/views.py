@@ -97,7 +97,8 @@ def checkout(request):
         }
         return render(request, 'store/checkout.html', context)
     else:
-        return render(request, 'auth_app/loginOrRegister.html')
+        return redirect('store_app:account_info')
+
 
 def updateItem(request):
     data = json.loads(request.body)

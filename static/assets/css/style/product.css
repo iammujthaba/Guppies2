@@ -779,10 +779,15 @@ button:focus {
     text-align: center;
     text-decoration: none;
     color: #fff;
-    background-color: #28a745;
+    background-color: #39f;
     border: none;
     border-radius: 4px;
     cursor: pointer
+}
+
+.product-details-action .btn-cart:hover, .product-details-action .btn-cart:focus {
+    border-color: #28a745;
+    background-color: #28a745;
 }
 
 .carousel-indicators {

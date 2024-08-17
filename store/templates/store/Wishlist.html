@@ -31,8 +31,14 @@
                                     <span class="text-success mb-0 ml-2">{{ item.discount_percentage }}% off</span>
                                 {% endif %}
                             </div>
-                            <button class="remove-wishlist-btn" data-product-id="{{ item.id }}">Remove</button>
-                            <button data-quantity="{{ item.stock }}" data-product="{{ item.id }}" data-action="add" class="add-to-cart update-cart">Add to Cart</button>
+                            <div class="product-actions">
+                                <button class="btn btn-outline-danger remove-wishlist-btn" data-product-id="{{ item.id }}" style="margin-left: 0px;">
+                                    <i class="fas fa-trash-alt"></i> Remove
+                                </button>
+                                <button class="btn btn-primary add-to-cart update-cart" data-quantity="{{ item.stock }}" data-product="{{ item.id }}" data-action="add">
+                                    <i class="fas fa-shopping-cart"></i> Add&nbsp;to&nbsp;Cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
