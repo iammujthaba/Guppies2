@@ -3,7 +3,46 @@
 <h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Product</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {% if field.name == 'status' %}
+                <select name="{{ field.name }}" id="{{ field.id_for_label }}">
+                    {% for value, label in field.field.choices %}
+                        <option value="{{ value }}" {% if field.value == value %}selected{% endif %} 
+                                {% if value == 'in_stock' and form.instance.stock == 0 %}disabled{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                {{ field }}
+            {% endif %}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
     <button type="submit">Save</button>
 </form>
+
+<script>
+    document.getElementById('id_stock').addEventListener('change', function() {
+        var stockValue = parseInt(this.value);
+        var statusSelect = document.getElementById('id_status');
+        var inStockOption = statusSelect.querySelector('option[value="in_stock"]');
+        
+        if (stockValue === 0) {
+            statusSelect.value = 'out_of_stock';
+            inStockOption.disabled = true;
+        } else {
+            inStockOption.disabled = false;
+            statusSelect.value = 'in_stock';
+        }
+    });
+</script>
 {% endblock %}

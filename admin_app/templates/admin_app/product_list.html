@@ -39,9 +39,9 @@
             <th>ID</th>
             <th>Name</th>
             <th>Stock</th>
+            <th>Status</th>
             <th>Active</th>
             <th>Price</th>
-            <th>Category</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -51,9 +51,9 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ product.name }}</td>
             <td class="{% if product.stock < 4 %}low-stock{% endif %}">{{ product.stock }}</td>
+            <td class="{% if product.status == 'out_of_stock' %}low-stock{% endif %}">{{ product.status }}</td>
             <td class="{% if not product.active %}inactive{% endif %}">{{ product.active }}</td>
             <td>{{ product.new_price }}</td>
-            <td>{{ product.category.name }}</td>
             <td>
                 <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>
                 <!-- <a href="{#{% url 'admin_app:product_delete' product.pk %}#}">Delete</a> -->

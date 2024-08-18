@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 # from django import forms
 
 class Category(models.Model):
@@ -31,6 +32,12 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
+
+    PRODUCT_STATUS_CHOICES = [
+        ('in_stock', 'In Stock'),
+        ('out_of_stock', 'Out of Stock'),
+    ]
+        
     name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(max_length=250, unique=True)
     description = models.TextField(blank=True)
@@ -42,6 +49,7 @@ class Product(models.Model):
     image_3 = models.ImageField(upload_to='product', blank=True)
     video_url = models.URLField(max_length=200, blank=True)
     stock = models.IntegerField()
+    status = models.CharField(max_length=20, choices=PRODUCT_STATUS_CHOICES, default='in_stock')
     active = models.BooleanField(default=True)
     new = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -57,6 +65,17 @@ class Product(models.Model):
             percentage = int(round(discount_percentage))
             return dict(percentage=percentage, diff=diff)
         return None
+    
+    def save(self, *args, **kwargs):
+        if self.stock == 0:
+            self.status = 'out_of_stock'
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        if self.stock == 0 and self.status == 'in_stock':
+            raise ValidationError("Cannot set status to 'In Stock' when stock is 0.")
+        elif self.stock > 0 and self.status == 'out_of_stock':
+            self.status = 'in_stock'
     
     class Meta:
         ordering = ('name',)

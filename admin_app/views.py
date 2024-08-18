@@ -105,7 +105,9 @@ def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.clean()  # Run model validation
+            product.save()
             return redirect('admin_app:product_list')
     else:
         form = ProductForm()
@@ -118,7 +120,9 @@ def product_update(request, pk):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.clean()  # Run model validation
+            product.save()
             return redirect('admin_app:product_list')
     else:
         form = ProductForm(instance=product)
