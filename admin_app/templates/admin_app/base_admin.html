@@ -27,11 +27,17 @@
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'product_list' %}active{% endif %}">
                 <a style="padding: 20px;" href="{% url 'admin_app:product_list' %}">Products Manage</a>
             </li>
-            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'order_list' %}active{% endif %}">
-                <a style="padding: 20px;" href="{% url 'admin_app:order_list' %}">Processing Orders</a>
+            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'processing_orders' %}active{% endif %}">
+                <a style="padding: 20px;" href="{% url 'admin_app:processing_orders' %}">Processing Orders</a>
             </li>
-            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'order_compleated' %}active{% endif %}">
-                <a style="padding: 20px;" href="{% url 'admin_app:order_compleated' %}">Completed Orders</a>
+            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'confirmed_orders' %}active{% endif %}">
+                <a style="padding: 20px;" href="{% url 'admin_app:confirmed_orders' %}">Confirmed Orders</a>
+            </li>
+            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'shipped_orders' %}active{% endif %}">
+                <a style="padding: 20px;" href="{% url 'admin_app:shipped_orders' %}">Shipped Orders</a>
+            </li>
+            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'completed_orders' %}active{% endif %}">
+                <a style="padding: 20px;" href="{% url 'admin_app:completed_orders' %}">Completed Orders</a>
             </li>
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'users_list' %}active{% endif %}">
                 <a style="padding: 20px;" href="{% url 'admin_app:users_list' %}">Users List</a>

@@ -277,14 +277,20 @@ def orders(request):
     
     customer = request.user.customer
     orders = Order.objects.filter(customer=customer, complete=True)
-    pending_orders = orders.exclude(status='Delivered')
+    
+    processing_orders = orders.filter(status='Processing')
+    confirmed_orders = orders.filter(status='Confirmed')
+    shipped_orders = orders.filter(status='Shipped')
     delivered_orders = orders.filter(status='Delivered')
     
     context = {
         'user': request.user,
-        'pending_orders': pending_orders,
+        'processing_orders': processing_orders,
+        'confirmed_orders': confirmed_orders,
+        'shipped_orders': shipped_orders,
         'delivered_orders': delivered_orders,
     }
+    
     return render(request, 'store/orders.html', context)
 
 def about(request):

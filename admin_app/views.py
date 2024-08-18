@@ -18,23 +18,25 @@ def dashboard(request):
     total_categories = Category.objects.count()
     total_products = Product.objects.count()
     total_customers = Customer.objects.count()
-    
+    processing_orders_count = Order.objects.filter(status='Processing').count()
+    confirmed_orders_count = Order.objects.filter(status='Confirmed').count()
+    shipped_orders_count = Order.objects.filter(status='Shipped').count()
     delivered_orders_count = Order.objects.filter(status='Delivered').count()
-    pending_orders_count = Order.objects.filter(complete=True).exclude(status='Delivered').count()
-    
     total_revenue = OrderItem.objects.filter(order__complete=True).aggregate(
         total_revenue=Sum(F('price_at_purchase') * F('quantity'), output_field=FloatField())
     )['total_revenue'] or 0
-
+    
     context = {
         'total_categories': total_categories,
         'total_products': total_products,
+        'processing_orders_count': processing_orders_count,
+        'confirmed_orders_count': confirmed_orders_count,
+        'shipped_orders_count': shipped_orders_count,
         'delivered_orders_count': delivered_orders_count,
-        'pending_orders_count': pending_orders_count,
         'total_customers': total_customers,
         'total_revenue': total_revenue,
     }
-    
+
     return render(request, 'admin_app/dashboard.html', context)
 
 # Apply the same decorators to the other views
@@ -142,22 +144,6 @@ def product_update(request, pk):
 # def order_list(request):
 #     orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
 #     return render(request, 'admin_app/order_list.html', {'orders': orders})
-@login_required
-@user_passes_test(is_admin)
-def order_list(request):
-    orders = Order.objects.filter(Q(complete=True) & ~Q(status='Delivered'))
-
-    orders_with_details = []
-    for order in orders:
-        shipping_address = ShippingAddress.objects.filter(order=order).first()
-        total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
-        orders_with_details.append({
-            'order': order,
-            'state': shipping_address.state if shipping_address else 'N/A',
-            'total_quantity': total_quantity or 0
-        })
-
-    return render(request, 'admin_app/order_list.html', {'orders_with_details': orders_with_details})
 
 @login_required
 @user_passes_test(is_admin)
@@ -170,24 +156,50 @@ def order_view(request, pk):
         if new_status and new_status != order.status:
             order.status = new_status
             order.save()
-            return redirect('admin_app:order_view', pk=pk)
-    
+        return redirect('admin_app:order_view', pk=pk)
     return render(request, 'admin_app/order_view.html', {
         'order': order,
         'shipping_address': shipping_address
     })
 
 
+
+
 @login_required
 @user_passes_test(is_admin)
-def order_compleated(request):
-    orders = Order.objects.filter(complete=True, status='Delivered').select_related('customer')
+def processing_orders(request):
+    orders = Order.objects.filter(complete=True, status='Processing')
+    return render_order_list(request, orders, 'Processing Orders', 'admin_app/order_list.html')
 
+@login_required
+@user_passes_test(is_admin)
+def confirmed_orders(request):
+    orders = Order.objects.filter(complete=True, status='Confirmed')
+    return render_order_list(request, orders, 'Confirmed Orders', 'admin_app/order_list.html')
+
+@login_required
+@user_passes_test(is_admin)
+def shipped_orders(request):
+    orders = Order.objects.filter(complete=True, status='Shipped')
+    return render_order_list(request, orders, 'Shipped Orders', 'admin_app/order_list.html')
+
+@login_required
+@user_passes_test(is_admin)
+def completed_orders(request):
+    orders = Order.objects.filter(complete=True, status='Delivered')
+    return render_order_list(request, orders, 'Completed Orders', 'admin_app/order_list.html')
+
+def render_order_list(request, orders, title, template):
+    orders_with_details = []
     for order in orders:
-        order.shipping_address = ShippingAddress.objects.filter(order=order).first()
-        order.total_quantity = OrderItem.objects.filter(order=order).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-
-    return render(request, 'admin_app/order_compleated_list.html', {'orders': orders})
+        shipping_address = ShippingAddress.objects.filter(order=order).first()
+        total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
+        orders_with_details.append({
+            'order': order,
+            'state': shipping_address.state if shipping_address else 'N/A',
+            'total_quantity': total_quantity or 0
+        })
+    return render(request, template, {'orders_with_details': orders_with_details, 'title': title})
 
 
 @login_required

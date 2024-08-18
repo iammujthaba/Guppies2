@@ -1,14 +1,12 @@
 {% extends 'admin_app/base_admin.html' %}
 {% block content %}
 <style>
-    .status-processing {
-        color: red;
-    }
-    .status-shipped {
-        color: green;
-    }
+    .status-processing { color: red; }
+    .status-confirmed { color: orange; }
+    .status-shipped { color: blue; }
+    .status-delivered { color: green; }
 </style>
-<h1>Pending Order List</h1>
+<h1>{{ title }}</h1>
 <table>
     <thead>
         <tr>
@@ -31,7 +29,15 @@
             <td>{{ order_detail.total_quantity }}</td>
             <td>{{ order_detail.order.get_cart_total }}</td>
             <td>{{ order_detail.state }}</td>
-            <td class="{% if order_detail.order.status == 'Processing' %}status-processing{% elif order_detail.order.status == 'Shipped' %}status-shipped{% endif %}">
+            <td class="{% if order_detail.order.status == 'Processing' %}
+                            status-processing
+                        {% elif order_detail.order.status == 'Confirmed' %}
+                            status-confirmed
+                        {% elif order_detail.order.status == 'Shipped' %}
+                            status-shipped
+                        {% elif order_detail.order.status == 'Delivered' %}
+                            status-delivered
+                        {% endif %}">
                 {{ order_detail.order.status }}
             </td>
             <td>

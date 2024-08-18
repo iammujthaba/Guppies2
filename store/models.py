@@ -96,6 +96,7 @@ class Product(models.Model):
 class Order(models.Model):
     STATUS_CHOICES = [
         ('Processing', 'Processing'),
+        ('Confirmed', 'Confirmed'),
         ('Shipped', 'Shipped'),
         ('Delivered', 'Delivered')
     ]
@@ -106,6 +107,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
     processing_time = models.DateTimeField(null=True, blank=True)
+    confirmed_time = models.DateTimeField(null=True, blank=True)  # Add this line
     shipped_time = models.DateTimeField(null=True, blank=True)
     delivered_time = models.DateTimeField(null=True, blank=True)
 
@@ -127,6 +129,8 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         if self.status == 'Processing' and not self.processing_time:
             self.processing_time = timezone.now()
+        elif self.status == 'Confirmed' and not self.confirmed_time:
+            self.confirmed_time = timezone.now()
         elif self.status == 'Shipped' and not self.shipped_time:
             self.shipped_time = timezone.now()
         elif self.status == 'Delivered' and not self.delivered_time:
