@@ -28,10 +28,10 @@
                 <a style="padding: 20px;" href="{% url 'admin_app:product_list' %}">Products Manage</a>
             </li>
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'order_list' %}active{% endif %}">
-                <a style="padding: 20px;" href="{% url 'admin_app:order_list' %}">Orders Pending</a>
+                <a style="padding: 20px;" href="{% url 'admin_app:order_list' %}">Processing Orders</a>
             </li>
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'order_compleated' %}active{% endif %}">
-                <a style="padding: 20px;" href="{% url 'admin_app:order_compleated' %}">Orders Completed</a>
+                <a style="padding: 20px;" href="{% url 'admin_app:order_compleated' %}">Completed Orders</a>
             </li>
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'users_list' %}active{% endif %}">
                 <a style="padding: 20px;" href="{% url 'admin_app:users_list' %}">Users List</a>
