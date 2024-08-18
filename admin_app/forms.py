@@ -7,9 +7,22 @@ class CategoryForm(forms.ModelForm):
         fields = '__all__'
 
 class ProductForm(forms.ModelForm):
+    active = forms.ChoiceField(choices=[
+        (True, 'Enabled'),
+        (False, 'Disabled')
+    ], widget=forms.Select)
+
     class Meta:
         model = Product
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['active'].initial = 'Enabled' if self.instance.active else 'Disabled'
+
+    def clean_active(self):
+        return self.cleaned_data['active'] == 'True'
 
     def clean(self):
         cleaned_data = super().clean()

@@ -51,8 +51,20 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ product.name }}</td>
             <td class="{% if product.stock < 4 %}low-stock{% endif %}">{{ product.stock }}</td>
-            <td class="{% if product.status == 'out_of_stock' %}low-stock{% endif %}">{{ product.status }}</td>
-            <td class="{% if not product.active %}inactive{% endif %}">{{ product.active }}</td>
+            <td class="{% if product.status == 'out_of_stock' %}low-stock{% endif %}">
+                {% if product.status == 'in_stock' %}
+                    In Stock
+                {% else %}
+                    Out of Stock
+                {% endif %}
+            </td>
+            <td class="{% if not product.active %}inactive{% endif %}">
+                {% if product.active %}
+                    Enabled
+                {% else %}
+                    Disabled
+                {% endif %}
+            </td>
             <td>{{ product.new_price }}</td>
             <td>
                 <a href="{% url 'admin_app:product_update' product.pk %}">Edit</a>

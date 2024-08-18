@@ -15,6 +15,14 @@
                         </option>
                     {% endfor %}
                 </select>
+            {% elif field.name == 'active' %}
+                <select name="{{ field.name }}" id="{{ field.id_for_label }}">
+                    {% for value, label in field.field.choices %}
+                        <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
             {% else %}
                 {{ field }}
             {% endif %}
