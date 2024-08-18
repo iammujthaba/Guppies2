@@ -84,8 +84,20 @@ def category_delete(request, pk):
 @login_required
 @user_passes_test(is_admin)
 def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'admin_app/product_list.html', {'products': products})
+    categories = Category.objects.all()
+    selected_category = request.GET.get('category')
+    
+    if selected_category:
+        products = Product.objects.filter(category_id=selected_category)
+    else:
+        products = Product.objects.all()
+    
+    context = {
+        'products': products,
+        'categories': categories,
+        'selected_category': selected_category,
+    }
+    return render(request, 'admin_app/product_list.html', context)
 
 @login_required
 @user_passes_test(is_admin)

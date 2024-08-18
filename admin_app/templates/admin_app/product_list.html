@@ -1,15 +1,38 @@
 {% extends 'admin_app/base_admin.html' %}
 {% block content %}
 <style>
-    .inactive {
-        color: red;
+    .inactive { 
+        color: red; }
+    .low-stock { 
+        color: red; }
+    .filter-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
     }
-    .low-stock {
-        color: red;
+    .filter-container select {
+        margin-right: 10px;
+        background: #007bff;
+        color: #fff;
     }
 </style>
+
 <h1>Product List</h1>
-<a href="{% url 'admin_app:product_create' %}" class="button">Add New Product</a>
+
+<div class="filter-container">
+    <form method="get" action="{% url 'admin_app:product_list' %}">
+        <select name="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    <a href="{% url 'admin_app:product_create' %}" class="button">Add New Product</a>
+</div>
+
 <table>
     <thead>
         <tr>

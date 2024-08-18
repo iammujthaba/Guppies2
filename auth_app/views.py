@@ -130,7 +130,7 @@ def login(request):
                     else:
                         return redirect('/')
                 except Customer.DoesNotExist:
-                    form.add_error('contact_number', 'Contact number not found')
+                    form.add_error('contact_number', 'This number is not found')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
