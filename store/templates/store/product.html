@@ -325,7 +325,7 @@
                                             <h3 class=" mb-0">₹{{product.new_price}}</h3>
                                             <!-- <span class="text-muted ml-2"><s>₹599</s></span> -->
                                             <h1 class="mb-0 ml-2">-</h1>
-                                            {% if product.old_price == 0 %}
+                                            {% if product.old_price == 0 or product.old_price is None %}
                                             {% else %}
                                             <h4 class="text-muted mb-0 ml-2"><s>₹{{product.old_price}}</s></h4>
                                             {% endif %}

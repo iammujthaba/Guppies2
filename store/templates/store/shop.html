@@ -10,10 +10,10 @@
         <div class="container-fluid">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
-                {% if offer %}
-                <li class="breadcrumb-item"><a href="#">Offer</a></li>
+                {% if page == 'offer' %}
+                    <li class="breadcrumb-item"><a href="#">Offer</a></li>
                 {% else %}
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
                 {% endif %}
             </ol>
         </div><!-- End .container-fluid -->
@@ -26,7 +26,7 @@
         <div class="row justify-content-center">
 
             {% for product in products.object_list %}
-            <div class="col-6 col-md-4 col-lg-2">
+            <div class="col-6 col-md-4 col-lg-2 {% if product.status == 'out_of_stock' %}desabled{% endif %}">
                 <div class="product product-2">
                     {#{{product.get_url}}#}
                     <a href="{{product.get_url}}">
@@ -64,11 +64,11 @@
                                         
                                         <div class="product-price">
                                             <strong class="related-product-price">Rs {{ product.new_price|strip_decimal }}</strong>
-                                            {% if product.old_price == 0 %}
+                                            {% if product.old_price == 0 or product.old_price is None %}
                                             {% else %}
-                                            <strong class="text-muted related-product-price">-</strong>
-                                            <strong class="text-muted related-product-price"><s>₹{{product.old_price|strip_decimal}}</s></strong>
-                                            {% endif %}
+                                                <strong class="text-muted related-product-price">-</strong>
+                                                <strong class="text-muted related-product-price"><s>₹{{ product.old_price|strip_decimal }}</s></strong>
+                                            {% endif %}                                            
                                         </div>
                                     </h6>
                                     

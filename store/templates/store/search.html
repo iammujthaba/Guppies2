@@ -74,7 +74,7 @@
                                             
                                             <div class="product-price">
                                                 <strong class="related-product-price">Rs {{ product.new_price|strip_decimal }}</strong>
-                                                {% if product.old_price == 0 %}
+                                                {% if product.old_price == 0 or product.old_price is None %}
                                                 {% else %}
                                                 <strong class="text-muted related-product-price">-</strong>
                                                 <strong class="text-muted related-product-price"><s>₹{{product.old_price|strip_decimal}}</s></strong>

@@ -24,7 +24,7 @@ def allProdCat(request, c_slug=None):
     else:
         products_list = Product.objects.all().filter(active=True, stock__gt=0)
 
-    offer_list = Product.objects.filter(active=True, old_price__gt=0)
+    offer_list = Product.objects.filter(active=True, old_price__gt=0, stock__gt=0)
 
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
@@ -255,7 +255,7 @@ def allProductListing(request):
     return render(request, 'store/shop.html', {'products': products})
 
 def offerProductListing(request):
-    products_list = Product.objects.filter(old_price__gt=0)
+    products_list = Product.objects.filter(old_price__gt=0, active=True)
     paginator = Paginator(products_list, 14)
     try:
         page = int(request.GET.get('page', '1'))
@@ -265,7 +265,7 @@ def offerProductListing(request):
         products = paginator.page(page)
     except (InvalidPage, EmptyPage):
         products = paginator.page(paginator.num_pages)
-    return render(request, 'store/shop.html', {'products': products})
+    return render(request, 'store/shop.html', {'products': products, 'page': 'offer'})
 
 def Category_list(request):
     categorys_list = Category.objects.all()
