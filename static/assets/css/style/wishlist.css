@@ -565,3 +565,10 @@ a {
 .btn i:first-child {
     margin-right: .1rem;
 }
+
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

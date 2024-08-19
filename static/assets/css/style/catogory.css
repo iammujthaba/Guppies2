@@ -968,3 +968,9 @@ button:focus {
 .add-to-cart {
     border-radius: 3px
 }
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

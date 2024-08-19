@@ -35,9 +35,15 @@
                                 <button class="btn btn-outline-danger remove-wishlist-btn" data-product-id="{{ item.id }}" style="margin-left: 0px;">
                                     <i class="fas fa-trash-alt"></i> Remove
                                 </button>
-                                <button class="btn btn-primary add-to-cart update-cart" data-quantity="{{ item.stock }}" data-product="{{ item.id }}" data-action="add">
-                                    <i class="fas fa-shopping-cart"></i> Add&nbsp;to&nbsp;Cart
+                                {% if item.status == 'out_of_stock' or item.stock <= 0 %}
+                                <button class="btn btn-secondary add-to-cart update-cart disabled">
+                                    <i class="fas"></i>Out&nbsp;Of&nbsp;Stock
                                 </button>
+                                {% else %}
+                                <button class="btn btn-primary add-to-cart update-cart" data-quantity="{{ item.stock }}" data-product="{{ item.id }}" data-action="add">
+                                    <i class="fas fa-shopping-cart"></i><span style="font-size: 1.5rem;">Add&nbsp;to&nbsp;Cart</span>
+                                </button>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

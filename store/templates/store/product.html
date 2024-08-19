@@ -43,6 +43,8 @@
             padding-bottom: 56.25%; /* 16:9 aspect ratio for even larger screens */
         }
     }
+
+    
     </style>
 
     <div class="page-content">
@@ -391,12 +393,23 @@
 
 
                                     <div class="product-details-action">
-                                        <a data-quantity="{{product.stock}}" data-product="{{product.id}}"
-                                            data-action="add" id="add-to-cart-btn"
-                                            class="btn-product btn-cart update-cart" style="
-                                            margin-left: 17px;
-                                            margin-right: 17px;
-                                        "><span>add to cart</span></a>
+
+                                        {% if product.status == 'out_of_stock' or product.stock <= 0 %}
+                                            <a id="add-to-cart-btn"
+                                                class="btn-product btn-disabled2 update-cart disabled" style="
+                                                margin-left: 17px;
+                                                margin-right: 17px;
+                                                background-color: #6c757d;
+                                                opacity: .80;
+                                            "><span style="color: #fff;font-size: 1.5rem;">Out Of Stock</span></a>
+                                        {% else %}
+                                            <a data-quantity="{{product.stock}}" data-product="{{product.id}}"
+                                                data-action="add" id="add-to-cart-btn"
+                                                class="btn-product btn-cart update-cart" style="
+                                                margin-left: 17px;
+                                                margin-right: 17px;
+                                            "><span style="color: #fff;font-size: 1.5rem;">add to cart</span></a>
+                                        {% endif %}
                                     </div>
 
                                 </div>

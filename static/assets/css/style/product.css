@@ -544,14 +544,14 @@ button:focus {
     margin-bottom: 3rem
 }
 
-.product-details-action .btn-cart {
+.product-details-action .btn-cart, .product-details-action .btn-disabled2  {
     padding: 1rem 1.5rem;
     max-width: 100%;
     color: #c96;
     border: .1rem solid #c96
 }
 
-.product-details-action .btn-cart span {
+.product-details-action .btn-cart span, .product-details-action .btn-disabled2 span {
     font-size: 1.4rem;
     color: inherit;
     text-transform: uppercase;
@@ -559,7 +559,8 @@ button:focus {
     transition: box-shadow .35s ease, color 0s ease
 }
 
-.product-details-action .btn-cart:before {
+.product-details-action .btn-cart:before, 
+.product-details-action .btn-disabled2:before {
     margin-right: .4rem
 }
 
@@ -585,7 +586,7 @@ button:focus {
 }
 
 @media screen and (min-width:1700px) {
-    .container-fluid .product-details-action .btn-cart {
+    .container-fluid .product-details-action .btn-cart, .container-fluid .product-details-action .btn-disabled2 {
         min-width: 240px
     }
 }
@@ -623,7 +624,7 @@ button:focus {
         align-items: flex-start
     }
 
-    .product-details-action .btn-cart {
+    .product-details-action .btn-cart, .product-details-action .btn-disabled2 {
         min-width: 100%
     }
 }
@@ -641,7 +642,7 @@ button:focus {
         align-items: flex-start
     }
 
-    .product-details-action .btn-cart {
+    .product-details-action .btn-cart, .product-details-action .btn-disabled2 {
         min-width: 90%
     }
 }
