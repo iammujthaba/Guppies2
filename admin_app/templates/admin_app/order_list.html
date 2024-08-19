@@ -5,6 +5,10 @@
     .status-confirmed { color: orange; }
     .status-shipped { color: blue; }
     .status-delivered { color: green; }
+    .status{
+        font-size: 1.2em;
+        font-family: cursive;
+    }
 </style>
 <h1>{{ title }}</h1>
 <table>
@@ -14,7 +18,7 @@
             <th>Customer</th>
             <th>Ordered</th>
             <th>Quantity</th>
-            <th>Total</th>
+            <th>Price</th>
             <th>State</th>
             <th>Status</th>
             <th>Actions</th>
@@ -37,11 +41,13 @@
                             status-shipped
                         {% elif order_detail.order.status == 'Delivered' %}
                             status-delivered
-                        {% endif %}">
+                        {% endif %} status">
                 {{ order_detail.order.status }}
             </td>
             <td>
-                <a href="{% url 'admin_app:order_view' order_detail.order.pk %}">View</a>
+                <a href="{% url 'admin_app:order_view' order_detail.order.pk %}">
+                    <button type="button" class="btn btn-primary">View</button>
+                </a>
             </td>
         </tr>
         {% endfor %}
