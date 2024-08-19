@@ -41,8 +41,8 @@ class Product(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(max_length=250, unique=True)
     description = models.TextField(blank=True)
-    old_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
-    new_price = models.DecimalField(max_digits=7, blank=False, decimal_places=2)
+    old_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=0)
+    new_price = models.DecimalField(max_digits=7, blank=False, decimal_places=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     image_1 = models.ImageField(upload_to='product')
     image_2 = models.ImageField(upload_to='product', blank=True)
@@ -143,7 +143,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    price_at_purchase = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    price_at_purchase = models.DecimalField(max_digits=7, decimal_places=0, null=True, blank=True)
 
     @property
     def get_total(self):
@@ -175,7 +175,7 @@ class ShippingAddress(models.Model):
 class PurchaseHistory(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    price_at_purchase = models.DecimalField(max_digits=7, decimal_places=2)
+    price_at_purchase = models.DecimalField(max_digits=7, decimal_places=0)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

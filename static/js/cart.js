@@ -158,14 +158,17 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
 
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
+    
     updateCartDataForUnauthorizedUser();
     updateCartItemQuantity(productId, cart[productId] ? cart[productId]['quantity'] : 0);
-
+    
     // Update cart totals
     updateCartTotals();
 
     if (Object.keys(cart).length === 0) {
         showEmptyCartMessage();
+    } else {
+        location.reload(); // Reload the page to ensure all items are displayed correctly
     }
 }
 

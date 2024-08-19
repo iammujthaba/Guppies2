@@ -36,11 +36,11 @@
 			{% for cart_item in items %}
 			<div class="col-md-6">
 				<div class="card border rounded shadow-sm" 
-				data-product-id="{{ cart_item.product.id }}"
-				data-product-name="{{ cart_item.product.name }}"
-				data-product-new-price="{{ cart_item.product.new_price }}"
-				data-product-old-price="{{ cart_item.product.old_price }}"
-				data-product-stock="{{ cart_item.product.stock }}">
+					 data-product-id="{{ cart_item.product.id }}" 
+					 data-product-name="{{ cart_item.product.name }}" 
+					 data-product-new-price="{{ cart_item.product.new_price }}" 
+					 data-product-old-price="{{ cart_item.product.old_price|default_if_none:'' }}"
+					 data-product-stock="{{ cart_item.product.stock }}">
 
 					<div class="card-header m-3">
 						<a href="{{cart_item.product.get_url}}">
@@ -91,11 +91,13 @@
 						</div><!-- End .details-filter-row -->
 
 						<div class="d-flex flex-row justify-content-between">
-							{% if user.is_authenticated %}
-								<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
-							{% else %}
-								<div>Price: {{ cart_item.product.new_price }} (<span class="price-difference">{{ cart_item.product.price_difference }}</span>)</div>
-							{% endif %}
+
+							<div>Price: {{ cart_item.product.new_price }} 
+								{% if cart_item.product.old_price %}
+									<span class="price-difference" style="padding-left: 10px; color: green;">[₹{{ cart_item.product.price_difference }} Off]</span>
+								{% endif %}
+							</div>
+
 							<div>Total: ₹ <span class="item-total">{{cart_item.get_total|floatformat:2}}</span></div>
 						</div>
 

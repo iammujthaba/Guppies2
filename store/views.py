@@ -62,13 +62,12 @@ def cart(request):
     items = data['items']
     total_price_difference = data['total_price_difference']
 
-    # Calculate price_difference for each item
     if request.user.is_authenticated:
         for item in items:
-            item.product.price_difference = item.product.old_price - item.product.new_price
+            item.product.price_difference = item.product.old_price - item.product.new_price if item.product.old_price else 0
     else:
         for item in items:
-            item['product']['price_difference'] = item['product']['old_price'] - item['product']['new_price']
+            item['product']['price_difference'] = item['product']['old_price'] - item['product']['new_price'] if item['product']['old_price'] is not None else 0
 
     context = {
         'items': items,
@@ -130,7 +129,7 @@ def updateItem(request):
 
     cart_total = order.get_cart_total
     cart_items = order.get_cart_items
-    total_price_difference = sum((item.product.old_price - item.product.new_price) * item.quantity for item in order.orderitem_set.all())
+    total_price_difference = sum((item.product.old_price - item.product.new_price if item.product.old_price else 0) * item.quantity for item in order.orderitem_set.all())
 
     return JsonResponse({
         'added': added,
