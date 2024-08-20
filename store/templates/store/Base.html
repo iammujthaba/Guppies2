@@ -300,7 +300,9 @@
                                 <li class="{% if request.path == '/cart/' %}active{% endif %}">
                                     <a href="{% url 'store_app:cart' %}">Cart</a>
                                 </li>
-                                <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
+                                <li class="{% if request.path == '/delivered/' %}active{% endif %}">
+                                    <a href="{% url 'store_app:delivered' %}">delivered</a>
+                                </li>
                                 <li class="{% if request.path == '/myorders/' %}active{% endif %}">
                                     <a href="{% url 'store_app:myorders' %}">Orders</a>
                                 </li>
@@ -568,10 +570,13 @@
                                 <a href="{% url 'store_app:allProductListing' %}">Shopping</a>
                             </li>
                             <li>
-                                <a href="{% url 'store_app:cart' %}">My Cart</a>
+                                <a href="{% url 'store_app:cart' %}">Cart</a>
                             </li>
                             <li>
-                                <a href="{% url 'store_app:myorders' %}">My Orders</a>
+                                <a href="{% url 'store_app:myorders' %}">Orders</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'store_app:delivered' %}">delivered</a>
                             </li>
                             <li>
                                 <a href="{% url 'store_app:account_info' %}">Account</a>

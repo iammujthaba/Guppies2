@@ -17,6 +17,7 @@ urlpatterns = [
     path('category/',views.Category_list,name='category_list'),
     path('account/',views.account_info,name='account_info'),
     path('myorders/', views.myorders, name='myorders'),
+    path('delivered/',views.myorders,name='delivered'),
     
     path('orders/',views.orders,name='orders'),
     # path('track-order/<int:order_id>/', views.track_order, name='track_order'),
