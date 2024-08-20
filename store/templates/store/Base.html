@@ -301,12 +301,9 @@
                                     <a href="{% url 'store_app:cart' %}">Cart</a>
                                 </li>
                                 <!-- <li class="{% if request.path == '/ecommerce/account/' %}active{% endif %}"> -->
-
-                                {% if user.is_authenticated %}
-                                <li class="{% if request.path == '/orders/' %}active{% endif %}">
-                                    <a href="{% url 'store_app:orders' %}">Orders</a>
+                                <li class="{% if request.path == '/myorders/' %}active{% endif %}">
+                                    <a href="{% url 'store_app:myorders' %}">Orders</a>
                                 </li>
-                                {% endif %}
                                 <li class="{% if request.path == '/account/' %}active{% endif %}">
                                     <a href="{% url 'store_app:account_info' %}">Account</a>
                                 </li>
@@ -418,7 +415,7 @@
                                                     <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
                                                     <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
                                                     <li><a href="{% url 'store_app:cart' %}">Cart</a></li>
-                                                    <li><a href="{% url 'store_app:orders' %}">Orders</a></li>
+                                                    <li><a href="{% url 'store_app:myorders' %}">Orders</a></li>
                                                     <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
                                                 </ul>
                                             </div>
@@ -501,7 +498,7 @@
                                             <li><a href="{% url 'auth_app:login' %}">Sign In</a></li>
                                             <li><a href="{% url 'auth_app:register' %}">Sign Up</a></li>
                                             <li><a href="{% url 'store_app:cart' %}">Cart</a></li>
-                                            <li><a href="{% url 'store_app:orders' %}">Orders</a></li>
+                                            <li><a href="{% url 'store_app:myorders' %}">Orders</a></li>
                                             <li><a href="{% url 'store_app:account_info' %}">Account</a></li>
                                         </ul>
                                     </div>
@@ -573,11 +570,9 @@
                             <li>
                                 <a href="{% url 'store_app:cart' %}">My Cart</a>
                             </li>
-                            {% if user.is_authenticated %}
                             <li>
-                                <a href="{% url 'store_app:orders' %}">My Orders</a>
+                                <a href="{% url 'store_app:myorders' %}">My Orders</a>
                             </li>
-                            {% endif %}
                             <li>
                                 <a href="{% url 'store_app:account_info' %}">Account</a>
                             </li>

@@ -292,6 +292,52 @@ def orders(request):
     
     return render(request, 'store/orders.html', context)
 
+
+from django.db.models import Sum
+
+def myorders(request):
+    if not request.user.is_authenticated:
+        return redirect('auth_app:login')
+    
+    customer = request.user.customer
+    orders = Order.objects.filter(
+        customer=customer, 
+        complete=True
+    ).exclude(
+        status='Delivered'
+    ).order_by('-date_ordered')
+    
+    orders_with_details = []
+    for order in orders:
+        total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
+        orders_with_details.append({
+            'order': order,
+            'total_quantity': total_quantity or 0,
+            'total_amount': order.get_cart_total,
+            'date_ordered': order.date_ordered,
+            'status': order.status,
+        })
+    
+    context = {
+        'user': request.user,
+        'orders_with_details': orders_with_details,
+    }
+    return render(request, 'store/myorder.html', context)
+
+# def track_order(request, order_id):
+#     if not request.user.is_authenticated:
+#         return redirect('auth_app:login')
+    
+#     order = Order.objects.get(id=order_id, customer=request.user.customer)
+#     order_items = OrderItem.objects.filter(order=order)
+    
+#     context = {
+#         'order': order,
+#         'order_items': order_items,
+#     }
+#     return render(request, 'store/track_order.html', context)
+
+
 def about(request):
     return render(request, 'resources/about.html')
 
