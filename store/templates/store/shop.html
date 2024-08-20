@@ -77,7 +77,7 @@
                         </div>
                     </a>
                     {% if product.status == 'out_of_stock' or product.stock <= 0 %}
-                    <button class="btn btn-secondary btn-lg btn-block add-to-cart add-btn update-cart disabled">Out Of Stock</button>
+                    <button class="btn btn-secondary btn-lg btn-block add-to-cart add-btn update-cart disabled" style="cursor: not-allowed;">Out Of Stock</button>
                     {% else %}
                     <button data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" class="btn btn-primary btn-lg btn-block add-to-cart add-btn update-cart">Add to Cart</button>
                     {% endif %}

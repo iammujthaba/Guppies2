@@ -357,7 +357,7 @@ a {
 }
 
 .sidebar-product {
-    max-width: 375px;
+    /* max-width: 375px; */
     margin-left: auto;
     margin-right: auto
 }
