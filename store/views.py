@@ -211,7 +211,7 @@ def proDetail(request, c_slug, product_slug):
     
     except Product.DoesNotExist:
         logger.error(f"Product not found: category_slug={c_slug}, product_slug={product_slug}")
-        return render(request, 'auth_app/loginOrRegister.html')
+        return render(request, 'store/error.html')
     
     if c_slug:
         c_page = get_object_or_404(Category, slug=c_slug)
@@ -270,27 +270,27 @@ def Category_list(request):
     categorys_list = Category.objects.all()
     return render(request, 'store/category_listing.html', {'categorys_list': categorys_list})
 
-def orders(request):
-    if not request.user.is_authenticated:
-        return redirect('auth_app:login')
+# def orders(request):
+#     if not request.user.is_authenticated:
+#         return redirect('auth_app:login')
     
-    customer = request.user.customer
-    orders = Order.objects.filter(customer=customer, complete=True)
+#     customer = request.user.customer
+#     orders = Order.objects.filter(customer=customer, complete=True)
     
-    processing_orders = orders.filter(status='Processing')
-    confirmed_orders = orders.filter(status='Confirmed')
-    shipped_orders = orders.filter(status='Shipped')
-    delivered_orders = orders.filter(status='Delivered')
+#     processing_orders = orders.filter(status='Processing')
+#     confirmed_orders = orders.filter(status='Confirmed')
+#     shipped_orders = orders.filter(status='Shipped')
+#     delivered_orders = orders.filter(status='Delivered')
     
-    context = {
-        'user': request.user,
-        'processing_orders': processing_orders,
-        'confirmed_orders': confirmed_orders,
-        'shipped_orders': shipped_orders,
-        'delivered_orders': delivered_orders,
-    }
+#     context = {
+#         'user': request.user,
+#         'processing_orders': processing_orders,
+#         'confirmed_orders': confirmed_orders,
+#         'shipped_orders': shipped_orders,
+#         'delivered_orders': delivered_orders,
+#     }
     
-    return render(request, 'store/orders.html', context)
+#     return render(request, 'store/orders.html', context)
 
 
 from django.db.models import Sum
@@ -483,3 +483,7 @@ def is_product_in_wishlist(request, product):
     else:
         cookie_data = cookieWishlist(request)
         return str(product.id) in cookie_data['wishlist_items']
+
+
+def trackOrder(request, order_id):
+    return render(request, 'store/trackOrder.html')
