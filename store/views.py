@@ -484,6 +484,15 @@ def is_product_in_wishlist(request, product):
         cookie_data = cookieWishlist(request)
         return str(product.id) in cookie_data['wishlist_items']
 
-
+@login_required
 def trackOrder(request, order_id):
-    return render(request, 'store/trackOrder.html')
+    order = get_object_or_404(Order, id=order_id, customer=request.user.customer)
+    order_items = OrderItem.objects.filter(order=order)
+    shipping_address = ShippingAddress.objects.filter(order=order).first()
+    
+    context = {
+        'order': order,
+        'order_items': order_items,
+        'shipping_address': shipping_address,
+    }
+    return render(request, 'store/trackOrder.html', context)
