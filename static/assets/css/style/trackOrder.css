@@ -1,14 +1,18 @@
-h1, h2 {
+h1,
+h2 {
     color: #2c3e50;
-    margin-top: 0;
+    margin-top: 0
 }
+
 h1 {
     font-size: 28px;
-    margin-bottom: 20px;
+    margin-bottom: 20px
 }
+
 h2 {
-    font-size: 22px;
+    font-size: 22px
 }
+
 .btn {
     background-color: #1abc9c;
     color: #fff;
@@ -18,104 +22,136 @@ h2 {
     cursor: pointer;
     font-size: 14px;
     transition: background-color .3s;
-    margin-top: 15px;
+    margin-top: 15px
 }
+
 .btn:hover {
-    background-color: #16a085;
+    background-color: #16a085
 }
+
 .product-item {
     display: flex;
     align-items: center;
     padding: 15px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0
 }
+
 .product-item:last-child {
-    border-bottom: none;
+    border-bottom: none
 }
+
 .product-image {
     width: 80px;
     height: 80px;
     object-fit: cover;
     margin-right: 20px;
-    border-radius: 8px;
+    border-radius: 8px
 }
+
 .product-details {
-    flex-grow: 1;
+    flex-grow: 1
 }
+
 .product-name {
     font-weight: 600;
     margin: 0 0 3px;
-    color: #2c3e50;
+    color: #2c3e50
 }
+
 .product-price {
     font-weight: 600;
     text-align: right;
-    color: #2c3e50;
+    color: #2c3e50
 }
+
 .quantity {
     font-size: .9em;
     color: #7f8c8d;
-    text-align: right;
+    text-align: right
 }
+
 .delivery-address {
-    background-color: #fff8e1;
+    background-color: #c5d1c2;
     padding: 15px;
     border-radius: 8px;
-    margin-top: 30px;
+    margin-top: 20px
 }
+
 .delivery-address p {
-    margin: 5px 0;
+    margin: 5px 0
 }
+
 .order-details {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    font-size: larger;
+    font-style: oblique;
 }
-/* New progress bar styles */
-.progress-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    flex-direction: row;
-    background-color: #ffffff;
-    margin-bottom: 4px;
-    height: 16px;
+
+
+.timeline {
+position: relative;
+padding-left: 100px;
+margin-top: 30px;
+padding-bottom: 10px; /* Add some padding at the bottom */
 }
-.progress-step {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: #e0e0e0;
-    z-index: 3;
-    transition: background-color 0.3s ease;
-    position: relative;
+
+.timeline-item {
+position: relative;
+margin-bottom: 30px;
+display: flex;
+align-items: flex-start;
 }
-.progress-step.active {
-    background-color: #4CAF50;
+
+.timeline-item::before {
+content: '';
+position: absolute;
+left: -25px;
+top: 4px;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background-color: #4caf50;
+z-index: 2;
 }
-.progress-line-background {
-    position: absolute;
-    top: 7px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: #e0e0e0;
-    z-index: 1;
+
+.timeline-date {
+position: absolute;
+left: -90px;
+top: 4px;
+font-size: .9em;
+color: #666;
 }
+
+.timeline-icon {
+flex-shrink: 0;
+width: 24px;
+height: 24px;
+margin-right: 15px;
+color: var(--primary-color);
+}
+
 .progress-line {
-    position: absolute;
-    top: 7px;
-    left: 0;
-    height: 2px;
-    background-color: #4CAF50;
-    z-index: 2;
-    transition: width 0.5s ease;
+position: absolute;
+left: 80px;
+top: 10px;
+width: 2px;
+background-color: #4caf50;
+transition: height 0.5s ease;
+z-index: 1;
 }
-.progress-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 8px;
+
+.timeline-item.completed .timeline-icon,
+.timeline-item.active .timeline-icon {
+color: green;
+}
+
+.dark-progress-line {
+position: absolute;
+left: 80px;
+top: 10px;
+width: 2px;
+background-color: #e0e0e0;
+z-index: 0;
 }
