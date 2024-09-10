@@ -128,9 +128,18 @@ def checkout(request):
         # customer = request.user.customer
         # last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
 
+        frequent_customer_areas = ["Kerala", "Karnataka", "Tamil Nadu"]
+        other_states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+                "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
+                "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", 
+                "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
+                "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"]
+
         context = {
             'items': items,
             'order': order,
+            'frequent_customer_areas': frequent_customer_areas,
+            'other_states': other_states,
             'cartItems': cartItems,
             'last_shipping': last_shipping,
         }
