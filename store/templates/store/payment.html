@@ -1,0 +1,346 @@
+{% extends 'store/Base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .box-element {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .order-summary h3, .shipping-info h3 {
+        color: #343a40;
+        /* margin-bottom: 1.5rem; */
+    }
+    .cart-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .cart-row:last-child {
+        border-bottom: none;
+    }
+    .cart-row img {
+        max-width: 60px;
+        border-radius: 4px;
+        margin-right: 1rem;
+    }
+    .cart-row p {
+        margin: 0;
+    }
+    .product-name {
+        flex: 2;
+    }
+    .dlist-align {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+    .total {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #28a745;
+    }
+    .shipping-info p {
+        margin-bottom: 0.5rem;
+    }
+    .btn-back {
+        background-color: #6c757d;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 1rem;
+        margin-top: 10px;
+    }
+    .btn-back:hover {
+        background-color: #5a6268;
+        color: white;
+        text-decoration: none;
+    }
+    #rzp-button1 {
+        background-color: #28a745;
+        color: white;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        display: block;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    #rzp-button1:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mt-4">
+    
+            <div class="box-element order-summary" style="padding-bottom: 1rem; padding-top: 1.5rem;">
+                <h3>Order Summary</h3>
+
+<!-- ----------------------------------------------------------- -->
+
+            
+
+                <style>
+h1,
+h2 {
+	color: #2c3e50;
+	margin-top: 0
+}
+
+h1 {
+	font-size: 28px;
+	margin-bottom: 20px
+}
+
+h2 {
+	font-size: 22px
+}
+
+.product-item {
+	display: flex;
+	align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+	border-bottom: 1px solid #e0e0e0
+}
+
+.product-item:last-child {
+	border-bottom: none
+}
+
+.product-image {
+	/* width: 80px; */
+	height: 80px;
+	object-fit: cover;
+	margin-right: 20px;
+	border-radius: 8px
+}
+
+.product-details {
+	flex-grow: 1
+}
+
+.product-name {
+	font-weight: 600;
+	margin: 0 0 3px;
+	color: #2c3e50
+}
+
+.product-price {
+	font-weight: 600;
+	text-align: right;
+	color: #2c3e50
+}
+
+.quantity {
+	font-size: .9em;
+	color: #7f8c8d;
+	text-align: right
+}
+
+.order-details {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	font-size: larger;
+	font-style: oblique
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: .85rem 1.5rem;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    letter-spacing: -.01em;
+    min-width: 170px;
+    border-radius: 0;
+    white-space: normal;
+    transition: all .3s;
+}
+
+                </style>
+
+
+<div class="product-list">
+    {% for item in items %}
+                    <div class="product-item">
+                        <a href="{{item.product.get_url}}">
+                        <img src="{{ item.product.imageURL }}" alt="{{ item.product.name }}" class="product-image">
+                        <div class="product-details">
+                            <h3 class="product-name">{{ item.product.name }}</h3>
+                        </a>
+                            <div class="product-price" style="text-align: left;">
+                                <span class="related-product-price">₹{{ item.price_at_purchase }}</span>
+                                {% if item.product.get_discounted_price %}
+                                <span class="text-success mb-0 ml-2" style="color: #4CAF50; padding-left: 7px;">{{ item.product.get_discounted_price.percentage }}% off</span>
+                                {% else %}
+                                <span class="mb-0 ml-2" style="padding-left: 7px; color: #6c757d;">[Offer Not avalable]</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <span class="related-product-price">Qty: {{ item.quantity }}</span>
+                                <span style="padding-left: 10px;"><strong>X</strong></span>
+                                <span style="padding-left: 10px;" class="text-success mb-0 ml-2">₹{{ item.price_at_purchase }}</span>
+                                <span style="padding-left: 10px;"><strong>=</strong></span>
+                                <span style="padding-left: 10px;"><strong>₹{{ item.get_total }}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                {% endfor %}
+            </div>
+
+<!-- --------------------------------------------------- -->
+
+
+
+                <hr>
+                <div class="card" style="border: none;">
+                    <div class="card-body" style="padding: 0px;">
+                        <dl class="dlist-align">
+                            <dt>Sub Total:</dt>
+                            <dd class="text-end">₹ {{order.get_cart_total|floatformat:2}}</dd>
+                        </dl>
+                        {% if total_price_difference %}
+                        <dl class="dlist-align">
+                            <dt>You Save:</dt>
+                            <dd class="text-end text-success">₹ {{ total_price_difference|floatformat:2 }}</dd>
+                        </dl>
+                        {% endif %}
+                        <dl class="dlist-align">
+                            <dt>Shipping:</dt>
+                            <dd class="text-end">₹ 60.00</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Total Items:</dt>
+                            <dd class="text-end">{{order.get_cart_items}}</dd>
+                        </dl>
+                        <hr>
+                        <dl class="dlist-align total">
+                            <dt>Total:</dt>
+                            <dd class="text-end">₹ {{ order.get_cart_total|add:60}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="box-element shipping-info">
+                <h3>Shipping Address</h3>
+                <p><strong>Contact Number:</strong> {{ shipping_info.number }}</p>
+                <p><strong>WhatsApp Number:</strong> {{ shipping_info.whatsapp }}</p>
+                <p><strong>Address:</strong> {{ shipping_info.address }}</p>
+                <p><strong>City:</strong> {{ shipping_info.city }}</p>
+                <p><strong>State:</strong> {{ shipping_info.state }}</p>
+                <p><strong>Zip Code:</strong> {{ shipping_info.zipcode }}</p>
+                <div id="payment-info">
+                    <button id="rzp-button1" style="background-color: #007BFF;">Proceed to Pay</button>
+                    <a href="{% url 'store_app:checkout' %}" class="btn btn-light w-100 mt-4"> Back to Address </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var total = '{{order.get_cart_total|add:60}}';
+var options = {
+    "key": "rzp_test_T3s2cflbXqYRRf",
+    "amount": total * 100,
+    "currency": "INR",
+    "name": "MUJTHABA M K",
+    "description": "Thank You for Buying from Us",
+    "image": "https://example.com/your_logo",
+    "handler": function (response){
+        submitFormData(response);
+    },
+    "prefill": {
+        "name": null,
+        "email": null,
+        "contact": null
+    },
+    "theme": {
+        "color": "#28a745"
+    }
+};
+
+var rzp1 = new Razorpay(options);
+
+rzp1.on('payment.failed', function (response){
+    alert(response.error.description);
+});
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+
+function submitFormData(paymentResponse){
+    console.log('Payment successful, processing order...');
+
+    var shippingInfo = {{ shipping_info|safe }};
+    shippingInfo.total = total;
+    shippingInfo.razorpay_payment_id = paymentResponse.razorpay_payment_id;
+
+    var url = "{% url 'store_app:process_order' %}";
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({'shipping': shippingInfo }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data.message);
+        if (data.success) {
+            Swal.fire({
+                icon: "success",
+                title: "Well done!",
+                text: data.message,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear the cart
+                    localStorage.removeItem('cart');
+                    
+                    // Redirect to the home page
+                    window.location.href = "{% url 'store_app:allProdCat' %}";
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+            });
+        }
+    });
+}
+</script>
+
+{% endblock content %}
+
+
+
+
+

@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
     <style>
         /* Custom CSS for the Checkout Page */
 body {
@@ -145,6 +146,23 @@ body {
             background-color: #004085; /* Even darker shade for active state */
             transform: scale(1);
         }
+
+        .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: .85rem 1.5rem;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    letter-spacing: -.01em;
+    min-width: 170px;
+    border-radius: 0;
+    white-space: normal;
+    transition: all .3s;
+}
+
     </style>
 </head>
 <body>
@@ -153,9 +171,9 @@ body {
             <div class="col-lg-6">
 
                 <div class="box-element" id="form-wrapper">
-                    <form id="form">
+
+                    <form id="form" method="POST" action="{% url 'store_app:checkout' %}">
                         {% csrf_token %}
-                        
                         <div id="shipping-info">
                             <h5>Shipping Information</h5>
                             <div class="form-field">
@@ -185,194 +203,15 @@ body {
                         </div>
                         <hr>
                         <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+
+                        <a href="{% url 'store_app:cart' %}" class="btn btn-light w-100 mt-4"> Back to Cart </a>
                     </form>
                 </div>
-                
 
-
-                <br>
-                <div class="box-element hidden" id="payment-info">
-                    <!-- this peyment button only seen after address submission -->
-                    <!-- <button id="make-payment">Make Payment</button> -->
-                    <button id="rzp-button1">Proceed to pay</button>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="box-element order-summary">
-                    <a class="btn btn-outline-dark" href="{% url 'store_app:cart' %}">&#x2190; Back to Cart</a>
-                    <hr>
-                    <h3>Order Summary</h3>
-                    <hr>
-                    {% for item in items %}
-                    <div class="cart-row">
-                        <div><img class="row-image" src="{{item.product.imageURL}}"></div>
-                        <div><p>{{item.product.name}}</p></div>
-                        <div><p>₹{{item.product.new_price|floatformat:2}}</p></div>
-                        <div><p>X  {{item.quantity}}</p></div>
-                    </div>
-                    {% endfor %}
-                    <h5>Items: {{order.get_cart_items}}</h5>
-                    <h5 name="total">Total: ₹{{order.get_cart_total|floatformat:2}}</h5>
-                </div>
             </div>
         </div>
     </div>
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-<script>
-    var total = '{{order.get_cart_total}}'
-    
-    var options = {
-        "key": "rzp_test_T3s2cflbXqYRRf", // Enter the Key ID generated from the Dashboard
-        "amount": 1*100,// total * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        "currency": "INR",
-        "name": "MUJTHABA M K", //your business name
-        "description": "Thank You for Buying from Us",
-        "image": "https://example.com/your_logo",
-        // if i giving order_id, it's not working
-        //"order_id": order.transaction_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
-            //alert(response.razorpay_payment_id);
-            submitFormData()
-            // alert(response.razorpay_order_id);
-            // alert(response.razorpay_signature)
-        },
-        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-            "name": null,
-            "email": null,
-            "contact": null
-        },
-        "theme": {
-            "color": "#3399cc"
-        }
-    };
-    var rzp1 = new Razorpay(options);
-    rzp1.on('payment.failed', function (response){
-            alert(response.error.description);
-    });
-    document.getElementById('rzp-button1').onclick = function(e){
-        rzp1.open();
-        e.preventDefault();
-    }
-</script>
-
-
-<script type="text/javascript">
-    // if it's digital product don't show shipping address
-    var order = '{{order}}'
-
-    // if (shipping == 'False'){
-    //      document.getElementById('shipping-info').innerHTML = ''
-    // }
-
-    // cheking user is anonymous or not (if anonymous show the filed to submit user name and email)
-    // if (user != 'AnonymousUser'){
-    //     document.getElementById('user-info').innerHTML = ''
-    //     }
-
-    // if (shipping == 'False' && user != 'AnonymousUser'){
-    //     //Hide entire form if user is logged in and shipping is false
-    //         document.getElementById('form-wrapper').classList.add("hidden");
-    //         //Show payment if logged in user wants to buy an item that does not require shipping
-    //         document.getElementById('payment-info').classList.remove("hidden");
-    // }
-
-    // conforming shipping address then showing payment option
-    var form = document.getElementById('form')
-
-    // createing new csrftoken for incoginato mode working
-    csrftoken = form.getElementsByTagName("input")[0].value
-    
-    form.addEventListener('submit', function(e){
-        e.preventDefault()
-        console.log('Form Submitted...')
-        document.getElementById('form-button').classList.add("hidden");
-        document.getElementById('payment-info').classList.remove("hidden");
-    })
-    // document.getElementById('make-payment').addEventListener('click', function(e){
-    //     submitFormData()
-    // })
-
-    // send user data into backend
-        // feching data
-    function submitFormData(){
-        console.log('Payment button clicked')
-        // var userFormData = {
-        //     'name':null,
-        //     'email':null,
-        //     'total':total,
-        // }
-
-        var shippingInfo = {
-            'number':null,
-            'whatsapp':null,
-            'address':null,
-            'city':null,
-            'state':null,
-            'zipcode':null,
-            'total':total,
-        }
-
-        if (order){
-            shippingInfo.number = form.number.value
-            shippingInfo.whatsapp = form.whatsapp.value
-            shippingInfo.address = form.address.value
-            shippingInfo.city = form.city.value
-            shippingInfo.state = form.state.value
-            shippingInfo.zipcode = form.zipcode.value
-        }
-
-        // if (user == 'AnonymousUser'){
-        //     userFormData.name = form.name.value
-        //     userFormData.email = form.email.value
-        // }
-
-        console.log('Shipping Info:', shippingInfo)
-        //console.log('User Info:', userFormData)
-
-        // send feched data into back
-        var url = "/process_order/";
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            // 'form': userFormData, 
-            body: JSON.stringify({'shipping': shippingInfo }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data.message);
-            // alert(data.message);
-
-            if (data.success) {
-                Swal.fire({
-                icon: "success",
-                title: "Congrats...",
-                text: data.message,
-                }).then((result) => {
-                if (result.isConfirmed) {
-                        // After payment, set cart as empty for both authenticated and non-authenticated users
-                        cart = {};
-                        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
-
-                        // Redirect to the home page
-                        window.location.href = "{% url 'store_app:allProdCat' %}";
-                        }
-                    });
-            } else{
-                Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-                });
-            }
-        })
-
-    }
-</script>
-
 {% endblock content %}
+
+

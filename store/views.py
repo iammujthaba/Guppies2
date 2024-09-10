@@ -77,16 +77,56 @@ def cart(request):
     }
     return render(request, 'store/Cart.html', context)
 
+# def checkout(request):
+#     if request.user.is_authenticated:
+#         data = cartData(request)
+#         cartItems = data['cartItems']
+#         order = data['order']
+#         items = data['items']
+
+#         customer = request.user.customer
+#         last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
+
+#         context = {
+#             'items': items,
+#             'order': order,
+#             'cartItems': cartItems,
+#             'last_shipping': last_shipping,
+#         }
+#         return render(request, 'store/Checkout.html', context)
+#     else:
+#         return redirect('store_app:account_info')
+
+
+
 def checkout(request):
     if request.user.is_authenticated:
         data = cartData(request)
         cartItems = data['cartItems']
         order = data['order']
         items = data['items']
-
-        # Get the last shipping information
         customer = request.user.customer
         last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
+
+        if request.method == 'POST':
+            # Process the form data
+            shipping_info = {
+                'number': request.POST.get('number'),
+                'whatsapp': request.POST.get('whatsapp'),
+                'address': request.POST.get('address'),
+                'city': request.POST.get('city'),
+                'state': request.POST.get('state'),
+                'zipcode': request.POST.get('zipcode'),
+            }
+            # Store shipping info in session
+            request.session['shipping_info'] = shipping_info
+            return redirect('store_app:payment')  # Redirect to the new payment page
+
+
+        # Get the last shipping information
+
+        # customer = request.user.customer
+        # last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
 
         context = {
             'items': items,
@@ -95,6 +135,26 @@ def checkout(request):
             'last_shipping': last_shipping,
         }
         return render(request, 'store/Checkout.html', context)
+    else:
+        return redirect('store_app:account_info')
+
+def payment(request):
+    if request.user.is_authenticated:
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
+        
+        # Retrieve shipping info from session
+        shipping_info = request.session.get('shipping_info', {})
+        
+        context = {
+            'items': items,
+            'order': order,
+            'cartItems': cartItems,
+            'shipping_info': shipping_info,
+        }
+        return render(request, 'store/payment.html', context)
     else:
         return redirect('store_app:account_info')
 
@@ -141,39 +201,21 @@ def updateItem(request):
         'itemTotal': orderItem.get_total if orderItem.id else 0,
     }, safe=False)
 
-def processOrder(request):
-    transaction_id = datetime.datetime.now().timestamp()
-    data = json.loads(request.body)
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def processOrder(request):
+    data = json.loads(request.body)
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = data['shipping']['total']
-        order.transaction_id = transaction_id
+        total = float(data['shipping']['total'])
 
-        if total == str(order.get_cart_total):
+        if total == float(order.get_cart_total) + 60:  # Adding shipping cost
             order.complete = True
+            order.transaction_id = data['shipping']['razorpay_payment_id']
             order.save()
 
-            # Decrement stock for each product in the order
-            for item in order.orderitem_set.all():
-                if item.price_at_purchase is None:
-                    item.price_at_purchase = item.product.new_price
-                item.save()
-
-                # Decrement product stock
-                product = item.product
-                product.stock -= item.quantity
-                product.save()
-
-                # Record purchase history
-                PurchaseHistory.objects.create(
-                    customer=customer,
-                    product=product,
-                    price_at_purchase=item.price_at_purchase
-                )
-
-            # Save shipping address
             ShippingAddress.objects.create(
                 customer=customer,
                 order=order,
@@ -183,17 +225,30 @@ def processOrder(request):
                 city=data['shipping']['city'],
                 state=data['shipping']['state'],
                 zipcode=data['shipping']['zipcode'],
-                date_added=timezone.now()
             )
 
-            success = True
-            message = "Transaction completed, \nYour order placed successfully..."
+            # Process order items
+            for item in order.orderitem_set.all():
+                product = item.product
+                product.stock -= item.quantity
+                product.save()
+
+                PurchaseHistory.objects.create(
+                    customer=customer,
+                    product=product,
+                    price_at_purchase=item.price_at_purchase
+                )
+
+            # Clear the cart
+            if 'cart' in request.session:
+                del request.session['cart']
+            request.session.modified = True
+
+            return JsonResponse({'success': True, 'message': 'Order placed successfully!'})
         else:
-            success = False
-            message = "Something went wrong! \nOrder not placed, For more contact us."
-
-        return JsonResponse({'success': success, 'message': message}, safe=False)
-
+            return JsonResponse({'success': False, 'message': 'Total price mismatch.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'User not authenticated.'})
 
 
 
