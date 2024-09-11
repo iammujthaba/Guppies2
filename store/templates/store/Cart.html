@@ -149,10 +149,11 @@
 					<div class="form-group">
 						<label for="state">Select State for Shipping Estimate:</label>
 						<select name="state" id="state" class="form-control" onchange="this.form.submit()">
-							<option value="">Select a state</option>
+							<option value="" disabled selected style="background-color: rgb(223, 223, 223);">Select a state</option>
 							{% for state in all_states %}
 								<option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
 							{% endfor %}
+							<option value="Other" {% if selected_state == 'Other' %}selected{% endif %}>Other</option>
 						</select>
 					</div>
 				</form>
