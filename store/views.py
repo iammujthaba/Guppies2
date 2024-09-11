@@ -55,6 +55,22 @@ def allProdCat(request, c_slug=None):
         'messages': message_list
     })
 
+from decimal import Decimal
+
+def calculate_shipping(state, unique_items):
+    try:
+        rate = ShippingRate.objects.get(state=state)
+        base_rate = rate.base_rate
+        additional_rate = rate.additional_item_rate
+    except ShippingRate.DoesNotExist:
+        # Default rates for other states
+        base_rate = Decimal('180.00')
+        additional_rate = Decimal('40.00')
+    
+    total_shipping = base_rate + (max(0, unique_items - 1) * additional_rate)
+    return total_shipping
+
+
 def cart(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -62,18 +78,30 @@ def cart(request):
     items = data['items']
     total_price_difference = data['total_price_difference']
 
-    if request.user.is_authenticated:
-        for item in items:
-            item.product.price_difference = item.product.old_price - item.product.new_price if item.product.old_price else 0
-    else:
-        for item in items:
-            item['product']['price_difference'] = item['product']['old_price'] - item['product']['new_price'] if item['product']['old_price'] is not None else 0
+    # Get unique items count
+    unique_items = len(set(item.product.id for item in items))
+
+    # Get all states for the dropdown
+    all_states = ShippingRate.objects.values_list('state', flat=True)
+
+    # Get the selected state or use the saved state for returning customers
+    selected_state = request.GET.get('state')
+    if not selected_state and request.user.is_authenticated:
+        last_shipping = ShippingAddress.objects.filter(customer=request.user.customer).order_by('-date_added').first()
+        if last_shipping:
+            selected_state = last_shipping.state
+
+    # Calculate shipping
+    shipping_charge = calculate_shipping(selected_state, unique_items) if selected_state else Decimal('0.00')
 
     context = {
         'items': items,
         'order': order,
         'cartItems': cartItems,
-        'total_price_difference': total_price_difference
+        'total_price_difference': total_price_difference,
+        'all_states': all_states,
+        'selected_state': selected_state,
+        'shipping_charge': shipping_charge,
     }
     return render(request, 'store/Cart.html', context)
 
@@ -153,15 +181,20 @@ def payment(request):
         cartItems = data['cartItems']
         order = data['order']
         items = data['items']
-        
+
         # Retrieve shipping info from session
         shipping_info = request.session.get('shipping_info', {})
-        
+
+        # Calculate shipping charge
+        unique_items = len(set(item.product.id for item in items))
+        shipping_charge = calculate_shipping(shipping_info.get('state'), unique_items)
+
         context = {
             'items': items,
             'order': order,
             'cartItems': cartItems,
             'shipping_info': shipping_info,
+            'shipping_charge': shipping_charge,
         }
         return render(request, 'store/payment.html', context)
     else:

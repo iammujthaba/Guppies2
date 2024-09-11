@@ -125,7 +125,7 @@
 
 	<aside class="col-lg-3 mb-3">
 
-		<div class="card">
+		<div class="card" style="margin-bottom: 0rem;">
 
 			<div class="card-body">
 				<form id="couponForm">
@@ -144,7 +144,22 @@
 						<button id="okButton">OK</button>
 					</div>
 				</div>
+
+				<form method="get">
+					<div class="form-group">
+						<label for="state">Select State for Shipping Estimate:</label>
+						<select name="state" id="state" class="form-control" onchange="this.form.submit()">
+							<option value="">Select a state</option>
+							{% for state in all_states %}
+								<option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</form>
 			</div>
+
+
+
 
 
 		</div> <!-- card.// -->
@@ -163,12 +178,12 @@
 				{% endif %}
 				<dl class="dlist-align">
 					<dt>Shipping:</dt>
-					<dd class="text-end"> ₹ 60.00 </dd>
+					<dd class="text-end shipping-charge">₹ {{ shipping_charge|floatformat:2 }}</dd>
 				</dl>
 				<hr>
 				<dl class="dlist-align">
 					<dt>Total:</dt>
-					<dd class="text-end text-dark h5 cart-total-with-shipping">₹ {{ order.get_cart_total|add:60}}</dd>
+					<dd class="text-end text-dark h5 cart-total-with-shipping">₹ {{ order.get_cart_total|add:shipping_charge|floatformat:2 }}</dd>
 				</dl>
 
 				<div class="d-grid gap-2 my-3">

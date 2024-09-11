@@ -227,7 +227,7 @@ h2 {
                         {% endif %}
                         <dl class="dlist-align">
                             <dt>Shipping:</dt>
-                            <dd class="text-end">₹ 60.00</dd>
+                            <dd class="text-end">₹ {{ shipping_charge|floatformat:2 }}</dd>
                         </dl>
                         <dl class="dlist-align">
                             <dt>Total Items:</dt>
@@ -236,7 +236,7 @@ h2 {
                         <hr>
                         <dl class="dlist-align total">
                             <dt>Total:</dt>
-                            <dd class="text-end">₹ {{ order.get_cart_total|add:60}}</dd>
+                            <dd class="text-end">₹ {{ order.get_cart_total|add:shipping_charge|floatformat:2 }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -262,7 +262,7 @@ h2 {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-var total = '{{order.get_cart_total|add:60}}';
+var total = '{{order.get_cart_total|add:shipping_charge}}';
 var options = {
     "key": "rzp_test_T3s2cflbXqYRRf",
     "amount": total * 100,

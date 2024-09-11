@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CategoryForm, ProductForm
-from store.models import Category, OrderItem, Product, Order, Customer, ShippingAddress
+from .forms import CategoryForm, ProductForm, ShippingRateForm
+from store.models import Category, OrderItem, Product, Order, Customer, ShippingAddress, ShippingRate
 from django.db.models import Count, Q, Sum, F, FloatField
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -163,6 +163,46 @@ def order_view(request, pk):
     })
 
 
+
+@login_required
+@user_passes_test(is_admin)
+def shipping_rate_list(request):
+    shipping_rates = ShippingRate.objects.all()
+    return render(request, 'admin_app/shipping_rate_list.html', {'shipping_rates': shipping_rates})
+
+@login_required
+@user_passes_test(is_admin)
+def shipping_rate_create(request):
+    if request.method == 'POST':
+        form = ShippingRateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_app:shipping_rate_list')
+    else:
+        form = ShippingRateForm()
+    return render(request, 'admin_app/shipping_rate_form.html', {'form': form})
+
+@login_required
+@user_passes_test(is_admin)
+def shipping_rate_update(request, pk):
+    shipping_rate = get_object_or_404(ShippingRate, pk=pk)
+    if request.method == 'POST':
+        form = ShippingRateForm(request.POST, instance=shipping_rate)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_app:shipping_rate_list')
+    else:
+        form = ShippingRateForm(instance=shipping_rate)
+    return render(request, 'admin_app/shipping_rate_form.html', {'form': form})
+
+@login_required
+@user_passes_test(is_admin)
+def shipping_rate_delete(request, pk):
+    shipping_rate = get_object_or_404(ShippingRate, pk=pk)
+    if request.method == 'POST':
+        shipping_rate.delete()
+        return redirect('admin_app:shipping_rate_list')
+    return render(request, 'admin_app/shipping_rate_confirm_delete.html', {'shipping_rate': shipping_rate})
 
 
 @login_required

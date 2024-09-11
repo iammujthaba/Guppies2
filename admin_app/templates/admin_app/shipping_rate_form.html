@@ -1,0 +1,21 @@
+{% extends 'admin_app/base_admin.html' %}
+
+{% block content %}
+<h2>Shipping Rate Form</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_state">State</label>
+        {{ form.state }}
+    </div>
+    <div class="form-group">
+        <label for="id_base_rate">Base Rate</label>
+        {{ form.base_rate }}
+    </div>
+    <div class="form-group">
+        <label for="id_additional_item_rate">Additional Item Rate</label>
+        {{ form.additional_item_rate }}
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

@@ -172,6 +172,15 @@ class ShippingAddress(models.Model):
         return self.address
 
 
+class ShippingRate(models.Model):
+    state = models.CharField(max_length=100, unique=True)
+    base_rate = models.DecimalField(max_digits=6, decimal_places=2)
+    additional_item_rate = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.state}: ₹{self.base_rate} (₹{self.additional_item_rate} per additional item)"
+
+
 class PurchaseHistory(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

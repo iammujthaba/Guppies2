@@ -39,6 +39,9 @@
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'completed_orders' %}active{% endif %}">
                 <a style="padding: 20px;" href="{% url 'admin_app:completed_orders' %}">Completed Orders</a>
             </li>
+            <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'shipping_rate_list' %}active{% endif %}">
+                <a style="padding: 20px;" href="{% url 'admin_app:shipping_rate_list' %}">Shipping Rates</a>
+            </li>
             <li style="padding: 0px;" class="{% if request.resolver_match.url_name == 'users_list' %}active{% endif %}">
                 <a style="padding: 20px;" href="{% url 'admin_app:users_list' %}">Users List</a>
             </li>

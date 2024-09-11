@@ -19,4 +19,9 @@ urlpatterns = [
     path('admin_app/orders/shipped/', views.shipped_orders, name='shipped_orders'),
     path('admin_app/orders/completed/', views.completed_orders, name='completed_orders'),
     path('admin_app/users/', views.users_list, name='users_list'),
+
+    path('admin_app/shipping-rates/', views.shipping_rate_list, name='shipping_rate_list'),
+    path('admin_app/shipping-rates/create/', views.shipping_rate_create, name='shipping_rate_create'),
+    path('admin_app/shipping-rates/<int:pk>/update/', views.shipping_rate_update, name='shipping_rate_update'),
+    path('admin_app/shipping-rates/<int:pk>/delete/', views.shipping_rate_delete, name='shipping_rate_delete'),
 ]
