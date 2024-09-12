@@ -78,8 +78,11 @@ def cart(request):
     items = data['items']
     total_price_difference = data['total_price_difference']
 
-    # Get unique items count
-    unique_items = len(set(item.product.id for item in items))
+    # Handle unique items count for both authenticated and unauthenticated users
+    if request.user.is_authenticated:
+        unique_items = len(set(item.product.id for item in items))
+    else:
+        unique_items = len(items)
 
     # Get all states for the dropdown
     all_states = ShippingRate.objects.values_list('state', flat=True)
@@ -103,6 +106,7 @@ def cart(request):
         'selected_state': selected_state,
         'shipping_charge': shipping_charge,
     }
+
     return render(request, 'store/Cart.html', context)
 
 # def checkout(request):
