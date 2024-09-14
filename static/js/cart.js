@@ -106,6 +106,55 @@ function updateCartDataForUnauthorizedUser() {
     let cartItems = getCartItemCount();
     updateCartCount(cartItems);
     updateCartTotals();
+    updateCartItemsDisplay();
+}
+
+function updateCartItemsDisplay() {
+    const cartContainer = document.querySelector('.cart-items-container');
+    if (!cartContainer) return;
+
+    let cartHTML = '';
+    let cartTotal = 0;
+    let totalPriceDifference = 0;
+
+    for (let productId in cart) {
+        const product = getProductDetails(productId);
+        if (product) {
+            const quantity = cart[productId]['quantity'];
+            const itemTotal = quantity * product.new_price;
+            cartTotal += itemTotal;
+            const priceDifference = (product.old_price - product.new_price) * quantity;
+            totalPriceDifference += priceDifference;
+
+            cartHTML += `
+                <div class="card mb-3" data-product-id="${product.id}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="ms-3">
+                                    <h5>${product.name}</h5>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <div style="width: 50px;">
+                                    <h5 class="fw-normal mb-0">${quantity}</h5>
+                                </div>
+                                <div style="width: 80px;">
+                                    <h5 class="mb-0 item-total">₹ ${itemTotal.toFixed(2)}</h5>
+                                </div>
+                                <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    cartContainer.innerHTML = cartHTML;
+    updateCartTotal(cartTotal);
+    updateTotalPriceDifference(totalPriceDifference);
+    updateCartTotalWithShipping(cartTotal);
 }
 
 function getProductDetails(productId) {
@@ -159,16 +208,13 @@ function addCookieItem(productId, action, stock, currentQuantity = 1) {
     console.log('CART:', cart);
     document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
     
+    // Update cart data without page refresh
     updateCartDataForUnauthorizedUser();
     updateCartItemQuantity(productId, cart[productId] ? cart[productId]['quantity'] : 0);
-    
-    // Update cart totals
     updateCartTotals();
 
     if (Object.keys(cart).length === 0) {
         showEmptyCartMessage();
-    } else {
-        location.reload(); // Reload the page to ensure all items are displayed correctly
     }
 }
 
