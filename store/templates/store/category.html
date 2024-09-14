@@ -15,19 +15,19 @@
     <div>
 
         {% if category %}
-            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <!-- <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         {# {% url 'store_app:allProdCat' %} #}
                         <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
-                        <li class="breadcrumb-item">{{category}}</li>
+                        <li class="breadcrumb-item">{#{{category}}#}</li>
                     </ol>
                 </div>
-            </nav>
+            </nav> -->
 
-            <div class="text-center p-3">
-                <h2>{{category.name}}</h2>
-            </div>
+            <!-- <div class="text-center p-3">
+                <h2>{#{{category.name}}#}</h2>
+            </div> -->
 
         {% else %}
 
@@ -493,6 +493,19 @@
         </main>
 
         {% endif %}
+    </div>
+
+    <div class="category-line mb-2">
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link {% if not category %}active{% endif %}" href="{% url 'store_app:allProductListing' %}">All Product</a>
+            </li>
+            {% for cat in categories %}
+                <li class="nav-item">
+                    <a class="nav-link {% if category.slug == cat.slug %}active{% endif %}" href="{{ cat.get_url }}">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 
     {% if category %}

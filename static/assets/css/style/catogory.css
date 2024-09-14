@@ -984,3 +984,36 @@ button:focus {
 .add-to-cart:active {
     animation: blink 0.1s ease-in-out;
 }
+
+.category-line {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.category-line .nav {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    padding: 10px;
+    padding-left: 7px;
+}
+
+.category-line .nav-item {
+    margin-right: 10px;
+}
+
+.category-line .nav-link {
+    color: #333;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+}
+
+.category-line .nav-link:hover,
+.category-line .nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}

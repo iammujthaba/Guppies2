@@ -15,44 +15,44 @@ def allProdCat(request, c_slug=None):
     c_page = None
     offer = None
     products_list = None
-
+    categories = Category.objects.all()  # Get all categories
+    
     if c_slug is not None:
-        print('c_slug...........',c_slug)
         c_page = get_object_or_404(Category, slug=c_slug)
-        print('c_page...........',c_page)
-        products_list = Product.objects.all().filter(category=c_page, active=True, stock__gt=0)
+        products_list = Product.objects.filter(category=c_page, active=True, stock__gt=0)
     else:
-        products_list = Product.objects.all().filter(active=True, stock__gt=0)
-
+        products_list = Product.objects.filter(active=True, stock__gt=0)
+    
     offer_list = Product.objects.filter(active=True, old_price__gt=0, stock__gt=0)
-
+    
     paginator1 = Paginator(products_list, 6)
     paginator2 = Paginator(offer_list, 6)
-
+    
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
-
+    
     try:
         products = paginator1.page(page)
         offer = paginator2.page(page)
     except (InvalidPage, EmptyPage):
         products = paginator1.page(paginator1.num_pages)
         offer = paginator2.page(paginator2.num_pages)
-
+    
     message_list = []
     for message in messages.get_messages(request):
         message_list.append({
             'message': message.message,
             'tags': message.tags
         })
-
+    
     return render(request, 'store/category.html', {
         'category': c_page,
         'products': products,
         'offer': offer,
-        'messages': message_list
+        'messages': message_list,
+        'categories': categories,  # Pass all categories to the template
     })
 
 from decimal import Decimal
@@ -342,30 +342,47 @@ def proDetail(request, c_slug, product_slug):
 
 
 def allProductListing(request):
-    products_list = Product.objects.all().filter(active=True)
+    products_list = Product.objects.filter(active=True)
+    categories = Category.objects.all()  # Get all categories
+    
     paginator = Paginator(products_list, 14)
+    
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
+    
     try:
         products = paginator.page(page)
     except (InvalidPage, EmptyPage):
         products = paginator.page(paginator.num_pages)
-    return render(request, 'store/shop.html', {'products': products})
+    
+    return render(request, 'store/shop.html', {
+        'products': products,
+        'categories': categories,  # Pass all categories to the template
+    })
 
 def offerProductListing(request):
     products_list = Product.objects.filter(old_price__gt=0, active=True)
+    categories = Category.objects.all()  # Get all categories
+    
     paginator = Paginator(products_list, 14)
+    
     try:
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
+    
     try:
         products = paginator.page(page)
     except (InvalidPage, EmptyPage):
         products = paginator.page(paginator.num_pages)
-    return render(request, 'store/shop.html', {'products': products, 'page': 'offer'})
+    
+    return render(request, 'store/shop.html', {
+        'products': products,
+        'page': 'offer',
+        'categories': categories,  # Pass all categories to the template
+    })
 
 def Category_list(request):
     categorys_list = Category.objects.all()

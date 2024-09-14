@@ -6,21 +6,32 @@
 <link rel="stylesheet" href="{% static 'assets/css/style/catogory.css' %}">
 
 <div class="container">
-    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+    <!-- <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container-fluid">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'store_app:allProdCat' %}">Home</a></li>
-                {% if page == 'offer' %}
+                {#{% if page == 'offer' %}#}
                     <li class="breadcrumb-item"><a href="#">Offer</a></li>
-                {% else %}
+                {#{% else %}#}
                     <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                {% endif %}
+                {#{% endif %}#}
             </ol>
-        </div><!-- End .container-fluid -->
-    </nav><!-- End .breadcrumb-nav -->
-    
+        </div>
+    </nav> -->
 
-
+    <!-- Category horizontal line -->
+    <div class="category-line mb-2">
+        <ul class="nav nav-pills justify-content-center" style="padding-left: 1px;">
+            <li class="nav-item">
+                <a class="nav-link {% if not category %}active{% endif %}" href="{% url 'store_app:allProductListing' %}">All Product</a>
+            </li>
+            {% for cat in categories %}
+                <li class="nav-item">
+                    <a class="nav-link {% if category.slug == cat.slug %}active{% endif %}" href="{{ cat.get_url }}">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     <div class="products">
         <div class="row justify-content-center">
