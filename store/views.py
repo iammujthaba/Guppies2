@@ -15,7 +15,7 @@ def allProdCat(request, c_slug=None):
     c_page = None
     offer = None
     products_list = None
-    categories = Category.objects.all()  # Get all categories
+    categories = Category.objects.all().order_by('priority', 'name')  # Get all categories
     
     if c_slug is not None:
         c_page = get_object_or_404(Category, slug=c_slug)
@@ -343,7 +343,7 @@ def proDetail(request, c_slug, product_slug):
 
 def allProductListing(request):
     products_list = Product.objects.filter(active=True)
-    categories = Category.objects.all()  # Get all categories
+    categories = Category.objects.all().order_by('priority', 'name')  # Get all categories
     
     paginator = Paginator(products_list, 14)
     
@@ -364,7 +364,7 @@ def allProductListing(request):
 
 def offerProductListing(request):
     products_list = Product.objects.filter(old_price__gt=0, active=True)
-    categories = Category.objects.all()  # Get all categories
+    categories = Category.objects.all().order_by('priority', 'name')  # Get all categories
     
     paginator = Paginator(products_list, 14)
     
@@ -385,7 +385,7 @@ def offerProductListing(request):
     })
 
 def Category_list(request):
-    categorys_list = Category.objects.all()
+    categorys_list = Category.objects.all().order_by('priority', 'name')
     return render(request, 'store/category_listing.html', {'categorys_list': categorys_list})
 
 # def orders(request):

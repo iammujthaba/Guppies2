@@ -47,9 +47,21 @@ def dashboard(request):
 
 @login_required
 @user_passes_test(is_admin)
+@csrf_exempt
+@require_POST
+def update_category_priority(request):
+    priorities = request.POST.get('priorities')
+    if priorities:
+        with transaction.atomic():
+            for priority, category_id in enumerate(priorities.split(',')):
+                Category.objects.filter(id=category_id).update(priority=priority)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
+@login_required
+@user_passes_test(is_admin)
 def category_list(request):
-    # categories = Category.objects.all()
-    categories = Category.objects.annotate(num_products=Count('product')).all()
+    categories = Category.objects.annotate(num_products=Count('product')).order_by('priority', 'name')
     return render(request, 'admin_app/category_list.html', {'categories': categories})
 
 @login_required

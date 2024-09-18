@@ -10,9 +10,10 @@ class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(max_length=250, unique=True)
     image = models.ImageField(upload_to='category', blank=True)
+    priority = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
-        ordering = ('name',)
+        ordering = ['priority', 'name']
         verbose_name = 'category'
         verbose_name_plural = 'categorys'
 
@@ -20,7 +21,7 @@ class Category(models.Model):
         return reverse('store_app:product_by_category', args=[self.slug])
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return self.name
 
 
 class Customer(models.Model):
