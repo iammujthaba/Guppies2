@@ -4,6 +4,10 @@ from store.models import Category, OrderItem, Product, Order, Customer, Shipping
 from django.db.models import Count, Q, Sum, F, FloatField
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 def is_admin(user):
     return user.is_superuser
@@ -92,7 +96,7 @@ def product_list(request):
     if selected_category:
         products = Product.objects.filter(category_id=selected_category)
     else:
-        products = Product.objects.all()
+        products = Product.objects.all().order_by('priority', 'name')
     
     context = {
         'products': products,
@@ -129,6 +133,20 @@ def product_update(request, pk):
     else:
         form = ProductForm(instance=product)
     return render(request, 'admin_app/product_form.html', {'form': form})
+
+
+@login_required
+@user_passes_test(is_admin)
+@csrf_exempt
+@require_POST
+def update_product_priority(request):
+    priorities = request.POST.get('priorities')
+    if priorities:
+        with transaction.atomic():
+            for priority, product_id in enumerate(priorities.split(',')):
+                Product.objects.filter(id=product_id).update(priority=priority)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
 
 # @login_required
 # @user_passes_test(is_admin)

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 # from django import forms
 
 class Category(models.Model):
@@ -54,6 +55,7 @@ class Product(models.Model):
     new = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateField(auto_now=True)
+    priority = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
     def get_url(self):
         return reverse('store_app:proDetail', args=[self.category.slug, self.slug])
@@ -82,6 +84,9 @@ class Product(models.Model):
         verbose_name = 'product'
         verbose_name_plural = 'products'
     
+    class Meta:
+        ordering = ['priority', 'name']  # Update ordering to use priority first
+
     def __str__(self):
         return self.name
     
