@@ -94,11 +94,11 @@
 
 							<div>Price: {{ cart_item.product.new_price }} 
 								{% if cart_item.product.old_price %}
-									<span class="price-difference" style="padding-left: 10px; color: green;">[₹{{ cart_item.product.price_difference }} Off]</span>
+									<span class="price-difference" style="padding-left: 10px; color: green;">[₹{{ cart_item.product.get_discounted_price.diff }} Off]</span>
 								{% endif %}
 							</div>
 
-							<div>Total: ₹ <span class="item-total">{{cart_item.get_total|floatformat:2}}</span></div>
+							<div>Total: <span class="item-total"> ₹{{cart_item.get_total|floatformat:2}}</span></div>
 						</div>
 
 						<div class="d-flex flex-row justify-content-start">
