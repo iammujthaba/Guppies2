@@ -36,7 +36,7 @@
 
 <div class="filter-container">
     <form method="get" action="{% url 'admin_app:product_list' %}">
-        <select name="category" onchange="this.form.submit()">
+        <select name="category" onchange="this.form.submit()" style="background-color: grey;">
             <option value="">All Categories</option>
             {% for category in categories %}
                 <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
