@@ -255,9 +255,14 @@ def processOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['shipping']['total'])
+        total = Decimal(data['shipping']['total'])
 
-        if total == float(order.get_cart_total) + 60:  # Adding shipping cost
+        # Calculate shipping
+        unique_items = len(set(item.product.id for item in order.orderitem_set.all()))
+        shipping_state = data['shipping']['state']
+        total_shipping = calculate_shipping(shipping_state, unique_items)
+
+        if total == Decimal(order.get_cart_total) + total_shipping:
             order.complete = True
             order.transaction_id = data['shipping']['razorpay_payment_id']
             order.save()
@@ -295,7 +300,6 @@ def processOrder(request):
             return JsonResponse({'success': False, 'message': 'Total price mismatch.'})
     else:
         return JsonResponse({'success': False, 'message': 'User not authenticated.'})
-
 
 
 def proDetail(request, c_slug, product_slug):
