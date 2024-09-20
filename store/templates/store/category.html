@@ -168,10 +168,12 @@
                                                 <h6 class="pricing">
                                                     
                                                     <h6 class="text-muted mb-0 cart-heading">JEE Exam preparation book</h6>
-                                                    {% if product.stock <= 3 %}
+                                                    {% if product.stock <= 3 and product.stock > 0 %}
                                                     <strong style="color: rgb(199, 0, 85);">Only few left</strong><br>
+                                                    {% elif product.stock == 0 %}
+                                                        <strong style="color:#999999;">Will Back Soon...</strong><br>
                                                     {% else %}
-                                                    <em class="related-product-publisher">DC Books</em>
+                                                        <em class="related-product-publisher">DC Books</em>
                                                     {% endif %}
                                                     
                                                     <div class="product-price">
@@ -251,10 +253,12 @@
                                                     <h6 class="pricing">
                                                         
                                                         <h6 class="text-muted mb-0 cart-heading">JEE Exam preparation book</h6>
-                                                        {% if product.stock <= 3 %}
+                                                        {% if product.stock <= 3 and product.stock > 0 %}
                                                         <strong style="color: rgb(199, 0, 85);">Only few left</strong><br>
+                                                        {% elif product.stock == 0 %}
+                                                            <strong style="color:#999999;">Will Back Soon...</strong><br>
                                                         {% else %}
-                                                        <em class="related-product-publisher">DC Books</em>
+                                                            <em class="related-product-publisher">DC Books</em>
                                                         {% endif %}
                                                         
                                                         <div class="product-price">
@@ -514,7 +518,7 @@
             display: inline-flex;
             flex-wrap: nowrap;
             padding: 10px;
-            padding-left: 7px;
+            padding-left: 0px;
         }
 
         /* .category-line .nav-item {
@@ -538,7 +542,7 @@
         }
     </style>
 
-    <div class="category-line mb-2">
+    <div class="category-line mb-2 container">
         <ul class="nav nav-pills justify-content-center">
             <li class="nav-item">
                 <a class="nav-link {% if not category %}active{% endif %}" href="{% url 'store_app:allProductListing' %}">All Product</a>
@@ -588,10 +592,12 @@
                                             <h6 class="pricing">
                                                 
                                                 <h6 class="text-muted mb-0 cart-heading">JEE Exam preparation book</h6>
-                                                {% if product.stock <= 3 %}
+                                                {% if product.stock <= 3 and product.stock > 0 %}
                                                 <strong style="color: rgb(199, 0, 85);">Only few left</strong><br>
+                                                {% elif product.stock == 0 %}
+                                                    <strong style="color:#999999;">Will Back Soon...</strong><br>
                                                 {% else %}
-                                                <em class="related-product-publisher">DC Books</em>
+                                                    <em class="related-product-publisher">DC Books</em>
                                                 {% endif %}
                                                 
                                                 <div class="product-price">
