@@ -169,11 +169,41 @@
                                         }
                                         </script>
                                     
+                                    <style>
+                                        .product-image-container {
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        .slider-arrow {
+                                            position: absolute;
+                                            top: 50%;
+                                            transform: translateY(-50%);
+                                            background-color: rgba(0, 0, 0, 0.5);
+                                            color: white;
+                                            border: none;
+                                            padding: 10px 15px;
+                                            font-size: 20px;
+                                            cursor: pointer;
+                                            z-index: 10;
+                                        }
+                                        .left-arrow {
+                                            left: 10px;
+                                        }
+                                        .right-arrow {
+                                            right: 10px;
+                                        }
+                                    </style>
+                                    
                                     <figure class="product-main-image">
                                         <div class="product-gallery">
                                             <figure class="product-main-image">
-                                                <img src="{{ product.image_1.url }}" alt="product image" class="product-image">
+                                                <div class="product-image-container">
+                                                    <img src="{{ product.image_1.url }}" alt="product image" class="product-image">
+                                                    <button class="slider-arrow left-arrow d-none d-md-block">&lt;</button>
+                                                    <button class="slider-arrow right-arrow d-none d-md-block">&gt;</button>
+                                                </div>
                                             </figure>
+                                            <div class="carousel-indicators"></div>
                                         </div>
                                     </figure>
                                     <div class="carousel-indicators"></div>
@@ -197,7 +227,9 @@
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         const carouselIndicators = document.querySelector('.carousel-indicators');
-                                        const productMainImage = document.querySelector('.product-main-image img');
+                                        const productMainImage = document.querySelector('.product-image');
+                                        const leftArrow = document.querySelector('.left-arrow');
+                                        const rightArrow = document.querySelector('.right-arrow');
                                         let currentIndex = 0;
                                         let galleryItems = [];
                             
@@ -220,6 +252,9 @@
                             
                                             createIndicators();
                                             updateGallery(0);
+
+                                            leftArrow.addEventListener('click', () => navigate(-1));
+                                            rightArrow.addEventListener('click', () => navigate(1));
                                         }
                             
                                         function createIndicators() {
@@ -265,6 +300,13 @@
                                                 }
                                             }
                                             updateIndicators(index);
+                                        }
+
+                                        function navigate(direction) {
+                                            currentIndex += direction;
+                                            if (currentIndex < 0) currentIndex = galleryItems.length - 1;
+                                            if (currentIndex >= galleryItems.length) currentIndex = 0;
+                                            updateGallery(currentIndex);
                                         }
 
                                         function isMobileDevice() {
@@ -382,17 +424,6 @@
                                             });
                                         });
                                     </script>
-
-                                    <!-- <div class="product-details-action">
-                                        <div class="quantity">
-                                            <button onclick="decrementQuantity()" class="minus">-</button>
-                                            <input type="number" id="cart-quantity" value="1" min="1" max="{{ product.stock }}">
-                                            <button onclick="incrementQuantity({{ product.stock }})" class="plus">+</button>
-                                        </div>
-                                        <a data-quantity="{{product.stock}}" data-product="{{product.id}}" data-action="add" id="add-to-cart-btn" class="btn-product btn-cart update-cart" style="margin-left: 17px; margin-right: 17px;">
-                                            <span>Add to Cart</span>
-                                        </a>
-                                    </div> -->
 
                                     <input style="display: none;" type="number" id="cart-quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control">
 

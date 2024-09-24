@@ -546,7 +546,7 @@ button:focus {
 
 .product-details-action .btn-cart, .product-details-action .btn-disabled2  {
     padding: 1rem 1.5rem;
-    max-width: 100%;
+    max-width: 80%;
     color: #c96;
     border: .1rem solid #c96
 }
