@@ -4,7 +4,7 @@ from store.models import Category, Product, ShippingRate
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['name', 'image']
 
 class ProductForm(forms.ModelForm):
     active = forms.ChoiceField(choices=[
@@ -15,6 +15,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
+        exclude = ['slug', 'priority']  # Exclude slug field from the form
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

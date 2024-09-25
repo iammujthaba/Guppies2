@@ -4,18 +4,33 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 # from django import forms
 
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
-    slug = models.SlugField(max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)  # Make blank=True
     image = models.ImageField(upload_to='category', blank=True)
     priority = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         ordering = ['priority', 'name']
         verbose_name = 'category'
-        verbose_name_plural = 'categorys'
+        verbose_name_plural = 'categories'  # Fixed typo: 'categorys' to 'categories'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super().save(*args, **kwargs)
+
+    def _generate_unique_slug(self):
+        base_slug = slugify(self.name)
+        unique_slug = base_slug
+        num = 1
+        while Category.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{base_slug}-{num}"
+            num += 1
+        return unique_slug
 
     def get_url(self):
         return reverse('store_app:product_by_category', args=[self.slug])
@@ -41,7 +56,7 @@ class Product(models.Model):
     ]
         
     name = models.CharField(max_length=250, unique=True)
-    slug = models.SlugField(max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)  # Make blank=True
     description = models.TextField(blank=True)
     old_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=0)
     new_price = models.DecimalField(max_digits=7, blank=False, decimal_places=0)
@@ -70,6 +85,8 @@ class Product(models.Model):
         return None
     
     def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
         if self.stock == 0:
             self.status = 'out_of_stock'
         super().save(*args, **kwargs)
@@ -79,9 +96,18 @@ class Product(models.Model):
             raise ValidationError("Cannot set status to 'In Stock' when stock is 0.")
         elif self.stock > 0 and self.status == 'out_of_stock':
             self.status = 'in_stock'
+
+    def _generate_unique_slug(self):
+        base_slug = slugify(self.name)
+        unique_slug = base_slug
+        num = 1
+        while Product.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{base_slug}-{num}"
+            num += 1
+        return unique_slug
     
     class Meta:
-        ordering = ('name',)
+        ordering = ['priority', 'name']
         verbose_name = 'product'
         verbose_name_plural = 'products'
     
