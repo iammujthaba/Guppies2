@@ -225,38 +225,33 @@
                                 </script>
                             
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
+                                   document.addEventListener('DOMContentLoaded', function() {
                                         const carouselIndicators = document.querySelector('.carousel-indicators');
                                         const productMainImage = document.querySelector('.product-image');
                                         const leftArrow = document.querySelector('.left-arrow');
                                         const rightArrow = document.querySelector('.right-arrow');
                                         let currentIndex = 0;
                                         let galleryItems = [];
-                            
+
                                         function initializeGallery() {
                                             galleryItems = [
                                                 { type: 'image', url: productData.image1 }
                                             ];
-                            
                                             if (productData.image2) {
                                                 galleryItems.push({ type: 'image', url: productData.image2 });
                                             }
-                            
                                             if (productData.videoUrl) {
                                                 galleryItems.push({ type: 'video', url: productData.videoUrl });
                                             }
-                            
                                             if (productData.image3) {
                                                 galleryItems.push({ type: 'image', url: productData.image3 });
                                             }
-                            
                                             createIndicators();
                                             updateGallery(0);
-
                                             leftArrow.addEventListener('click', () => navigate(-1));
                                             rightArrow.addEventListener('click', () => navigate(1));
                                         }
-                            
+
                                         function createIndicators() {
                                             carouselIndicators.innerHTML = '';
                                             galleryItems.forEach((_, index) => {
@@ -266,7 +261,7 @@
                                                 carouselIndicators.appendChild(indicator);
                                             });
                                         }
-                            
+
                                         function updateGallery(index) {
                                             const item = galleryItems[index];
                                             const productMainImageContainer = productMainImage.parentNode;
@@ -276,7 +271,7 @@
                                             if (existingVideo) {
                                                 existingVideo.remove();
                                             }
-                                            
+
                                             if (item.type === 'image') {
                                                 productMainImage.src = item.url;
                                                 productMainImage.style.display = 'block';
@@ -284,22 +279,31 @@
                                                 productMainImage.style.display = 'none';
                                                 const videoContainer = document.createElement('div');
                                                 videoContainer.className = 'responsive-video';
-                                                videoContainer.innerHTML = `<iframe src="${item.url}?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                                                videoContainer.innerHTML = `
+                                                    <iframe 
+                                                        src="${item.url}?autoplay=1&mute=1&loop=1&playlist=${productData.videoUrl.split('/').pop()}" 
+                                                        frameborder="0" 
+                                                        allow="autoplay; encrypted-media" 
+                                                        allowfullscreen
+                                                    ></iframe>`;
                                                 productMainImageContainer.appendChild(videoContainer);
-                                                
-                                                // Automatically play the video
-                                                const iframe = videoContainer.querySelector('iframe');
-                                                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
 
-                                                // Apply inline CSS to the product-gallery when video is loaded on mobile
-                                                if (isMobileDevice()) {
-                                                    const nowVideo = document.querySelector('.product-gallery');
-                                                    nowVideo.style.paddingLeft = '0px';
-                                                    nowVideo.style.paddingRight = '0px';
-                                                    nowVideo.style.paddingTop = '23px';
-                                                }
+                                                // Ensure the video is played
+                                                const iframe = videoContainer.querySelector('iframe');
+                                                iframe.onload = function() {
+                                                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                                                };
                                             }
+
                                             updateIndicators(index);
+
+                                            // Apply inline CSS to the product-gallery when video is loaded on mobile
+                                            if (isMobileDevice()) {
+                                                const nowVideo = document.querySelector('.product-gallery');
+                                                nowVideo.style.paddingLeft = '0px';
+                                                nowVideo.style.paddingRight = '0px';
+                                                nowVideo.style.paddingTop = '23px';
+                                            }
                                         }
 
                                         function navigate(direction) {
@@ -312,41 +316,24 @@
                                         function isMobileDevice() {
                                             return window.innerWidth <= 767; // Adjust this value based on your mobile breakpoint
                                         }
-                            
+
                                         function updateIndicators(activeIndex) {
                                             const indicators = carouselIndicators.querySelectorAll('button');
                                             indicators.forEach((indicator, index) => {
                                                 indicator.classList.toggle('active', index === activeIndex);
                                             });
                                         }
-                            
-                                        function navigate(direction) {
-                                            currentIndex += direction;
-                                            if (currentIndex < 0) currentIndex = galleryItems.length - 1;
-                                            if (currentIndex >= galleryItems.length) currentIndex = 0;
-                                            updateGallery(currentIndex);
-                                            
-                                            // If the current item is a video, play it
-                                            if (galleryItems[currentIndex].type === 'video') {
-                                                const iframe = document.querySelector('.responsive-video iframe');
-                                                if (iframe) {
-                                                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                                                }
-                                            }
-                                        }
-                            
+
                                         let touchStartX = 0;
                                         let touchEndX = 0;
-                            
                                         productMainImage.parentNode.addEventListener('touchstart', e => {
                                             touchStartX = e.changedTouches[0].screenX;
                                         });
-                            
                                         productMainImage.parentNode.addEventListener('touchend', e => {
                                             touchEndX = e.changedTouches[0].screenX;
                                             handleSwipe();
                                         });
-                            
+
                                         function handleSwipe() {
                                             const swipeThreshold = 30; // Minimum pixels for a swipe
                                             if (Math.abs(touchEndX - touchStartX) > swipeThreshold) {
@@ -354,6 +341,7 @@
                                                 if (touchEndX > touchStartX) navigate(-1);
                                             }
                                         }
+
                                         initializeGallery();
                                     });
                                 </script>
