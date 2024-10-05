@@ -18,6 +18,7 @@ def cookieCart(request):
             total = (product.new_price * cart[i]['quantity'])
             order['get_cart_total'] += total
             order['get_cart_items'] += cart[i]['quantity']
+
             price_difference = (product.old_price - product.new_price) if product.old_price else 0
             total_price_difference += (cart[i]['quantity']) * price_difference
 
@@ -32,7 +33,8 @@ def cookieCart(request):
                     'get_url': product.get_url,
                     'active': product.active,
                     'stock': product.stock,
-                    'price_difference': price_difference
+                    'price_difference': price_difference,
+                    'get_discounted_price': product.get_discounted_price(),
                 },
                 'quantity': cart[i]['quantity'],
                 'get_total': total,
