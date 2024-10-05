@@ -57,7 +57,7 @@ def allProdCat(request, c_slug=None):
 
 from decimal import Decimal
 
-def calculate_shipping(state, unique_items):
+def calculate_shipping(state, items):
     try:
         rate = ShippingRate.objects.get(state=state)
         base_rate = rate.base_rate
@@ -66,8 +66,14 @@ def calculate_shipping(state, unique_items):
         # Default rates for other states
         base_rate = Decimal('180.00')
         additional_rate = Decimal('40.00')
-    
-    total_shipping = base_rate + (max(0, unique_items - 1) * additional_rate)
+
+    # Count total quantity of items
+    total_quantity = sum(item.quantity for item in items)
+
+    # Calculate additional charge based on total quantity
+    additional_charge = additional_rate * (total_quantity - 1) if total_quantity > 1 else Decimal('0.00')
+
+    total_shipping = base_rate + additional_charge
     return total_shipping
 
 
@@ -77,12 +83,6 @@ def cart(request):
     order = data['order']
     items = data['items']
     total_price_difference = data['total_price_difference']
-
-    # Handle unique items count for both authenticated and unauthenticated users
-    if request.user.is_authenticated:
-        unique_items = len(set(item.product.id for item in items))
-    else:
-        unique_items = len(items)
 
     # Get all states for the dropdown
     all_states = ShippingRate.objects.values_list('state', flat=True)
@@ -95,7 +95,7 @@ def cart(request):
             selected_state = last_shipping.state
 
     # Calculate shipping
-    shipping_charge = calculate_shipping(selected_state, unique_items) if selected_state else Decimal('0.00')
+    shipping_charge = calculate_shipping(selected_state, items) if selected_state else Decimal('0.00')
 
     context = {
         'items': items,
@@ -106,7 +106,6 @@ def cart(request):
         'selected_state': selected_state,
         'shipping_charge': shipping_charge,
     }
-
     return render(request, 'store/Cart.html', context)
 
 # def checkout(request):
@@ -190,8 +189,7 @@ def payment(request):
         shipping_info = request.session.get('shipping_info', {})
 
         # Calculate shipping charge
-        unique_items = len(set(item.product.id for item in items))
-        shipping_charge = calculate_shipping(shipping_info.get('state'), unique_items)
+        shipping_charge = calculate_shipping(shipping_info.get('state'), items)
 
         context = {
             'items': items,
@@ -258,9 +256,9 @@ def processOrder(request):
         total = Decimal(data['shipping']['total'])
 
         # Calculate shipping
-        unique_items = len(set(item.product.id for item in order.orderitem_set.all()))
+        items = order.orderitem_set.all()
         shipping_state = data['shipping']['state']
-        total_shipping = calculate_shipping(shipping_state, unique_items)
+        total_shipping = calculate_shipping(shipping_state, items)
 
         if total == Decimal(order.get_cart_total) + total_shipping:
             order.complete = True
