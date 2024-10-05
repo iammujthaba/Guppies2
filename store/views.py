@@ -69,7 +69,7 @@ def calculate_shipping(state, items):
         additional_rate = Decimal('40.00')
 
     # Count total quantity of items
-    total_quantity = sum(item.quantity for item in items)
+    total_quantity = sum(item.quantity if hasattr(item, 'quantity') else item['quantity'] for item in items)
 
     # Calculate additional charge based on total quantity
     additional_charge = additional_rate * (total_quantity - 1) if total_quantity > 1 else Decimal('0.00')

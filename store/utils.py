@@ -6,23 +6,21 @@ def cookieCart(request):
         cart = json.loads(request.COOKIES.get('cart', '{}'))
     except:
         cart = {}
-    
+
     items = []
-    order = {'get_cart_total':0, 'get_cart_items':0}
+    order = {'get_cart_total': 0, 'get_cart_items': 0}
     cartItems = order['get_cart_items']
     total_price_difference = 0
-    
+
     for i in cart:
         try:
             product = Product.objects.get(id=i)
             total = (product.new_price * cart[i]['quantity'])
-            
             order['get_cart_total'] += total
             order['get_cart_items'] += cart[i]['quantity']
-            
             price_difference = (product.old_price - product.new_price) if product.old_price else 0
             total_price_difference += (cart[i]['quantity']) * price_difference
-            
+
             item = {
                 'id': product.id,
                 'product': {
@@ -42,8 +40,8 @@ def cookieCart(request):
             items.append(item)
         except:
             pass
-    
-    return {'cartItems':cartItems ,'order':order, 'items':items, 'total_price_difference':total_price_difference}
+
+    return {'cartItems': cartItems, 'order': order, 'items': items, 'total_price_difference': total_price_difference}
 
 def cartData(request):
     if request.user.is_authenticated:
