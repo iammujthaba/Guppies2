@@ -8,6 +8,7 @@ from .models import *
 from .utils import cartData, cookieWishlist
 from django.contrib.auth.decorators import login_required
 import logging
+from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,21 @@ def calculate_shipping(state, items):
     total_shipping = base_rate + additional_charge
     return total_shipping
 
+
+@csrf_exempt
+def calculate_shipping_ajax(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        state = data.get('state')
+        items = data.get('items')
+        
+        # Convert items to the format expected by calculate_shipping
+        formatted_items = [type('obj', (object,), {'quantity': item['quantity']}) for item in items]
+        
+        shipping_charge = calculate_shipping(state, formatted_items)
+        
+        return JsonResponse({'shipping_charge': float(shipping_charge)})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def cart(request):
     data = cartData(request)

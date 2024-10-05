@@ -10,6 +10,7 @@ urlpatterns = [
     path('payment/', views.payment, name='payment'),
     path('update_item/', views.updateItem, name="update_item"),
 	path('process_order/', views.processOrder, name="process_order"),
+    path('calculate-shipping/', views.calculate_shipping_ajax, name='calculate_shipping_ajax'),
     
 	path('<slug:c_slug>/slug',views.allProdCat,name='product_by_category'), #called form models.py
     path('<slug:c_slug>/<slug:product_slug>/',views.proDetail,name='proDetail'), #called form models.py
