@@ -6,43 +6,49 @@ def cookieCart(request):
         cart = json.loads(request.COOKIES.get('cart', '{}'))
     except:
         cart = {}
-
+    
     items = []
     order = {'get_cart_total': 0, 'get_cart_items': 0}
     cartItems = order['get_cart_items']
     total_price_difference = 0
-
+    
     for i in cart:
         try:
             product = Product.objects.get(id=i)
-            total = (product.new_price * cart[i]['quantity'])
+            quantity = cart[i]['quantity']
+            total = (product.new_price * quantity)
             order['get_cart_total'] += total
-            order['get_cart_items'] += cart[i]['quantity']
-
-            price_difference = (product.old_price - product.new_price) if product.old_price else 0
-            total_price_difference += (cart[i]['quantity']) * price_difference
-
+            order['get_cart_items'] += quantity
+            
+            # Ensure old_price is a number, defaulting to new_price if None or 0
+            old_price = product.old_price if product.old_price and product.old_price > product.new_price else product.new_price
+            
+            # Calculate price difference only if there's a actual discount
+            price_difference = (old_price - product.new_price) * quantity if old_price > product.new_price else 0
+            total_price_difference += price_difference
+            
             item = {
                 'id': product.id,
                 'product': {
                     'id': product.id,
                     'name': product.name,
                     'new_price': product.new_price,
-                    'old_price': product.old_price,
+                    'old_price': old_price,
                     'imageURL': product.imageURL,
                     'get_url': product.get_url,
                     'active': product.active,
                     'stock': product.stock,
-                    'price_difference': price_difference,
+                    'price_difference': price_difference / quantity,  # Store per-item price difference
                     'get_discounted_price': product.get_discounted_price(),
                 },
-                'quantity': cart[i]['quantity'],
+                'quantity': quantity,
                 'get_total': total,
             }
             items.append(item)
-        except:
+        except Exception as e:
+            print(f"Error processing product {i}: {str(e)}")
             pass
-
+    
     return {'cartItems': cartItems, 'order': order, 'items': items, 'total_price_difference': total_price_difference}
 
 def cartData(request):
