@@ -145,6 +145,7 @@
 					</div>
 				</div>
 
+
 				<form method="get">
 					<div class="form-group">
 						<label for="state">Select State for Shipping Estimate:</label>
@@ -179,8 +180,13 @@
 				{% endif %}
 				<dl class="dlist-align">
 					<dt>Shipping:</dt>
-					{% if shipping_charge != 0 %}
-						<dd class="text-end shipping-charge">₹ {{ shipping_charge|floatformat:2 }}</dd>
+
+					{% if selected_state %}
+						{% if shipping_charge != 0 %}
+							<dd class="text-end shipping-charge">₹ {{ shipping_charge|floatformat:2 }}</dd>
+						{% else %}
+							<dd class="text-end shipping-charge text-success">Free Delivery</dd>
+						{% endif %}
 					{% else %}
 						<dd class="text-end shipping-charge">[Select State]</dd>
 					{% endif %}
