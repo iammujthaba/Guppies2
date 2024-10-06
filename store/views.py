@@ -445,6 +445,7 @@ def myorders(request):
     orders_with_details = []
     for order in orders:
         total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
+        
         orders_with_details.append({
             'order': order,
             'total_quantity': total_quantity or 0,
