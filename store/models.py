@@ -199,6 +199,7 @@ class ShippingAddress(models.Model):
     state = models.CharField(max_length=200, null=False)
     zipcode = models.CharField(max_length=200, null=False)
     date_added = models.DateTimeField(auto_now_add=True)
+    Shipping_cost = models.DecimalField(max_digits=7, blank=False, decimal_places=0)
 
     def __str__(self):
         return self.address

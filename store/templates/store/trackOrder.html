@@ -61,7 +61,7 @@
         <div class="order-timeline">
             <div class="order-details">
                 <span><strong>Order Date:</strong> {{ order.date_ordered|date:"D, d M" }}<br><strong>Quantity:</strong> {{ order.get_cart_items }} items</span>
-                <span><strong>Total:</strong> ₹{{ order.get_cart_total }}</span>
+                <span><strong>Total:</strong> ₹{{ order.get_cart_total|add:shipping_address.Shipping_cost }}</span>
             </div>
             
             <div class="timeline">
@@ -161,11 +161,16 @@
                     </p>
                     <p style="display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 10px;">
                         <strong>Shipping:</strong>
-                        <span style="color: #27ae60;">Free</span>
+                        
+                        {% if shipping_address.Shipping_cost != 0 %}
+                            <span>{{ shipping_address.Shipping_cost }}</span>
+						{% else %}
+                            <span  style="color: #27ae60;">Free Delivery</span>
+						{% endif %}
                     </p>
                     <p style="display: flex; justify-content: space-between; font-size: 18px; margin-top: 10px; font-weight: bold; color: #34495e; border-top: 1px solid #eceff1;">
                         <strong>Total:</strong>
-                        <span>₹{{ order.get_cart_total }}</span>
+                        <span>₹{{ order.get_cart_total|add:shipping_address.Shipping_cost }}</span>
                     </p>
                 </div>
             </div>

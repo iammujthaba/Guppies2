@@ -290,6 +290,7 @@ def processOrder(request):
                 city=data['shipping']['city'],
                 state=data['shipping']['state'],
                 zipcode=data['shipping']['zipcode'],
+                Shipping_cost=total_shipping,
             )
 
             # Process order items
@@ -445,13 +446,21 @@ def myorders(request):
     orders_with_details = []
     for order in orders:
         total_quantity = OrderItem.objects.filter(order=order).aggregate(Sum('quantity'))['quantity__sum']
-        
+                
+        # Get the shipping address and cost for this order
+        shipping_address = ShippingAddress.objects.filter(order=order).first()
+        shipping_cost = shipping_address.Shipping_cost if shipping_address else 0
+
+        print('..................................')
+        print('transaction_id',order.transaction_id)
+
         orders_with_details.append({
             'order': order,
             'total_quantity': total_quantity or 0,
             'total_amount': order.get_cart_total,
             'date_ordered': order.date_ordered,
             'status': order.status,
+            'shipping_cost': shipping_cost,
         })
 
     context = {

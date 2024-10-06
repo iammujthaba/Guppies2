@@ -127,7 +127,7 @@
                     <div>Quantity: {{ order.total_quantity }}</div>
                 </div>
             </div>
-            <div class="order-amount">₹{{ order.total_amount }}</div>
+            <div class="order-amount">₹{{ order.total_amount|add:order.shipping_cost }}</div>
         </div>
         <div class="progress-bar" data-status="{{ order.status }}">
             <div class="progress-line-background"></div>
