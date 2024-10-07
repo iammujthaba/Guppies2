@@ -180,16 +180,34 @@ def update_product_priority(request):
 def order_view(request, pk):
     order = get_object_or_404(Order, pk=pk)
     shipping_address = ShippingAddress.objects.filter(order=order).first()
-    
+
+    # Define the order status progression
+    status_progression = {
+        'Processing': 'Confirmed',
+        'Confirmed': 'Shipped',
+        'Shipped': 'Delivered',
+        'Delivered': 'Delivered'  # No further status change possible
+    }
+
     if request.method == 'POST':
         new_status = request.POST.get('status')
-        if new_status and new_status != order.status:
+        if new_status and new_status == status_progression[order.status]:
             order.status = new_status
             order.save()
-        return redirect('admin_app:order_view', pk=pk)
+            if new_status == 'Shipped':
+                order.shipped_time = timezone.now()
+            elif new_status == 'Delivered':
+                order.delivered_time = timezone.now()
+            order.save()
+            return redirect('admin_app:order_view', pk=pk)
+
+    # Get the next possible status
+    next_status = status_progression[order.status]
+
     return render(request, 'admin_app/order_view.html', {
         'order': order,
-        'shipping_address': shipping_address
+        'shipping_address': shipping_address,
+        'next_status': next_status
     })
 
 

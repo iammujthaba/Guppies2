@@ -114,11 +114,16 @@
                     <td>{{ item.get_total }}</td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td><strong>Status: </strong><span style="color: red;">{{ order.status }}</span></td>
+                    <td><strong>Quantity: </strong> {{ order.get_cart_items }}</td>
+                    <td><strong>Total: </strong> {{ order.get_cart_total }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="section">
+    <!-- <div class="section">
         <h2>Order Summary</h2>
         <div class="info-grid">
             <div class="info-item">
@@ -131,7 +136,7 @@
                 <p><strong>Total Amount:</strong> {{ order.get_cart_total }}</p>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="section">
         <h2>Shipping Timeline</h2>
@@ -174,11 +179,9 @@
             {% csrf_token %}
             <label for="status">Status:</label>
             <select id="status" name="status">
-                {% for choice in order.STATUS_CHOICES %}
-                    <option value="{{ choice.0 }}" {% if order.status == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
-                {% endfor %}
+                <option value="{{ next_status }}">{{ next_status }}</option>
             </select>
-            <button type="submit" class="btn btn-success">Update</button>
+            <button type="submit" class="btn btn-success">Update to {{ next_status }}</button>
         </form>
     </div>
     {% else %}
