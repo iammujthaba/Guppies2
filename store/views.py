@@ -275,10 +275,16 @@ def processOrder(request):
         items = order.orderitem_set.all()
         shipping_state = data['shipping']['state']
         total_shipping = calculate_shipping(shipping_state, items)
-
+        
+        razorpay_payment_id = data['shipping']['razorpay_payment_id']
+        
+        # Check if the payment ID already exists
+        if Order.objects.filter(razorpay_payment_id=razorpay_payment_id).exists():
+            return JsonResponse({'success': False, 'message': 'This payment has already been processed.'})
+        
         if total == Decimal(order.get_cart_total) + total_shipping:
             order.complete = True
-            order.transaction_id = data['shipping']['razorpay_payment_id']
+            order.razorpay_payment_id = razorpay_payment_id
             order.save()
 
             ShippingAddress.objects.create(
@@ -308,14 +314,15 @@ def processOrder(request):
             # Clear the cart
             if 'cart' in request.session:
                 del request.session['cart']
-            request.session.modified = True
-
+                request.session.modified = True
+            # request.session.modified = True 
+            # (Chat GPT ofter requsted to make this line under 'if' conditon [i dont know why])
+            
             return JsonResponse({'success': True, 'message': 'Order placed successfully!'})
         else:
             return JsonResponse({'success': False, 'message': 'Total price mismatch.'})
     else:
         return JsonResponse({'success': False, 'message': 'User not authenticated.'})
-
 
 def proDetail(request, c_slug, product_slug):
     try:

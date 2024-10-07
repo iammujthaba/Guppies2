@@ -136,10 +136,10 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=100, null=True)
+    razorpay_payment_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
     processing_time = models.DateTimeField(null=True, blank=True)
-    confirmed_time = models.DateTimeField(null=True, blank=True)  # Add this line
+    confirmed_time = models.DateTimeField(null=True, blank=True)
     shipped_time = models.DateTimeField(null=True, blank=True)
     delivered_time = models.DateTimeField(null=True, blank=True)
 
