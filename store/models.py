@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
+import uuid
 # from django import forms
 
 class Category(models.Model):
@@ -137,6 +138,9 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     razorpay_payment_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    order_id = models.CharField(max_length=100, unique=True, default=uuid.uuid4, editable=False)
+    razorpay_order_id = models.CharField(max_length=100, null=True, blank=True)
+    razorpay_signature = models.CharField(max_length=256, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Processing')
     processing_time = models.DateTimeField(null=True, blank=True)
     confirmed_time = models.DateTimeField(null=True, blank=True)

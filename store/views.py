@@ -9,7 +9,10 @@ from .utils import cartData, cookieWishlist
 from django.contrib.auth.decorators import login_required
 import logging
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+import razorpay
 
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 logger = logging.getLogger(__name__)
 
 def allProdCat(request, c_slug=None):
@@ -186,17 +189,34 @@ def payment(request):
         # Calculate shipping charge
         shipping_charge = calculate_shipping(shipping_info.get('state'), items)
 
+        # Calculate total amount
+        total_amount = order.get_cart_total + shipping_charge
+
+        # Create Razorpay order
+        razorpay_order = client.order.create({
+            'amount': int(total_amount * 100),
+            'currency': 'INR',
+            'payment_capture': '1'
+        })
+
+        # Update the order with Razorpay order ID
+        order.razorpay_order_id = razorpay_order['id']
+        order.save()
+
         context = {
             'items': items,
             'order': order,
             'cartItems': cartItems,
             'shipping_info': shipping_info,
             'shipping_charge': shipping_charge,
+            'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+            'razorpay_order_id': razorpay_order['id'],
+            'total_amount': total_amount,
         }
+
         return render(request, 'store/payment.html', context)
     else:
         return redirect('store_app:account_info')
-
 
 def updateItem(request):
     data = json.loads(request.body)
@@ -244,10 +264,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def processOrder(request):
-    data = json.loads(request.body)
-    if request.user.is_authenticated:
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'User not authenticated.'})
+
+    try:
+        data = json.loads(request.body)
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        order = Order.objects.get(customer=customer, complete=False, razorpay_order_id=data['shipping']['razorpay_order_id'])
         total = Decimal(data['shipping']['total'])
 
         # Calculate shipping
@@ -255,53 +280,77 @@ def processOrder(request):
         shipping_state = data['shipping']['state']
         total_shipping = calculate_shipping(shipping_state, items)
         
-        razorpay_payment_id = data['shipping']['razorpay_payment_id']
-        
+        razorpay_payment_id = data['shipping'].get('razorpay_payment_id')
+        razorpay_order_id = data['shipping'].get('razorpay_order_id')
+        razorpay_signature = data['shipping'].get('razorpay_signature')
+
+        if not all([razorpay_payment_id, razorpay_order_id, razorpay_signature]):
+            return JsonResponse({'success': False, 'message': 'Missing Razorpay payment information.'})
+
+        # Verify the payment signature
+        try:
+            client.utility.verify_payment_signature({
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': razorpay_payment_id,
+                'razorpay_signature': razorpay_signature
+            })
+        except razorpay.errors.SignatureVerificationError:
+            logger.error(f"Invalid Razorpay signature for order {order.id}")
+            return JsonResponse({'success': False, 'message': 'Invalid payment signature.'})
+
+    
         # Check if the payment ID already exists
         if Order.objects.filter(razorpay_payment_id=razorpay_payment_id).exists():
             return JsonResponse({'success': False, 'message': 'This payment has already been processed.'})
         
-        if total == Decimal(order.get_cart_total) + total_shipping:
-            order.complete = True
-            order.razorpay_payment_id = razorpay_payment_id
-            order.save()
+        if total != Decimal(order.get_cart_total) + total_shipping:
+            logger.warning(f"Total price mismatch for order {order.id}")
+            return JsonResponse({'success': False, 'message': 'Total price mismatch.'})
 
-            ShippingAddress.objects.create(
+        # Update order status
+        order.complete = True
+        order.razorpay_payment_id = razorpay_payment_id
+        order.save()
+
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            number=data['shipping']['number'],
+            whatsapp=data['shipping']['whatsapp'],
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=shipping_state,
+            zipcode=data['shipping']['zipcode'],
+            Shipping_cost=total_shipping,
+        )
+
+        # Process order items
+        for item in items:
+            product = item.product
+            product.stock -= item.quantity
+            product.save()
+            PurchaseHistory.objects.create(
                 customer=customer,
-                order=order,
-                number=data['shipping']['number'],
-                whatsapp=data['shipping']['whatsapp'],
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-                Shipping_cost=total_shipping,
+                product=product,
+                price_at_purchase=item.price_at_purchase
             )
 
-            # Process order items
-            for item in order.orderitem_set.all():
-                product = item.product
-                product.stock -= item.quantity
-                product.save()
+        # Clear the cart
+        if 'cart' in request.session:
+            del request.session['cart']
+            request.session.modified = True
+        # request.session.modified = True 
+        # (Chat GPT ofter requsted to make this line under 'if' conditon [i dont know why])
 
-                PurchaseHistory.objects.create(
-                    customer=customer,
-                    product=product,
-                    price_at_purchase=item.price_at_purchase
-                )
-
-            # Clear the cart
-            if 'cart' in request.session:
-                del request.session['cart']
-                request.session.modified = True
-            # request.session.modified = True 
-            # (Chat GPT ofter requsted to make this line under 'if' conditon [i dont know why])
+        logger.info(f"Order {order.id} placed successfully")
+        return JsonResponse({'success': True, 'message': 'Order placed successfully!'})
             
-            return JsonResponse({'success': True, 'message': 'Order placed successfully!'})
-        else:
-            return JsonResponse({'success': False, 'message': 'Total price mismatch.'})
-    else:
-        return JsonResponse({'success': False, 'message': 'User not authenticated.'})
+    except Order.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Order not found.'})
+    except Exception as e:
+        logger.error(f"Error processing order: {str(e)}")
+        return JsonResponse({'success': False, 'message': 'An error occurred while processing the order.'})
+
 
 def proDetail(request, c_slug, product_slug):
     try:
