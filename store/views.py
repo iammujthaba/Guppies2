@@ -124,27 +124,6 @@ def cart(request):
     }
     return render(request, 'store/Cart.html', context)
 
-# def checkout(request):
-#     if request.user.is_authenticated:
-#         data = cartData(request)
-#         cartItems = data['cartItems']
-#         order = data['order']
-#         items = data['items']
-
-#         customer = request.user.customer
-#         last_shipping = ShippingAddress.objects.filter(customer=customer).order_by('-date_added').first()
-
-#         context = {
-#             'items': items,
-#             'order': order,
-#             'cartItems': cartItems,
-#             'last_shipping': last_shipping,
-#         }
-#         return render(request, 'store/Checkout.html', context)
-#     else:
-#         return redirect('store_app:account_info')
-
-
 
 def checkout(request):
     if request.user.is_authenticated:
@@ -414,28 +393,6 @@ def Category_list(request):
     categorys_list = Category.objects.all().order_by('priority', 'name')
     return render(request, 'store/category_listing.html', {'categorys_list': categorys_list})
 
-# def orders(request):
-#     if not request.user.is_authenticated:
-#         return redirect('auth_app:login')
-
-#     customer = request.user.customer
-#     orders = Order.objects.filter(customer=customer, complete=True)
-
-#     processing_orders = orders.filter(status='Processing')
-#     confirmed_orders = orders.filter(status='Confirmed')
-#     shipped_orders = orders.filter(status='Shipped')
-#     delivered_orders = orders.filter(status='Delivered')
-
-#     context = {
-#         'user': request.user,
-#         'processing_orders': processing_orders,
-#         'confirmed_orders': confirmed_orders,
-#         'shipped_orders': shipped_orders,
-#         'delivered_orders': delivered_orders,
-#     }
-
-#     return render(request, 'store/orders.html', context)
-
 
 from django.db.models import Sum
 
@@ -475,19 +432,6 @@ def myorders(request):
         'orders_with_details': orders_with_details,
     }
     return render(request, 'store/myorder.html', context)
-
-# def track_order(request, order_id):
-#     if not request.user.is_authenticated:
-#         return redirect('auth_app:login')
-
-#     order = Order.objects.get(id=order_id, customer=request.user.customer)
-#     order_items = OrderItem.objects.filter(order=order)
-
-#     context = {
-#         'order': order,
-#         'order_items': order_items,
-#     }
-#     return render(request, 'store/track_order.html', context)
 
 
 def about(request):
